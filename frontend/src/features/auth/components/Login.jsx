@@ -66,7 +66,7 @@ export const Login = () => {
           <Lottie animationData={ecommerceOutlookAnimation}/>
         </Stack> 
         }
-
+        
         <Stack flex={1} justifyContent={'center'} alignItems={'center'}>
 
               <Stack flexDirection={'row'} justifyContent={'center'} alignItems={'center'}>
