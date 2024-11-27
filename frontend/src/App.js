@@ -48,7 +48,7 @@ function App() {
     createRoutesFromElements(
       <>
         {/* Public Routes */}
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/" element={<Homepage2 />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-otp" element={<OtpVerificationPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
