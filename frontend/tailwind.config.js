@@ -1,0 +1,15 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{html,js,jsx}"],
+  theme: {
+    extend: {
+      colors: {
+        primary: "#FFFFED",
+        cta: "rgb(13 148 136 / var(--tw-bg-opacity))",
+        secondary: "#E8B86D",
+        ternary: "rgb(244 63 94 / var(--tw-bg-opacity))",
+      },
+    },
+  },
+  plugins: [],
+};
