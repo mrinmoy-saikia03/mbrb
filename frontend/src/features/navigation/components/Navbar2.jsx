@@ -1,13 +1,36 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Searchbox from "./searchbox";
-import { ChevronDown, ShoppingBag, User } from "lucide-react";
+import Searchbox from "./SearchModal";
+import { ChevronDown, Menu, Search, ShoppingBag, User } from "lucide-react";
 import TopBanner from "./TopBanner";
 import Logo from "./Logo";
+import { CartDrawer } from "./CartDrawer";
+import { useDispatch } from "react-redux";
+import { openModal } from "../../Modals/modalSlice";
 
 const Navbar2 = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const loggedIn = true;
+  const dispatch = useDispatch();
+  const loggedIn = false;
+  const openCartDrawer = () => {
+    window.scrollTo(0, 0);
+    dispatch(openModal({ type: "cart" }));
+  };
+
+  const openMobileNav = () => {
+    window.scrollTo(0, 0);
+    dispatch(openModal({ type: "mobileNav" }));
+  };
+
+  const openSearchModal = () => {
+    window.scrollTo(0, 0);
+    dispatch(openModal({ type: "search" }));
+  };
+
+  const openLoginModal = () => {
+    window.scrollTo(0, 0);
+    dispatch(openModal({ type: "login" }));
+  };
   return (
     <>
       <header className="bg-ternary sticky top-0 z-50">
@@ -15,10 +38,7 @@ const Navbar2 = () => {
           <div className="flex py-1 items-center justify-between">
             <div className="">
               <div className="flex items-center justify-start gap-x-7 xl:gap-x-24">
-                <Logo/>
-                <div className="hidden  md:block">
-                  <Searchbox />
-                </div>
+                <Logo />
               </div>
             </div>
 
@@ -80,14 +100,22 @@ const Navbar2 = () => {
               </div>
 
               <div className="flex items-center gap-4">
-                <button className="relative">
-                  <ShoppingBag color="white" />
-                  <p className="rounded-full h-[10px] w-[10px] bg-cta absolute top-0 right-0" />
+                {loggedIn && (
+                  <button onClick={openCartDrawer} className="relative">
+                    <ShoppingBag color="white" />
+                    <p className="rounded-full h-[10px] w-[10px] bg-cta absolute top-0 right-0" />
+                  </button>
+                )}
+                <button onClick={openSearchModal} className="relative">
+                  <Search color="white" />
                 </button>
                 {!loggedIn ? (
                   <div className="sm:flex sm:gap-4">
-                    <button className="rounded-md bg-cta px-5 py-2.5 text-sm font-medium text-white shadow flex items-center gap-x-2">
-                      <User className="hidden md:block" /> Login
+                    <button
+                      onClick={openLoginModal}
+                      className="rounded-md bg-cta px-2 md:px-4 py-2 text-sm font-medium text-white shadow flex items-center gap-x-1"
+                    >
+                      <User /> Login
                     </button>
                   </div>
                 ) : (
@@ -95,6 +123,9 @@ const Navbar2 = () => {
                     <User className="text-white" size={27} />
                   </Link>
                 )}
+                <button onClick={openMobileNav} className="lg:hidden">
+                  <Menu color="white" />
+                </button>
               </div>
             </div>
           </div>
