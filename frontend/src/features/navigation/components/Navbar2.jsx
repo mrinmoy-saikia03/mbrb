@@ -11,7 +11,7 @@ import { openModal } from "../../Modals/modalSlice";
 const Navbar2 = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const loggedIn = false;
+  const loggedIn = true;
   const openCartDrawer = () => {
     window.scrollTo(0, 0);
     dispatch(openModal({ type: "cart" }));
@@ -33,6 +33,7 @@ const Navbar2 = () => {
   };
   return (
     <>
+      <TopBanner />
       <header className="bg-ternary sticky top-0 z-50">
         <div className="mx-auto max-w-screen-xl px-1 sm:px-2 lg:px-3">
           <div className="flex py-1 items-center justify-between">
@@ -47,53 +48,58 @@ const Navbar2 = () => {
                 <nav aria-label="Global">
                   <ul className="flex items-center gap-6 text-sm">
                     <li className="hover-underline-animation">
-                      <a
+                      <Link
+                        to={"/"}
                         className="text-white transition hover:text-white/75 xl:hover:text-white"
                         href="#"
                       >
                         {" "}
                         Home{" "}
-                      </a>
+                      </Link>
                     </li>
 
                     <li className=" hover-underline-animation">
-                      <a
+                      <Link
+                        to={"/sweets"}
                         className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
                         href="#"
                       >
                         {" "}
                         Our Products
-                      </a>
+                      </Link>
                     </li>
 
                     <li className="hover-underline-animation">
-                      <a
+                      <Link
+                        to={"/branches"}
                         className="text-white transition hover:text-white/75 xl:hover:text-white"
                         href="#"
                       >
                         {" "}
                         Branches{" "}
-                      </a>
+                      </Link>
                     </li>
 
                     <li className="hover-underline-animation">
-                      <a
+                      <Link
+                        to={"/about"}
                         className="text-white transition hover:text-white/75 xl:hover:text-white"
                         href="#"
                       >
                         {" "}
                         About{" "}
-                      </a>
+                      </Link>
                     </li>
 
                     <li className="hover-underline-animation">
-                      <a
+                      <Link
+                        to={"/contact"}
                         className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
                         href="#"
                       >
                         {" "}
                         Contact Us{" "}
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </nav>

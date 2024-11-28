@@ -1,22 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
   Typography,
   Input,
-  Checkbox,
 } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../Modals/modalSlice";
+import { loginAsync } from "../../auth/AuthSlice";
 
 export function LoginModal() {
-  const { isOpen, type, props } = useSelector((state) => state.modal);
+  const { isOpen, type } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
-  const closeDrawer = () => dispatch(closeModal());
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [message, setMessage] = useState("");
+
+  const closeDrawer = () => {
+    dispatch(closeModal());
+    setIsSignUp(false);
+    setIsForgotPassword(false);
+    setFormData({ name: "", email: "", password: "" });
+    setMessage("");
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleLoginSubmit = () => {
+    console.log("Login Data:", formData);
+    const cred = { email: formData.email, password: formData.password };
+    dispatch(loginAsync(cred));
+    closeDrawer();
+  };
+
+  const handleSignupSubmit = () => {
+    console.log("Signup Data:", formData);
+    setMessage(
+      "A verification link has been sent to your email. Kindly visit the link to complete verification."
+    );
+  };
+
+  const handleForgotPasswordSubmit = () => {
+    console.log("Forgot Password Data:", formData.email);
+    setMessage(
+      "A link has been sent to your email for resetting your password."
+    );
+  };
 
   return (
     <>
@@ -24,49 +64,141 @@ export function LoginModal() {
         size="xs"
         open={isOpen && type === "login"}
         handler={closeDrawer}
-        className="bg-transparent shadow-none"
+        className="bg-primary shadow-none"
       >
-        <Card className="mx-auto w-full max-w-[24rem]">
+        <Card className="mx-auto w-full max-w-[24rem] bg-primary">
           <CardBody className="flex flex-col gap-4">
-            <Typography variant="h4" color="blue-gray">
-              Sign In
-            </Typography>
-            <Typography
-              className="mb-3 font-normal"
-              variant="paragraph"
-              color="gray"
-            >
-              Enter your email and password to Sign In.
-            </Typography>
-            <Typography className="-mb-2" variant="h6">
-              Your Email
-            </Typography>
-            <Input label="Email" size="lg" />
-            <Typography className="-mb-2" variant="h6">
-              Your Password
-            </Typography>
-            <Input label="Password" size="lg" />
-            <div className="-ml-2.5 -mt-3">
-              <Checkbox label="Remember Me" />
-            </div>
+            {message ? (
+              <Typography variant="h6" color="black" className="text-center">
+                {message}
+              </Typography>
+            ) : isForgotPassword ? (
+              <>
+                <Typography variant="h4" color="black">
+                  Forgot Password
+                </Typography>
+                <Typography
+                  className="mb-3 font-normal text-black"
+                  variant="paragraph"
+                >
+                  Enter your email to receive a password reset link.
+                </Typography>
+                <Typography className="-mb-2 text-black" variant="h6">
+                  Your Email
+                </Typography>
+                <Input
+                  label="Email"
+                  size="lg"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+              </>
+            ) : (
+              <>
+                <Typography variant="h4" color="black">
+                  {isSignUp ? "Sign Up" : "Sign In"}
+                </Typography>
+                <Typography
+                  className="mb-3 font-normal text-black"
+                  variant="paragraph"
+                >
+                  {isSignUp
+                    ? "Enter your details to create an account."
+                    : "Enter your email and password to Sign In."}
+                </Typography>
+                {isSignUp && (
+                  <>
+                    <Typography className="-mb-2 text-black" variant="h6">
+                      Your Name
+                    </Typography>
+                    <Input
+                      label="Name"
+                      size="lg"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    />
+                  </>
+                )}
+                <Typography className="-mb-2 text-black" variant="h6">
+                  Your Email
+                </Typography>
+                <Input
+                  label="Email"
+                  size="lg"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+                <Typography className="-mb-2 text-black" variant="h6">
+                  Your Password
+                </Typography>
+                <Input
+                  label="Password"
+                  size="lg"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                />
+              </>
+            )}
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" onClick={closeDrawer} fullWidth>
-              Sign In
-            </Button>
-            <Typography variant="small" className="mt-4 flex justify-center">
-              Don&apos;t have an account?
-              <Typography
-                as="a"
-                href="#signup"
-                variant="small"
-                color="blue-gray"
-                className="ml-1 font-bold"
-                onClick={closeDrawer}
-              >
-                Sign up
-              </Typography>
-            </Typography>
+            {!message && (
+              <>
+                <Button
+                  onClick={
+                    isForgotPassword
+                      ? handleForgotPasswordSubmit
+                      : isSignUp
+                      ? handleSignupSubmit
+                      : handleLoginSubmit
+                  }
+                  fullWidth
+                  className="bg-ternary"
+                >
+                  {isForgotPassword
+                    ? "Send Reset Link"
+                    : isSignUp
+                    ? "Sign Up"
+                    : "Sign In"}
+                </Button>
+                {!isForgotPassword && (
+                  <Typography
+                    variant="small"
+                    className="mt-4 flex justify-center text-black"
+                  >
+                    {isSignUp
+                      ? "Already have an account?"
+                      : "Don't have an account?"}
+                    <Typography
+                      as="a"
+                      href="#toggle"
+                      variant="small"
+                      className="ml-1 font-bold cursor-pointer text-ternary hover-underline-animation-black"
+                      onClick={() => setIsSignUp(!isSignUp)}
+                    >
+                      {isSignUp ? "Sign in" : "Sign up"}
+                    </Typography>
+                  </Typography>
+                )}
+                {!isSignUp && (
+                  <Typography
+                    as="a"
+                    href="#forgot-password"
+                    variant="small"
+                    className="mt-2 flex font-bold text-center w-full justify-center text-ternary cursor-pointer"
+                    onClick={() => setIsForgotPassword(true)}
+                  >
+                    <p className="hover-underline-animation-black">
+                      Forgot Password?
+                    </p>
+                  </Typography>
+                )}
+              </>
+            )}
           </CardFooter>
         </Card>
       </Dialog>

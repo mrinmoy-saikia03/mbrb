@@ -14,22 +14,25 @@ import { SignupPage } from "./SignupPage";
 import { UserOrdersPage } from "./UserOrdersPage";
 import { UserProfilePage } from "./UserProfilePage";
 import { WishlistPage } from "./WishlistPage";
-
+import Sweets from "./Sweets";
+import ProductDetails2 from "./ProductDetails2";
 export {
-    SignupPage,
-    LoginPage,
-    ForgotPasswordPage,
-    ResetPasswordPage,
-    HomePage,
-    ProductDetailsPage,
-    CartPage,
-    UserProfilePage,
-    CheckoutPage,
-    OrderSuccessPage,
-    UserOrdersPage,
-    ProductUpdatePage,
-    AddProductPage,
-    AdminOrdersPage,
-    WishlistPage,
-    OtpVerificationPage
-}
+  SignupPage,
+  LoginPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  HomePage,
+  ProductDetailsPage,
+  CartPage,
+  UserProfilePage,
+  CheckoutPage,
+  OrderSuccessPage,
+  UserOrdersPage,
+  ProductUpdatePage,
+  AddProductPage,
+  AdminOrdersPage,
+  WishlistPage,
+  OtpVerificationPage,
+  Sweets,
+  ProductDetails2,
+};

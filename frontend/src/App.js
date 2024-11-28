@@ -1,19 +1,20 @@
+import React from "react";
 import { useSelector } from "react-redux";
 import {
-  Navigate,
+  BrowserRouter as Router,
+  Routes,
   Route,
-  RouterProvider,
-  createBrowserRouter,
-  createRoutesFromElements,
+  Navigate,
 } from "react-router-dom";
 import {
   selectIsAuthChecked,
   selectLoggedInUser,
 } from "./features/auth/AuthSlice";
-import { Logout } from "./features/auth/components/Logout";
-import { Protected } from "./features/auth/components/Protected";
 import { useAuthCheck } from "./hooks/useAuth/useAuthCheck";
 import { useFetchLoggedInUserDetails } from "./hooks/useAuth/useFetchLoggedInUserDetails";
+
+import Navbar2 from "./features/navigation/components/Navbar2";
+import { Footer } from "./features/footer/Footer";
 import {
   AddProductPage,
   AdminOrdersPage,
@@ -27,15 +28,36 @@ import {
   ProductDetailsPage,
   ProductUpdatePage,
   ResetPasswordPage,
+  ProductDetails2,
   SignupPage,
+  Sweets,
   UserOrdersPage,
   UserProfilePage,
   WishlistPage,
 } from "./pages";
 import { AdminDashboardPage } from "./pages/AdminDashboardPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import "./index.css";
 import Homepage2 from "./pages/Homepage2";
+import "./index.css";
+
+// Protected Route Wrapper
+function ProtectedRoute({ children, isAuthenticated }) {
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  return children;
+}
+
+// Layout Component
+function Layout({ children }) {
+  return (
+    <div className="min-h-screen flex flex-col bg-primary">
+      <Navbar2 />
+      <main className="flex-grow">{children}</main>
+      <Footer />
+    </div>
+  );
+}
 
 function App() {
   const isAuthChecked = useSelector(selectIsAuthChecked);
@@ -44,133 +66,132 @@ function App() {
   useAuthCheck();
   useFetchLoggedInUserDetails(loggedInUser);
 
-  const routes = createBrowserRouter(
-    createRoutesFromElements(
-      <>
-        {/* Public Routes */}
-        <Route path="/" element={<Homepage2 />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/verify-otp" element={<OtpVerificationPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route
-          path="/reset-password/:userId/:passwordResetToken"
-          element={<ResetPasswordPage />}
-        />
+  if (!isAuthChecked) return null; // Wait for auth check to complete
 
-        {/* Protected Routes */}
-        {loggedInUser?.isAdmin ? (
-          // Admin Routes
-          <>
-            <Route
-              path="/admin/dashboard"
-              element={
-                <Protected>
-                  <AdminDashboardPage />
-                </Protected>
-              }
-            />
-            <Route
-              path="/admin/product-update/:id"
-              element={
-                <Protected>
-                  <ProductUpdatePage />
-                </Protected>
-              }
-            />
-            <Route
-              path="/admin/add-product"
-              element={
-                <Protected>
-                  <AddProductPage />
-                </Protected>
-              }
-            />
-            <Route
-              path="/admin/orders"
-              element={
-                <Protected>
-                  <AdminOrdersPage />
-                </Protected>
-              }
-            />
-            <Route path="*" element={<Navigate to="/admin/dashboard" />} />
-          </>
-        ) : (
-          // User Routes
-          <>
-            <Route
-              path="/"
-              element={
-                <Protected>
-                  <Homepage2 />
-                </Protected>
-              }
-            />
-            <Route
-              path="/home"
-              element={
-                <Protected>
-                  <HomePage />
-                </Protected>
-              }
-            />
-            <Route
-              path="/cart"
-              element={
-                <Protected>
-                  <CartPage />
-                </Protected>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <Protected>
-                  <UserProfilePage />
-                </Protected>
-              }
-            />
-            <Route
-              path="/checkout"
-              element={
-                <Protected>
-                  <CheckoutPage />
-                </Protected>
-              }
-            />
-            <Route
-              path="/order-success/:id"
-              element={
-                <Protected>
-                  <OrderSuccessPage />
-                </Protected>
-              }
-            />
-            <Route
-              path="/orders"
-              element={
-                <Protected>
-                  <UserOrdersPage />
-                </Protected>
-              }
-            />
-            <Route
-              path="/wishlist"
-              element={
-                <Protected>
-                  <WishlistPage />
-                </Protected>
-              }
-            />
-          </>
-        )}
+  return (
+    <Router>
+      <Layout>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Homepage2 />} />
+          <Route path="/sweets" element={<Sweets />} />
+          <Route path="/sweets/:id" element={<ProductDetails2 />} />
 
-        <Route path="*" element={<NotFoundPage />} />
-      </>
-    )
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/verify-otp" element={<OtpVerificationPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route
+            path="/reset-password/:userId/:passwordResetToken"
+            element={<ResetPasswordPage />}
+          />
+
+          {/* Admin Routes */}
+          {loggedInUser?.isAdmin && (
+            <>
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <AdminDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/product-update/:id"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <ProductUpdatePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/add-product"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <AddProductPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/orders"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <AdminOrdersPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<Navigate to="/admin/dashboard" />} />
+            </>
+          )}
+
+          {/* User Routes */}
+          {!loggedInUser?.isAdmin && (
+            <>
+              <Route
+                path="/home"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <HomePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/cart"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <CartPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <UserProfilePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <CheckoutPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/order-success/:id"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <OrderSuccessPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/orders"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <UserOrdersPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/wishlist"
+                element={
+                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                    <WishlistPage />
+                  </ProtectedRoute>
+                }
+              />
+            </>
+          )}
+
+          {/* Catch-all Route */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Layout>
+    </Router>
   );
-
-  return <>{isAuthChecked ? <RouterProvider router={routes} /> : null}</>;
 }
 
 export default App;
