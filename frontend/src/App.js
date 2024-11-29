@@ -39,6 +39,7 @@ import { AdminDashboardPage } from "./pages/AdminDashboardPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import Homepage2 from "./pages/Homepage2";
 import "./index.css";
+import AboutUs from "./pages/AboutUs";
 
 // Protected Route Wrapper
 function ProtectedRoute({ children, isAuthenticated }) {
@@ -76,7 +77,7 @@ function App() {
           <Route path="/" element={<Homepage2 />} />
           <Route path="/sweets" element={<Sweets />} />
           <Route path="/sweets/:id" element={<ProductDetails2 />} />
-
+          <Route path="/about" element={<AboutUs />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/verify-otp" element={<OtpVerificationPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
