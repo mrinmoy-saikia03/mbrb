@@ -40,6 +40,9 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import Homepage2 from "./pages/Homepage2";
 import "./index.css";
 import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
+import Branches from "./pages/Branches";
+import AccountPage from "./pages/Account";
 
 // Protected Route Wrapper
 function ProtectedRoute({ children, isAuthenticated }) {
@@ -79,6 +82,10 @@ function App() {
           <Route path="/sweets/:id" element={<ProductDetails2 />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/branches" element={<Branches />} />
+          <Route path="/account" element={<AccountPage />} />
+
           <Route path="/verify-otp" element={<OtpVerificationPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route
@@ -152,14 +159,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="/checkout"
-                element={
-                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
-                    <CheckoutPage />
-                  </ProtectedRoute>
-                }
-              />
+              
               <Route
                 path="/order-success/:id"
                 element={

@@ -33,21 +33,21 @@ export const Checkout = () => {
     const is900=useMediaQuery(theme.breakpoints.down(900))
     const is480=useMediaQuery(theme.breakpoints.down(480))
     
-    useEffect(()=>{
-        if(addressStatus==='fulfilled'){
-            reset()
-        }
-        else if(addressStatus==='rejected'){
-            alert('Error adding your address')
-        }
-    },[addressStatus])
+    // useEffect(()=>{
+    //     if(addressStatus==='fulfilled'){
+    //         reset()
+    //     }
+    //     else if(addressStatus==='rejected'){
+    //         alert('Error adding your address')
+    //     }
+    // },[addressStatus])
 
-    useEffect(()=>{
-        if(currentOrder && currentOrder?._id){
-            dispatch(resetCartByUserIdAsync(loggedInUser?._id))
-            navigate(`/order-success/${currentOrder?._id}`)
-        }
-    },[currentOrder])
+    // useEffect(()=>{
+    //     if(currentOrder && currentOrder?._id){
+    //         dispatch(resetCartByUserIdAsync(loggedInUser?._id))
+    //         navigate(`/order-success/${currentOrder?._id}`)
+    //     }
+    // },[currentOrder])
     
     const handleAddAddress=(data)=>{
         const address={...data,user:loggedInUser._id}
