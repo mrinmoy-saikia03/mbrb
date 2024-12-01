@@ -2,6 +2,9 @@ import { IndianRupee, Star } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 const ProductCard2 = () => {
+  const addToCart = (e) => {
+    e.preventDefault();
+  };
   return (
     <Link to={"/sweets/123"}>
       <div className="relative w-full flex flex-col overflow-hidden rounded-lg border border-transparent transition duration-200 hover:bg-secondary/10 hover:border-secondary px-3">
@@ -35,7 +38,7 @@ const ProductCard2 = () => {
           </div>
 
           {/* Size Selector */}
-          <div className="mb-3">
+          <div className="mb-3" onClick={(e) => e.preventDefault()}>
             <select className="border text-xs sm:text-sm bg-secondary/20 border-secondary rounded-lg text-black w-full p-2 cursor-pointer">
               <option defaultValue>500g</option>
               <option>1000g</option>
@@ -43,7 +46,10 @@ const ProductCard2 = () => {
           </div>
 
           {/* Add to Cart Button */}
-          <button className="w-full flex items-center justify-center rounded-md bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700">
+          <button
+            onClick={addToCart}
+            className="w-full flex items-center justify-center rounded-md bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="mr-2 h-4 w-4 sm:h-5 sm:w-5"
