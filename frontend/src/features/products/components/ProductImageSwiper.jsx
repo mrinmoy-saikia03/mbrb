@@ -62,7 +62,7 @@ export default function ProductImageSwiper() {
           freeMode={true}
           watchSlidesProgress={true}
           modules={[FreeMode, Navigation, Thumbs]}
-          className="thumb-swiper"
+          className="productImageSwiper2"
         >
           <SwiperSlide>
             <img

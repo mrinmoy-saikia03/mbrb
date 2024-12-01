@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -10,11 +10,35 @@ import {
 } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../Modals/modalSlice";
-import { loginAsync } from "../../auth/AuthSlice";
+
+import {
+  selectLoggedInUser,
+  loginAsync,
+  selectLoginStatus,
+  selectLoginError,
+  clearLoginError,
+  resetLoginStatus,
+  signupAsync,
+  selectSignupStatus,
+  selectSignupError,
+  clearSignupError,
+  resetSignupStatus,
+} from "../../auth/AuthSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export function LoginModal() {
   const { isOpen, type } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  //signup
+  const status2 = useSelector(selectSignupStatus);
+  const error2 = useSelector(selectSignupError);
+
+  //signin
+  const status = useSelector(selectLoginStatus);
+  const error = useSelector(selectLoginError);
+  const loggedInUser = useSelector(selectLoggedInUser);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -23,6 +47,57 @@ export function LoginModal() {
     password: "",
   });
   const [message, setMessage] = useState("");
+
+  //signup useeffects
+  useEffect(() => {
+    if (loggedInUser && !loggedInUser?.isVerified) {
+      navigate("/verify-otp");
+    }
+  }, [loggedInUser]);
+
+  useEffect(() => {
+    if (error2) {
+      toast.error(error2.message);
+    }
+  }, [error2]);
+
+  useEffect(() => {
+    if (status2 === "fullfilled") {
+      toast.success(
+        "Welcome! Verify your email to start shopping on mern-ecommerce."
+      );
+    }
+    return () => {
+      dispatch(clearSignupError());
+      dispatch(resetSignupStatus());
+    };
+  }, [status2]);
+
+  //signin useeffects
+  useEffect(() => {
+    if (loggedInUser && loggedInUser?.isVerified) {
+      closeDrawer();
+    } else if (loggedInUser && !loggedInUser?.isVerified) {
+      navigate("/verify-otp");
+    }
+  }, [loggedInUser]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (status === "fullfilled" && loggedInUser?.isVerified === true) {
+      toast.success(`Login successful`);
+      closeDrawer();
+    }
+    return () => {
+      dispatch(clearLoginError());
+      dispatch(resetLoginStatus());
+    };
+  }, [status]);
 
   const closeDrawer = () => {
     dispatch(closeModal());
@@ -46,9 +121,13 @@ export function LoginModal() {
 
   const handleSignupSubmit = () => {
     console.log("Signup Data:", formData);
-    setMessage(
-      "A verification link has been sent to your email. Kindly visit the link to complete verification."
-    );
+    const cred = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    };
+    dispatch(signupAsync(cred));
+    closeDrawer();
   };
 
   const handleForgotPasswordSubmit = () => {
@@ -149,6 +228,8 @@ export function LoginModal() {
             {!message && (
               <>
                 <Button
+                  loading={status === "pending"}
+                  type="submit"
                   onClick={
                     isForgotPassword
                       ? handleForgotPasswordSubmit

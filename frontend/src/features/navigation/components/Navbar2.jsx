@@ -5,13 +5,14 @@ import { ChevronDown, Menu, Search, ShoppingBag, User } from "lucide-react";
 import TopBanner from "./TopBanner";
 import Logo from "./Logo";
 import { CartDrawer } from "./CartDrawer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../Modals/modalSlice";
+import { selectLoggedInUser } from "../../auth/AuthSlice";
 
 const Navbar2 = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const loggedIn = true;
+  const loggedInUser = useSelector(selectLoggedInUser);
   const openCartDrawer = () => {
     window.scrollTo(0, 0);
     dispatch(openModal({ type: "cart" }));
@@ -106,7 +107,7 @@ const Navbar2 = () => {
               </div>
 
               <div className="flex items-center gap-4">
-                {loggedIn && (
+                {loggedInUser && (
                   <button onClick={openCartDrawer} className="relative">
                     <ShoppingBag color="white" />
                     <p className="rounded-full h-[10px] w-[10px] bg-cta absolute top-0 right-0" />
@@ -115,7 +116,7 @@ const Navbar2 = () => {
                 <button onClick={openSearchModal} className="relative">
                   <Search color="white" />
                 </button>
-                {!loggedIn ? (
+                {!loggedInUser ? (
                   <div className="sm:flex sm:gap-4">
                     <button
                       onClick={openLoginModal}

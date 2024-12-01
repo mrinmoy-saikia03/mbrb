@@ -8,16 +8,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme/theme";
 import "./index.css";
-import ModalProvider from "./providers/ModalProvider";
-import { BrowserRouter } from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <ModalProvider>
-          <App />
-        </ModalProvider>
+        <App />
         <ToastContainer position="top-right" autoClose={1500} closeOnClick />
       </Provider>
     </ThemeProvider>

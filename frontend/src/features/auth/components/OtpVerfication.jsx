@@ -1,119 +1,164 @@
-import {Button, FormHelperText, Paper, Stack, TextField, Typography } from '@mui/material'
-import React, { useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { clearOtpVerificationError, clearResendOtpError, clearResendOtpSuccessMessage, resendOtpAsync, resetOtpVerificationStatus, resetResendOtpStatus, selectLoggedInUser, selectOtpVerificationError, selectOtpVerificationStatus, selectResendOtpError, selectResendOtpStatus, selectResendOtpSuccessMessage, verifyOtpAsync } from '../AuthSlice'
-import { LoadingButton } from '@mui/lab'
-import { useNavigate } from 'react-router-dom'
-import { useForm } from "react-hook-form"
-import {toast} from 'react-toastify'
-
+import React, { useEffect } from "react";
+import {
+  Card,
+  Typography,
+  Input,
+  Button,
+} from "@material-tailwind/react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearOtpVerificationError,
+  clearResendOtpError,
+  clearResendOtpSuccessMessage,
+  resendOtpAsync,
+  resetOtpVerificationStatus,
+  resetResendOtpStatus,
+  selectLoggedInUser,
+  selectOtpVerificationError,
+  selectOtpVerificationStatus,
+  selectResendOtpError,
+  selectResendOtpStatus,
+  selectResendOtpSuccessMessage,
+  verifyOtpAsync,
+} from "../AuthSlice";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export const OtpVerfication = () => {
-    
-    const {register,handleSubmit,formState: { errors }} = useForm()
-    const dispatch=useDispatch()
-    const loggedInUser=useSelector(selectLoggedInUser)
-    const navigate=useNavigate()
-    const resendOtpStatus=useSelector(selectResendOtpStatus)
-    const resendOtpError=useSelector(selectResendOtpError)
-    const resendOtpSuccessMessage=useSelector(selectResendOtpSuccessMessage)
-    const otpVerificationStatus=useSelector(selectOtpVerificationStatus)
-    const otpVerificationError=useSelector(selectOtpVerificationError)
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const dispatch = useDispatch();
+  const loggedInUser = useSelector(selectLoggedInUser);
+  const navigate = useNavigate();
+  const resendOtpStatus = useSelector(selectResendOtpStatus);
+  const resendOtpError = useSelector(selectResendOtpError);
+  const resendOtpSuccessMessage = useSelector(selectResendOtpSuccessMessage);
+  const otpVerificationStatus = useSelector(selectOtpVerificationStatus);
+  const otpVerificationError = useSelector(selectOtpVerificationError);
 
-    // handles the redirection
-    useEffect(()=>{
-        if(!loggedInUser){
-            navigate('/login')
-        }
-        else if(loggedInUser && loggedInUser?.isVerified){
-            navigate("/")
-        }
-    },[loggedInUser])
-
-    const handleSendOtp=()=>{
-        const data={user:loggedInUser?._id}
-        dispatch(resendOtpAsync(data))
+  // Redirect logic
+  useEffect(() => {
+    if (!loggedInUser) {
+      navigate("/login");
+    } else if (loggedInUser?.isVerified) {
+      navigate("/");
     }
-    
-    const handleVerifyOtp=(data)=>{
-        const cred={...data,userId:loggedInUser?._id}
-        dispatch(verifyOtpAsync(cred))
+  }, [loggedInUser]);
+
+  const handleSendOtp = () => {
+    const data = { user: loggedInUser?._id };
+    dispatch(resendOtpAsync(data));
+  };
+
+  const handleVerifyOtp = (data) => {
+    const cred = { ...data, userId: loggedInUser?._id };
+    dispatch(verifyOtpAsync(cred));
+  };
+
+  // Resend OTP error handler
+  useEffect(() => {
+    if (resendOtpError) {
+      toast.error(resendOtpError.message);
     }
+    return () => {
+      dispatch(clearResendOtpError());
+    };
+  }, [resendOtpError]);
 
-    // handles resend otp error
-    useEffect(()=>{
-        if(resendOtpError){
-            toast.error(resendOtpError.message)
-        }
-        return ()=>{
-            dispatch(clearResendOtpError())
-        }
-    },[resendOtpError])
+  // Resend OTP success handler
+  useEffect(() => {
+    if (resendOtpSuccessMessage) {
+      toast.success(resendOtpSuccessMessage.message);
+    }
+    return () => {
+      dispatch(clearResendOtpSuccessMessage());
+    };
+  }, [resendOtpSuccessMessage]);
 
-    // handles resend otp success message
-    useEffect(()=>{
-        if(resendOtpSuccessMessage){
-            toast.success(resendOtpSuccessMessage.message)
-        }
-        return ()=>{
-            dispatch(clearResendOtpSuccessMessage())
-        }
-    },[resendOtpSuccessMessage])
+  // OTP verification error handler
+  useEffect(() => {
+    if (otpVerificationError) {
+      toast.error(otpVerificationError.message);
+    }
+    return () => {
+      dispatch(clearOtpVerificationError());
+    };
+  }, [otpVerificationError]);
 
-    // handles error while verifying otp
-    useEffect(()=>{
-        if(otpVerificationError){
-            toast.error(otpVerificationError.message)
-        }
-        return ()=>{
-            dispatch(clearOtpVerificationError())
-        }
-    },[otpVerificationError])
-
-    useEffect(()=>{
-        if(otpVerificationStatus==='fullfilled'){
-            toast.success("Email verified! We are happy to have you here")
-            dispatch(resetResendOtpStatus())
-        }
-        return ()=>{
-            dispatch(resetOtpVerificationStatus())
-        }
-    },[otpVerificationStatus])
+  // OTP verification status handler
+  useEffect(() => {
+    if (otpVerificationStatus === "fullfilled") {
+      toast.success("Email verified! We are happy to have you here");
+      dispatch(resetResendOtpStatus());
+    }
+    return () => {
+      dispatch(resetOtpVerificationStatus());
+    };
+  }, [otpVerificationStatus]);
 
   return (
-    <Stack width={'100vw'} height={'100vh'} noValidate flexDirection={'column'} rowGap={3} justifyContent="center" alignItems="center" >
+    <div className="flex flex-col items-center justify-center w-full h-screen">
+      <Card shadow={true} className="p-8 space-y-6 w-full max-w-md">
+        <Typography variant="h5" className="font-semibold text-center">
+          Verify Your Email Address
+        </Typography>
 
-        
-        <Stack component={Paper} elevation={1} position={'relative'} justifyContent={'center'} alignItems={'center'} p={'2rem'} rowGap={'2rem'}>
-            
-            <Typography mt={4} variant='h5' fontWeight={500}>Verify Your Email Address</Typography>
-
-            {
-                resendOtpStatus==='fullfilled'?(
-                    <Stack width={'100%'} rowGap={'1rem'} component={'form'} noValidate onSubmit={handleSubmit(handleVerifyOtp)}>
-                        <Stack rowGap={'1rem'}> 
-                            <Stack>
-                                <Typography  color={'GrayText'}>Enter the 4 digit OTP sent on</Typography>
-                                <Typography fontWeight={'600'} color={'GrayText'}>{loggedInUser?.email}</Typography>
-                            </Stack>
-                            <Stack>
-                                <TextField {...register("otp",{required:"OTP is required",minLength:{value:4,message:"Please enter a 4 digit OTP"}})} fullWidth type='number' />
-                                {errors?.otp && <FormHelperText sx={{color:"red"}}>{errors.otp.message}</FormHelperText>}
-                            </Stack>
-                       </Stack>
-                        <LoadingButton loading={otpVerificationStatus==='pending'}  type='submit' fullWidth variant='contained'>Verify</LoadingButton>
-                    </Stack>
-                ):
-                <>
-                <Stack>
-                    <Typography color={'GrayText'}>We will send you a OTP on</Typography>
-                    <Typography fontWeight={'600'} color={'GrayText'}>{loggedInUser?.email}</Typography>
-                </Stack>
-                <LoadingButton onClick={handleSendOtp} loading={resendOtpStatus==='pending'} fullWidth variant='contained'>Get OTP</LoadingButton>
-                </>
-             }
-
-        </Stack>
-    </Stack>
-  )
-}
+        {resendOtpStatus === "fullfilled" ? (
+          <form
+            onSubmit={handleSubmit(handleVerifyOtp)}
+            className="space-y-4 w-full"
+          >
+            <div>
+              <Typography className="text-gray-600 text-center">
+                Enter the 4-digit OTP sent to
+              </Typography>
+              <Typography className="font-semibold text-gray-600 text-center">
+                {loggedInUser?.email}
+              </Typography>
+            </div>
+            <div className="space-y-1">
+              <Input
+                {...register("otp", {
+                  required: "OTP is required",
+                  minLength: { value: 4, message: "Enter a 4-digit OTP" },
+                })}
+                type="number"
+                size="lg"
+                error={!!errors?.otp}
+                label="OTP"
+              />
+              {errors?.otp && (
+                <Typography className="text-red-500 text-sm">
+                  {errors.otp.message}
+                </Typography>
+              )}
+            </div>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={otpVerificationStatus === "pending"}
+            >
+              {otpVerificationStatus === "pending" ? "Verifying..." : "Verify"}
+            </Button>
+          </form>
+        ) : (
+          <div className="space-y-4 text-center">
+            <Typography className="text-gray-600">
+              We will send you an OTP to {resendOtpStatus}
+            </Typography>
+            <Typography className="font-semibold text-gray-600">
+              {loggedInUser?.email}
+            </Typography>
+            <Button
+              onClick={handleSendOtp}
+              className="w-full"
+              disabled={resendOtpStatus === "pending"}
+            >
+              {resendOtpStatus === "pending" ? "Sending..." : "Get OTP"}
+            </Button>
+          </div>
+        )}
+      </Card>
+    </div>
+  );
+};

@@ -1,6 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { logoutAsync, selectLoggedInUser } from "../../auth/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 
 const UserOrders2 = () => {
+  const dispatch = useDispatch();
+  const loggedInUser = useSelector(selectLoggedInUser);
+  const navigate = useNavigate();
+
+  const Logout = () => {
+    dispatch(logoutAsync());
+  };
+
+  useEffect(() => {
+    if (!loggedInUser) {
+      navigate("/");
+    }
+  }, [loggedInUser]);
   return (
     <section class="py-24 relative">
       <div class="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
@@ -186,6 +203,9 @@ const UserOrders2 = () => {
           </div>
         </div>
       </div>
+      <Button onClick={Logout} className="bg-cta text-white">
+        Logout
+      </Button>
     </section>
   );
 };

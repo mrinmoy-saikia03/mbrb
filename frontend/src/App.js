@@ -43,7 +43,7 @@ import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Branches from "./pages/Branches";
 import AccountPage from "./pages/Account";
-
+import ModalProvider from "./providers/ModalProvider.jsx";
 // Protected Route Wrapper
 function ProtectedRoute({ children, isAuthenticated }) {
   if (!isAuthenticated) {
@@ -55,11 +55,13 @@ function ProtectedRoute({ children, isAuthenticated }) {
 // Layout Component
 function Layout({ children }) {
   return (
-    <div className="min-h-screen flex flex-col bg-primary">
-      <Navbar2 />
-      <main className="flex-grow">{children}</main>
-      <Footer />
-    </div>
+    <ModalProvider>
+      <div className="min-h-screen flex flex-col bg-primary">
+        <Navbar2 />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+      </div>
+    </ModalProvider>
   );
 }
 
@@ -159,7 +161,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              
+
               <Route
                 path="/order-success/:id"
                 element={
