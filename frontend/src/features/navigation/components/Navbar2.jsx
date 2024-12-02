@@ -10,8 +10,6 @@ import { openModal } from "../../Modals/modalSlice";
 import { selectLoggedInUser } from "../../auth/AuthSlice";
 
 const Navbar2 = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const path=useLocation().pathname;
   
   const dispatch = useDispatch();
   const loggedInUser = useSelector(selectLoggedInUser);
@@ -50,7 +48,7 @@ const Navbar2 = () => {
               <div className="hidden md:block border-r-2 pr-5">
                 <nav aria-label="Global">
                   <ul className="flex items-center gap-6 text-sm">
-                    <li className={`hover-underline-animation ${path==='/' && 'border-b'}`}>
+                    <li className={`hover-underline-animation`}>
                       <Link
                         to={"/"}
                         className="text-white transition hover:text-white/75 xl:hover:text-white"
@@ -61,7 +59,7 @@ const Navbar2 = () => {
                       </Link>
                     </li>
 
-                    <li className={`hover-underline-animation ${path==='/sweets' && 'border-b'}`}>
+                    <li className={`hover-underline-animation `}>
                       <Link
                         to={"/sweets"}
                         className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
@@ -72,7 +70,7 @@ const Navbar2 = () => {
                       </Link>
                     </li>
 
-                    <li className={`hover-underline-animation ${path==='/branches' && 'border-b'}`}>
+                    <li className={`hover-underline-animation`}>
                       <Link
                         to={"/branches"}
                         className="text-white transition hover:text-white/75 xl:hover:text-white"
@@ -83,7 +81,7 @@ const Navbar2 = () => {
                       </Link>
                     </li>
 
-                    <li className={`hover-underline-animation ${path==='/about' && 'border-b'}`}>
+                    <li className={`hover-underline-animation`}>
                       <Link
                         to={"/about"}
                         className="text-white transition hover:text-white/75 xl:hover:text-white"
@@ -94,7 +92,7 @@ const Navbar2 = () => {
                       </Link>
                     </li>
 
-                    <li className={`hover-underline-animation ${path==='/contact' && 'border-b'}`}>
+                    <li className={`hover-underline-animation `}>
                       <Link
                         to={"/contact"}
                         className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"

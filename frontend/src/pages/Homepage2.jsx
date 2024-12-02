@@ -9,7 +9,7 @@ const Homepage2 = () => {
   return (
     <div className="w-full bg-primary">
       <HeroCarousel />
-      <ProductList2 />
+      {/* <ProductList2 /> */}
       <USPbanner />
       <StatsSection />
       <OurStory />

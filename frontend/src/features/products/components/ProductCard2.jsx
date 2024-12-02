@@ -1,22 +1,27 @@
 import { IndianRupee, Star } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
-const ProductCard2 = () => {
+
+const ProductCard2 = ({ product }) => {
+  const { _id, title, price, thumbnail, rating, weightOptions } = product;
+
   const addToCart = (e) => {
     e.preventDefault();
+    // Here you can add functionality to add the item to the cart
   };
+
   return (
-    <Link to={"/sweets/123"}>
+    <Link to={`/sweets/${_id}`}>
       <div className="relative w-full flex flex-col overflow-hidden rounded-lg border border-transparent transition duration-200 hover:bg-secondary/10 hover:border-secondary px-3">
         {/* Product Image */}
         <div className="relative mt-3 flex h-48 sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg border">
           <img
             className="w-full object-cover"
-            src="https://www.anandsweets.in/cdn/shop/products/MysorePak.png?v=1702370572&width=535"
-            alt="product image"
+            src={thumbnail || "https://via.placeholder.com/535x535.png"} // Fallback image if no image is provided
+            alt={title}
           />
           <span className="absolute top-0 left-0 m-2 rounded-full bg-cta text-center text-xs sm:text-sm font-medium text-white flex items-center gap-x-1 p-1 px-2 sm:p-2 sm:px-3">
-            5 <Star className="h-4 w-4 sm:h-5 sm:w-5" />
+            {rating} <Star className="h-4 w-4 sm:h-5 sm:w-5" />
           </span>
         </div>
 
@@ -24,7 +29,7 @@ const ProductCard2 = () => {
         <div className="mt-4 pb-5">
           <div className="px-2">
             <h5 className="text-base sm:text-lg md:text-xl font-medium tracking-tight text-slate-900">
-              Nike Air MX Super 2500 - Red
+              {title || "Product Name"}
             </h5>
           </div>
 
@@ -32,7 +37,7 @@ const ProductCard2 = () => {
             <p className="flex items-center text-slate-900">
               <span className="text-base sm:text-lg md:text-xl font-medium tracking-tighter flex items-center">
                 <IndianRupee className="h-4 w-4 sm:h-5 sm:w-5" />
-                449
+                {price || 0}
               </span>
             </p>
           </div>
@@ -40,8 +45,12 @@ const ProductCard2 = () => {
           {/* Size Selector */}
           <div className="mb-3" onClick={(e) => e.preventDefault()}>
             <select className="border text-xs sm:text-sm bg-secondary/20 border-secondary rounded-lg text-black w-full p-2 cursor-pointer">
-              <option defaultValue>500g</option>
-              <option>1000g</option>
+              {weightOptions &&
+                weightOptions.map((opt, index) => (
+                  <option key={index} value={opt.weight}>
+                    {opt.weight + "gm : " + opt.price + "Rs"}
+                  </option>
+                ))}
             </select>
           </div>
 

@@ -1,148 +1,377 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate} from 'react-router-dom'
-import { addProductAsync, resetProductAddStatus, selectProductAddStatus,updateProductByIdAsync } from '../../products/ProductSlice'
-import { Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
-import { useForm } from "react-hook-form"
-import { selectBrands } from '../../brands/BrandSlice'
-import { selectCategories } from '../../categories/CategoriesSlice'
-import { toast } from 'react-toastify'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  addProductAsync,
+  resetProductAddStatus,
+  selectProductAddStatus,
+} from "../../products/ProductSlice";
+import { useForm, useFieldArray } from "react-hook-form";
+import { selectBrands } from "../../brands/BrandSlice";
+import { selectCategories } from "../../categories/CategoriesSlice";
+import { toast } from "react-toastify";
+import CloudinaryUploadWidget from "../../products/components/CloudinaryUploadWidget";
+import { Button } from "@material-tailwind/react";
 
 export const AddProduct = () => {
+  const [thumbnailPublicId, setThumbnailPublicId] = useState("");
+  const [imagesPublicIds, setImagesPublicIds] = useState([]);
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [imageUrls, setImageUrls] = useState([]);
 
-    const {register,handleSubmit,reset,formState: { errors }} = useForm()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "weightOptions",
+  });
 
-    const dispatch=useDispatch()
-    const brands=useSelector(selectBrands)
-    const categories=useSelector(selectCategories)
-    const productAddStatus=useSelector(selectProductAddStatus)
-    const navigate=useNavigate()
-    const theme=useTheme()
-    const is1100=useMediaQuery(theme.breakpoints.down(1100))
-    const is480=useMediaQuery(theme.breakpoints.down(480))
+  const dispatch = useDispatch();
+  const brands = useSelector(selectBrands);
+  const categories = useSelector(selectCategories);
+  const productAddStatus = useSelector(selectProductAddStatus);
+  const navigate = useNavigate();
 
-    useEffect(()=>{
-        if(productAddStatus==='fullfilled'){
-            reset()
-            toast.success("New product added")
-            navigate("/admin/dashboard")
-        }
-        else if(productAddStatus==='rejected'){
-            toast.error("Error adding product, please try again later")
-        }
-    },[productAddStatus])
-
-    useEffect(()=>{
-        return ()=>{
-            dispatch(resetProductAddStatus())
-        }
-    },[])
-
-    const handleAddProduct=(data)=>{
-        const newProduct={...data,images:[data.image0,data.image1,data.image2,data.image3]}
-        delete newProduct.image0
-        delete newProduct.image1
-        delete newProduct.image2
-        delete newProduct.image3
-
-        dispatch(addProductAsync(newProduct))
+  useEffect(() => {
+    if (productAddStatus === "fullfilled") {
+      reset();
+      toast.success("New product added");
+      navigate("/admin/dashboard");
+    } else if (productAddStatus === "rejected") {
+      toast.error("Error adding product, please try again later");
     }
+  }, [productAddStatus]);
 
-    
+  useEffect(() => {
+    return () => {
+      dispatch(resetProductAddStatus());
+    };
+  }, []);
+
+  const handleAddProduct = (data) => {
+    const newProduct = {
+      ...data,
+      images: imagesPublicIds,
+      thumbnail: thumbnailPublicId,
+    };
+    dispatch(addProductAsync(newProduct));
+  };
+
+  const handleThumbnailUpload = (imgUrl) => {
+    setThumbnailPublicId(imgUrl);
+    setThumbnailUrl(imgUrl);
+  };
+
+  const handleImageUpload = (imgUrl) => {
+    setImagesPublicIds((prev) => [...prev, imgUrl]);
+    setImageUrls((prev) => [...prev, imgUrl]);
+  };
+
+  const handleDeleteThumbnail = () => {
+    setThumbnailPublicId("");
+    setThumbnailUrl("");
+  };
+
+  const handleDeleteImage = (index) => {
+    const updatedImages = imagesPublicIds.filter((_, i) => i !== index);
+    const updatedImageUrls = imageUrls.filter((_, i) => i !== index);
+    setImagesPublicIds(updatedImages);
+    setImageUrls(updatedImageUrls);
+  };
+
   return (
-    <Stack p={'0 16px'} justifyContent={'center'} alignItems={'center'} flexDirection={'row'} >
-        
+    <div className="flex justify-center p-4">
+      <form
+        className="w-full max-w-4xl space-y-6"
+        onSubmit={handleSubmit(handleAddProduct)}
+      >
+        {/* Title */}
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Title
+          </label>
+          <input
+            type="text"
+            {...register("title", { required: "Title is required" })}
+            className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+          />
+          {errors.title && (
+            <p className="text-red-500 text-sm">{errors.title.message}</p>
+          )}
+        </div>
 
-        <Stack width={is1100?"100%":"60rem"} rowGap={4} mt={is480?4:6} mb={6} component={'form'} noValidate onSubmit={handleSubmit(handleAddProduct)}> 
-            
-            {/* feild area */}
-            <Stack rowGap={3}>
-                <Stack>
-                    <Typography variant='h6' fontWeight={400} gutterBottom>Title</Typography>
-                    <TextField {...register("title",{required:'Title is required'})}/>
-                </Stack> 
+        {/* Brand and Category */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Brand
+            </label>
+            <select
+              {...register("brand", { required: "Brand is required" })}
+              className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+            >
+              <option value="">Select Brand</option>
+              {brands.map((brand) => (
+                <option key={brand._id} value={brand._id}>
+                  {brand.name}
+                </option>
+              ))}
+            </select>
+            {errors.brand && (
+              <p className="text-red-500 text-sm">{errors.brand.message}</p>
+            )}
+          </div>
 
-                <Stack flexDirection={'row'} >
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Category
+            </label>
+            <select
+              {...register("category", { required: "Category is required" })}
+              className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+            >
+              <option value="">Select Category</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            {errors.category && (
+              <p className="text-red-500 text-sm">{errors.category.message}</p>
+            )}
+          </div>
+        </div>
 
-                    <FormControl fullWidth>
-                        <InputLabel id="brand-selection">Brand</InputLabel>
-                        <Select {...register("brand",{required:"Brand is required"})} labelId="brand-selection" label="Brand">
-                            
-                            {
-                                brands.map((brand)=>(
-                                    <MenuItem value={brand._id}>{brand.name}</MenuItem>
-                                ))
-                            }
+        {/* Description */}
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Description
+          </label>
+          <textarea
+            {...register("description", {
+              required: "Description is required",
+            })}
+            rows="4"
+            className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+          ></textarea>
+          {errors.description && (
+            <p className="text-red-500 text-sm">{errors.description.message}</p>
+          )}
+        </div>
 
-                        </Select>
-                    </FormControl>
+        {/* Weight Options */}
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Weight Options
+          </label>
+          <div className="space-y-4">
+            {fields.map((field, index) => (
+              <div key={field.id} className="flex items-center space-x-4">
+                <input
+                  {...register(`weightOptions[${index}].weight`, {
+                    required: "Weight is required",
+                  })}
+                  placeholder="Weight (e.g., 250g)"
+                  className="w-1/2 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+                />
+                <input
+                  {...register(`weightOptions[${index}].price`, {
+                    required: "Price is required",
+                  })}
+                  placeholder="Price (e.g., 500)"
+                  type="number"
+                  className="w-1/2 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+                />
+                <button
+                  type="button"
+                  className="px-3 py-1 text-white bg-red-500 rounded-md"
+                  onClick={() => remove(index)}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+            <Button
+              type="button"
+              className="mt-2 px-4 py-2 "
+              onClick={() => append({ weight: "", price: "" })}
+            >
+              Add Weight Option
+            </Button>
+          </div>
+        </div>
 
+        {/* Stock and Discount */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Stock Quantity
+            </label>
+            <input
+              type="number"
+              {...register("stockQuantity", {
+                required: "Stock Quantity is required",
+              })}
+              className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+            />
+            {errors.stockQuantity && (
+              <p className="text-red-500 text-sm">
+                {errors.stockQuantity.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Discount Percentage
+            </label>
+            <input
+              type="number"
+              {...register("discountPercentage", {
+                required: "Discount percentage is required",
+              })}
+              className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+            />
+            {errors.discountPercentage && (
+              <p className="text-red-500 text-sm">
+                {errors.discountPercentage.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Rating
+            </label>
+            <input
+              type="number"
+              {...register("rating", {
+                required: "rating is required",
+              })}
+              className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+            />
+            {errors.rating && (
+              <p className="text-red-500 text-sm">{errors.rating.message}</p>
+            )}
+          </div>
 
-                    <FormControl fullWidth>
-                        <InputLabel id="category-selection">Category</InputLabel>
-                        <Select {...register("category",{required:"category is required"})} labelId="category-selection" label="Category">
-                            
-                            {
-                                categories.map((category)=>(
-                                    <MenuItem value={category._id}>{category.name}</MenuItem>
-                                ))
-                            }
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Ingredients
+            </label>
+            <input
+              type="text"
+              {...register("ingredients", {
+                required: "ingredients is required",
+              })}
+              className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+            />
+            {errors.ingredients && (
+              <p className="text-red-500 text-sm">
+                {errors.ingredients.message}
+              </p>
+            )}
+          </div>
 
-                        </Select>
-                    </FormControl>
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Shelf Life
+            </label>
+            <input
+              type="text"
+              {...register("shelfLife", {
+                required: "shelfLife is required",
+              })}
+              className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+            />
+            {errors.shelfLife && (
+              <p className="text-red-500 text-sm">{errors.shelfLife.message}</p>
+            )}
+          </div>
 
-                </Stack>
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Pieces/Kg
+            </label>
+            <input
+              type="string"
+              {...register("piecesPerKg", {
+                required: "piecesPerKg is required",
+              })}
+              className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+            />
+            {errors.piecesPerKg && (
+              <p className="text-red-500 text-sm">
+                {errors.piecesPerKg.message}
+              </p>
+            )}
+          </div>
+        </div>
 
+        {/* Thumbnail Image */}
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Thumbnail Image
+          </label>
+          <CloudinaryUploadWidget onUpload={handleThumbnailUpload} />
+          {thumbnailUrl && (
+            <div className="mt-2">
+              <img
+                src={thumbnailUrl}
+                alt="Thumbnail"
+                className="w-32 h-32 object-cover"
+              />
+              <button
+                type="button"
+                onClick={handleDeleteThumbnail}
+                className="text-red-500 mt-2"
+              >
+                Delete Thumbnail
+              </button>
+            </div>
+          )}
+        </div>
 
-                <Stack>
-                    <Typography variant='h6' fontWeight={400}  gutterBottom>Description</Typography>
-                    <TextField multiline rows={4} {...register("description",{required:"Description is required"})}/>
-                </Stack>
+        {/* Product Images */}
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Product Images
+          </label>
+          <CloudinaryUploadWidget onUpload={handleImageUpload} />
+          <div className="mt-2">
+            {imageUrls.map((url, index) => (
+              <div key={index} className="flex items-center space-x-4">
+                <img
+                  src={url}
+                  alt={`Product Image ${index + 1}`}
+                  className="w-32 h-32 object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleDeleteImage(index)}
+                  className="text-red-500"
+                >
+                  Delete Image
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
 
-                <Stack flexDirection={'row'}>
-                    <Stack flex={1}>
-                        <Typography variant='h6' fontWeight={400}  gutterBottom>Price</Typography>
-                        <TextField type='number' {...register("price",{required:"Price is required"})}/>
-                    </Stack>
-                    <Stack flex={1}>
-                        <Typography variant='h6' fontWeight={400}  gutterBottom>Discount {is480?"%":"Percentage"}</Typography>
-                        <TextField type='number' {...register("discountPercentage",{required:"discount percentage is required"})}/>
-                    </Stack>
-                </Stack>
-
-                <Stack>
-                    <Typography variant='h6'  fontWeight={400} gutterBottom>Stock Quantity</Typography>
-                    <TextField type='number' {...register("stockQuantity",{required:"Stock Quantity is required"})}/>
-                </Stack>
-                <Stack>
-                    <Typography variant='h6'  fontWeight={400} gutterBottom>Thumbnail</Typography>
-                    <TextField {...register("thumbnail",{required:"Thumbnail is required"})}/>
-                </Stack>
-
-                <Stack>
-                    <Typography variant='h6'  fontWeight={400} gutterBottom>Product Images</Typography>
-
-                    <Stack rowGap={2}>
-   
-                        <TextField {...register("image0",{required:"Image is required"})}/>
-                        <TextField {...register("image1",{required:"Image is required"})}/>
-                        <TextField {...register("image2",{required:"Image is required"})}/>
-                        <TextField {...register("image3",{required:"Image is required"})}/>
-    
-                    </Stack>
-
-                </Stack>
-
-            </Stack>
-
-            {/* action area */}
-            <Stack flexDirection={'row'} alignSelf={'flex-end'} columnGap={is480?1:2}>
-                <Button size={is480?'medium':'large'} variant='contained' type='submit'>Add Product</Button>
-                <Button size={is480?'medium':'large'} variant='outlined' color='error' component={Link} to={'/admin/dashboard'}>Cancel</Button>
-            </Stack>
-
-        </Stack>
-
-    </Stack>
-  )
-}
+        {/* Submit Button */}
+        <div className="mt-4">
+          <button
+            type="submit"
+            className="w-full bg-indigo-500 text-white py-2 rounded-md"
+          >
+            Add Product
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
