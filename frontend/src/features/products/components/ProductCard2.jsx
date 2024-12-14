@@ -1,13 +1,66 @@
 import { IndianRupee, Star } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCartAsync,
+  deleteCartItemByIdAsync,
+  selectCartItems,
+} from "../../cart/CartSlice";
+import { toast } from "react-toastify";
 
 const ProductCard2 = ({ product }) => {
   const { _id, title, price, thumbnail, rating, weightOptions } = product;
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
+  const [selectedWeightOption, setSelectedWeightOption] = useState(
+    weightOptions[0] || {}
+  );
+  const [isInCart, setIsInCart] = useState(false);
+  const [cartItemId, setCartItemId] = useState(null);
 
-  const addToCart = (e) => {
+  // Check if product is already in the cart
+  useEffect(() => {
+    const cartItem = cartItems.find(
+      (item) =>
+        item.product._id === _id &&
+        item.selectedWeightOption._id === selectedWeightOption._id
+    );
+
+    if (cartItem) {
+      setIsInCart(true);
+      setCartItemId(cartItem._id);
+    } else {
+      setIsInCart(false);
+      setCartItemId(null);
+    }
+  }, [cartItems, _id, selectedWeightOption]);
+
+  const handleAddToCart = (e) => {
     e.preventDefault();
-    // Here you can add functionality to add the item to the cart
+    const item = {
+      user: "user_id", // Replace with logged-in user ID
+      product: _id,
+      quantity: 1,
+      selectedWeightOption: selectedWeightOption,
+    };
+    dispatch(addToCartAsync(item));
+    toast.success(`${title} added to cart`);
+  };
+
+  const handleRemoveFromCart = (e) => {
+    e.preventDefault();
+    if (cartItemId) {
+      dispatch(deleteCartItemByIdAsync(cartItemId));
+      toast.info(`${title} removed from cart`);
+    }
+  };
+
+  const handleWeightChange = (e) => {
+    const weightOption = weightOptions.find(
+      (opt) => opt._id === e.target.value
+    );
+    setSelectedWeightOption(weightOption);
   };
 
   return (
@@ -37,44 +90,43 @@ const ProductCard2 = ({ product }) => {
             <p className="flex items-center text-slate-900">
               <span className="text-base sm:text-lg md:text-xl font-medium tracking-tighter flex items-center">
                 <IndianRupee className="h-4 w-4 sm:h-5 sm:w-5" />
-                {price || 0}
+                {selectedWeightOption.price || price || 0}
               </span>
             </p>
           </div>
 
-          {/* Size Selector */}
+          {/* Weight Selector */}
           <div className="mb-3" onClick={(e) => e.preventDefault()}>
-            <select className="border text-xs sm:text-sm bg-secondary/20 border-secondary rounded-lg text-black w-full p-2 cursor-pointer">
+            <select
+              className="border text-xs sm:text-sm bg-secondary/20 border-secondary rounded-lg text-black w-full p-2 cursor-pointer"
+              onChange={handleWeightChange}
+              value={selectedWeightOption._id}
+            >
               {weightOptions &&
                 weightOptions.map((opt, index) => (
-                  <option key={index} value={opt.weight}>
+                  <option key={index} value={opt._id}>
                     {opt.weight + "gm : " + opt.price + "Rs"}
                   </option>
                 ))}
             </select>
           </div>
 
-          {/* Add to Cart Button */}
-          <button
-            onClick={addToCart}
-            className="w-full flex items-center justify-center rounded-md bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="mr-2 h-4 w-4 sm:h-5 sm:w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
+          {/* Add/Remove from Cart Button */}
+          {isInCart ? (
+            <button
+              onClick={handleRemoveFromCart}
+              className="w-full flex items-center justify-center rounded-md bg-red-500 px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-red-600"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-              />
-            </svg>
-            Add to cart
-          </button>
+              Remove from Cart
+            </button>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              className="w-full flex items-center justify-center rounded-md bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
+            >
+              Add to Cart
+            </button>
+          )}
         </div>
       </div>
     </Link>

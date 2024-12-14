@@ -28,7 +28,7 @@ export const Cart = ({checkout}) => {
 
     useEffect(()=>{
         if(items.length===0){
-            navigate("/")
+            // navigate("/")
         }
     },[items])
 

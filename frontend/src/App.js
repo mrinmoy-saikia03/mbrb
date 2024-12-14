@@ -94,6 +94,7 @@ function App() {
             path="/reset-password/:userId/:passwordResetToken"
             element={<ResetPasswordPage />}
           />
+          <Route path="/checkout" element={<CheckoutPage />} />
 
           {/* Admin Routes */}
           {loggedInUser?.isAdmin && (
@@ -130,64 +131,62 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="*" element={<Navigate to="/admin/dashboard" />} />
             </>
           )}
 
           {/* User Routes */}
-          {!loggedInUser?.isAdmin && (
-            <>
-              <Route
-                path="/home"
-                element={
-                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
-                    <HomePage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/cart"
-                element={
-                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
-                    <CartPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
-                    <UserProfilePage />
-                  </ProtectedRoute>
-                }
-              />
 
-              <Route
-                path="/order-success/:id"
-                element={
-                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
-                    <OrderSuccessPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/orders"
-                element={
-                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
-                    <UserOrdersPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/wishlist"
-                element={
-                  <ProtectedRoute isAuthenticated={!!loggedInUser}>
-                    <WishlistPage />
-                  </ProtectedRoute>
-                }
-              />
-            </>
-          )}
+          <>
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                  <CartPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                  <UserProfilePage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/order-success/:id"
+              element={
+                <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                  <OrderSuccessPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                  <UserOrdersPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/wishlist"
+              element={
+                <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                  <WishlistPage />
+                </ProtectedRoute>
+              }
+            />
+          </>
 
           {/* Catch-all Route */}
           <Route path="*" element={<NotFoundPage />} />
