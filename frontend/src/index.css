@@ -2,13 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+.indicators {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.indicator {
+  cursor: pointer;
+  height: 12px;
+  width: 12px;
+  border-radius: 100%;
+  background-color: #E8B86D;
+  text-align: center;
+  border: 1px #666 solid #E8B86D;
+  margin-left: 10px;
+}
+
+.indicator.active {
+  height: 15px;
+  width: 15px;
+  border: 1px solid #E8B86D;
+  background: white;
+}
+
 .hover-underline-animation {
   display: inline-block;
   position: relative;
 }
 
 .hover-underline-animation::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   transform: scaleX(0);
@@ -31,14 +55,13 @@
   transform-origin: bottom left;
 }
 
-
 .hover-underline-animation-black {
   display: inline-block;
   position: relative;
 }
 
 .hover-underline-animation-black::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   transform: scaleX(0);
@@ -60,9 +83,6 @@
 .hover-underline-animation-black:hover::after {
   transform-origin: bottom left;
 }
-
-
-
 
 .productImageSwiper2 {
   height: 20%;

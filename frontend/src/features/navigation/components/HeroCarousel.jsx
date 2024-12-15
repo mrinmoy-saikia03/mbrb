@@ -31,11 +31,16 @@ const HeroCarousel = () => {
       arrows
       transitionDuration={500}
       canSwipe
+      indicators={(index) => <div className="indicator"></div>}
       {...arrows}
     >
       {images.map((each, index) => (
         <div key={index} style={{ width: "100%" }}>
-          <img className="h-[30vh] xl:h-[70vh] w-full" alt="Slide Image" src={each} />
+          <img
+            className="h-[63vh] xl:h-[70vh] w-full"
+            alt="Slide Image"
+            src={each}
+          />
         </div>
       ))}
     </Fade>

@@ -10,7 +10,6 @@ import { openModal } from "../../Modals/modalSlice";
 import { selectLoggedInUser } from "../../auth/AuthSlice";
 
 const Navbar2 = () => {
-  
   const dispatch = useDispatch();
   const loggedInUser = useSelector(selectLoggedInUser);
   const openCartDrawer = () => {
@@ -37,9 +36,9 @@ const Navbar2 = () => {
       <TopBanner />
       <header className="bg-ternary sticky top-0 z-50">
         <div className="mx-auto max-w-screen-xl px-1 sm:px-2 lg:px-3">
-          <div className="flex py-1 items-center justify-between">
+          <div className="flex md:py-1 items-center justify-between">
             <div className="">
-              <div className="flex items-center justify-start gap-x-7 xl:gap-x-24">
+              <div className="flex w-40 md:w-full items-center justify-start gap-x-7 xl:gap-x-24">
                 <Logo />
               </div>
             </div>
@@ -69,52 +68,107 @@ const Navbar2 = () => {
                         Our Products
                       </Link>
                     </li>
-
-                    <li className={`hover-underline-animation`}>
-                      <Link
-                        to={"/branches"}
-                        className="text-white transition hover:text-white/75 xl:hover:text-white"
-                        href="#"
-                      >
-                        {" "}
-                        Branches{" "}
-                      </Link>
-                    </li>
-
-                    <li className={`hover-underline-animation`}>
-                      <Link
-                        to={"/about"}
-                        className="text-white transition hover:text-white/75 xl:hover:text-white"
-                        href="#"
-                      >
-                        {" "}
-                        About{" "}
-                      </Link>
-                    </li>
-
+                    {loggedInUser && !loggedInUser.isAdmin && (
+                      <li className={`hover-underline-animation`}>
+                        <Link
+                          to={"/branches"}
+                          className="text-white transition hover:text-white/75 xl:hover:text-white"
+                          href="#"
+                        >
+                          {" "}
+                          Branches{" "}
+                        </Link>
+                      </li>
+                    )}
+                    {loggedInUser && !loggedInUser.isAdmin && (
+                      <li className={`hover-underline-animation`}>
+                        <Link
+                          to={"/about"}
+                          className="text-white transition hover:text-white/75 xl:hover:text-white"
+                          href="#"
+                        >
+                          {" "}
+                          About{" "}
+                        </Link>
+                      </li>
+                    )}
                     <li className={`hover-underline-animation `}>
-                      <Link
-                        to={"/contact"}
-                        className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
-                        href="#"
-                      >
-                        {" "}
-                        Contact Us{" "}
-                      </Link>
+                      {loggedInUser && !loggedInUser.isAdmin && (
+                        <Link
+                          to={"/contact"}
+                          className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
+                          href="#"
+                        >
+                          {" "}
+                          Contact Us{" "}
+                        </Link>
+                      )}
                     </li>
+
+                    {loggedInUser && !loggedInUser.isAdmin && (
+                      <li className={`hover-underline-animation `}>
+                        <Link
+                          to={"/contact"}
+                          className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
+                          href="#"
+                        >
+                          {" "}
+                          Contact Us{" "}
+                        </Link>
+                      </li>
+                    )}
+
+                    {loggedInUser && loggedInUser.isAdmin && (
+                      <li className={`hover-underline-animation `}>
+                        <Link
+                          to={"/admin/dashboard"}
+                          className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
+                          href="#"
+                        >
+                          {" "}
+                          Dashboard{" "}
+                        </Link>
+                      </li>
+                    )}
+
+                    {loggedInUser && loggedInUser.isAdmin && (
+                      <li className={`hover-underline-animation `}>
+                        <Link
+                          to={"/admin/add-product"}
+                          className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
+                          href="#"
+                        >
+                          {" "}
+                          New Product{" "}
+                        </Link>
+                      </li>
+                    )}
+
+                    {loggedInUser && loggedInUser.isAdmin && (
+                      <li className={`hover-underline-animation `}>
+                        <Link
+                          to={"/admin/orders"}
+                          className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
+                          href="#"
+                        >
+                          {" "}
+                          Orders{" "}
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </nav>
               </div>
 
               <div className="flex items-center gap-4">
                 {loggedInUser && (
-                  <button onClick={openCartDrawer} className="relative">
-                    <ShoppingBag color="white" />
+                  <Link to={"/cart"} className="relative">
+                    <ShoppingBag size={20} color="white" />
                     <p className="rounded-full h-[10px] w-[10px] bg-cta absolute top-0 right-0" />
-                  </button>
+                  </Link>
                 )}
                 <button onClick={openSearchModal} className="relative">
-                  <Search color="white" />
+                  <Search size={20} color="white" />
                 </button>
                 {!loggedInUser ? (
                   <div className="sm:flex sm:gap-4">
@@ -122,16 +176,16 @@ const Navbar2 = () => {
                       onClick={openLoginModal}
                       className="rounded-md bg-cta px-2 md:px-4 py-2 text-sm font-medium text-white shadow flex items-center gap-x-1"
                     >
-                      <User /> Login
+                      <User size={20} /> Login
                     </button>
                   </div>
                 ) : (
                   <Link to={"/account"}>
-                    <User className="text-white" size={27} />
+                    <User size={20} className="text-white" />
                   </Link>
                 )}
                 <button onClick={openMobileNav} className="lg:hidden">
-                  <Menu color="white" />
+                  <Menu size={20} color="white" />
                 </button>
               </div>
             </div>

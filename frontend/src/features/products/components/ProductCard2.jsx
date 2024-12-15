@@ -8,8 +8,10 @@ import {
   selectCartItems,
 } from "../../cart/CartSlice";
 import { toast } from "react-toastify";
+import { selectLoggedInUser } from "../../auth/AuthSlice";
 
 const ProductCard2 = ({ product }) => {
+  const loggedInUser = useSelector(selectLoggedInUser);
   const { _id, title, price, thumbnail, rating, weightOptions } = product;
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
@@ -39,13 +41,12 @@ const ProductCard2 = ({ product }) => {
   const handleAddToCart = (e) => {
     e.preventDefault();
     const item = {
-      user: "user_id", // Replace with logged-in user ID
+      user: loggedInUser?._id,
       product: _id,
       quantity: 1,
       selectedWeightOption: selectedWeightOption,
     };
     dispatch(addToCartAsync(item));
-    toast.success(`${title} added to cart`);
   };
 
   const handleRemoveFromCart = (e) => {
@@ -65,9 +66,9 @@ const ProductCard2 = ({ product }) => {
 
   return (
     <Link to={`/sweets/${_id}`}>
-      <div className="relative w-full flex flex-col overflow-hidden rounded-lg border border-transparent transition duration-200 hover:bg-secondary/10 hover:border-secondary px-3">
+      <div className="relative w-full text-black flex flex-col overflow-hidden rounded border border-transparent transition duration-200 hover:bg-secondary/10 hover:border-secondary px-2 py-2 md:py-3 md:px-3">
         {/* Product Image */}
-        <div className="relative mt-3 flex h-48 sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg border">
+        <div className="relative  flex h-48 sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded border">
           <img
             className="w-full object-cover"
             src={thumbnail || "https://via.placeholder.com/535x535.png"} // Fallback image if no image is provided
@@ -79,16 +80,16 @@ const ProductCard2 = ({ product }) => {
         </div>
 
         {/* Product Info */}
-        <div className="mt-4 pb-5">
-          <div className="px-2">
-            <h5 className="text-base sm:text-lg md:text-xl font-medium tracking-tight text-slate-900">
+        <div className="mt-1 md:mt-4">
+          <div className="px-[1px]">
+            <h5 className="sm:text-lg md:text-xl font-medium tracking-tight text-slate-900">
               {title || "Product Name"}
             </h5>
           </div>
 
-          <div className="px-2 mt-3 mb-5 flex items-center justify-between">
+          <div className=" mt-1 font-semibold flex items-center justify-between">
             <p className="flex items-center text-slate-900">
-              <span className="text-base sm:text-lg md:text-xl font-medium tracking-tighter flex items-center">
+              <span className="text-base sm:text-lg md:text-xl tracking-tighter flex items-center">
                 <IndianRupee className="h-4 w-4 sm:h-5 sm:w-5" />
                 {selectedWeightOption.price || price || 0}
               </span>
@@ -96,9 +97,9 @@ const ProductCard2 = ({ product }) => {
           </div>
 
           {/* Weight Selector */}
-          <div className="mb-3" onClick={(e) => e.preventDefault()}>
+          <div className="my-3" onClick={(e) => e.preventDefault()}>
             <select
-              className="border text-xs sm:text-sm bg-secondary/20 border-secondary rounded-lg text-black w-full p-2 cursor-pointer"
+              className="border text-xs sm:text-sm bg-secondary/20 border-secondary rounded text-black w-full p-2 cursor-pointer"
               onChange={handleWeightChange}
               value={selectedWeightOption._id}
             >
@@ -115,14 +116,14 @@ const ProductCard2 = ({ product }) => {
           {isInCart ? (
             <button
               onClick={handleRemoveFromCart}
-              className="w-full flex items-center justify-center rounded-md bg-red-500 px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-red-600"
+              className="w-full flex items-center justify-center rounded bg-ternary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-red-600"
             >
               Remove from Cart
             </button>
           ) : (
             <button
               onClick={handleAddToCart}
-              className="w-full flex items-center justify-center rounded-md bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
+              className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
             >
               Add to Cart
             </button>

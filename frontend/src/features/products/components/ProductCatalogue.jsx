@@ -11,6 +11,7 @@ import ProductCard2 from "./ProductCard2";
 import Filter from "./Filter";
 import Pagination from "@mui/material/Pagination";
 import { ITEMS_PER_PAGE } from "../../../constants";
+import { toast } from "react-toastify";
 
 const ProductCatalogue = () => {
   const [page, setPage] = useState(1);
@@ -31,18 +32,21 @@ const ProductCatalogue = () => {
     dispatch(fetchProductsAsync(filterParams));
   }, [filters, page, dispatch]);
 
+
+
   console.log(products);
 
   return (
     <section className="text-gray-600 body-font">
-      <div className="container px-5 py-10 mx-auto">
+      <div className="container md:px-5 pt-10 mx-auto">
         <div className="flex flex-col text-center w-full mb-10 items-center">
-          <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 flex items-center gap-x-5">
+          <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 flex items-start md:items-center md:gap-x-5 px-3">
             <img
               width="45"
               height="32"
               src="https://img.icons8.com/retro/32/naan.png"
               alt="naan"
+              className="mt-2 md:mt-0"
             />{" "}
             Discover our wide range of Sweets
             <img
@@ -67,7 +71,7 @@ const ProductCatalogue = () => {
         )}
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-2 gap-y-7 mt-5">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-2 md:gap-x-2 gap-y-7 mt-5">
           {productFetchStatus === "fullfilled" &&
             products.map((product) => (
               <ProductCard2 key={product._id} product={product} />
