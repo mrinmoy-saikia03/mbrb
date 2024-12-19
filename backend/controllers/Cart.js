@@ -18,7 +18,6 @@ exports.create = async (req, res) => {
 
 exports.getByUserId = async (req, res) => {
   try {
-    console.log("get by user id called");
     const { id } = req.params;
     const result = await Cart.find({ user: id }).populate({
       path: "product",

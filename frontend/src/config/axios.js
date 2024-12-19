@@ -1,3 +1,3 @@
 import axios from 'axios'
 
-export const axiosi=axios.create({withCredentials:true,baseURL:"https://mbrb.vercel.app"})
+export const axiosi=axios.create({withCredentials:true,baseURL:"http://localhost:8000"})

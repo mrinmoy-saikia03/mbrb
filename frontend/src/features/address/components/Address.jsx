@@ -1,119 +1,223 @@
-import { LoadingButton } from '@mui/lab'
-import { Button, Paper, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
-import React, { useState } from 'react'
-import { useForm } from "react-hook-form"
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteAddressByIdAsync, selectAddressErrors, selectAddressStatus, updateAddressByIdAsync } from '../AddressSlice'
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import {
+  deleteAddressByIdAsync,
+  selectAddressErrors,
+  selectAddressStatus,
+  updateAddressByIdAsync,
+} from "../AddressSlice";
+import {
+  IconButton,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialContent,
+  SpeedDialHandler,
+  Typography,
+} from "@material-tailwind/react";
+import { Cross, EllipsisVertical, PencilLine, Trash, X } from "lucide-react";
+export const Address = ({
+  _id,
+  name,
+  type,
+  street,
+  postalCode,
+  country,
+  phoneNumber,
+  state,
+  city,
+}) => {
+  const id = _id;
+  const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+  const [edit, setEdit] = useState(false);
+  const status = useSelector(selectAddressStatus);
+  const error = useSelector(selectAddressErrors);
 
-export const Address = ({id,type,street,postalCode,country,phoneNumber,state,city}) => {
+  const handleRemoveAddress = () => {
+    setOpen(false);
+    dispatch(deleteAddressByIdAsync(id));
+  };
 
-    const theme=useTheme()
-    const dispatch=useDispatch()
-    const {register,handleSubmit,watch,reset,formState: { errors }} = useForm()
-    const [edit,setEdit]=useState(false)
-    const [open, setOpen] = useState(false);
-    const status=useSelector(selectAddressStatus)
-    const error=useSelector(selectAddressErrors)
-    
-    const is480=useMediaQuery(theme.breakpoints.down(480))
-
-    const handleRemoveAddress=()=>{
-        dispatch(deleteAddressByIdAsync(id))
-    }
-
-    const handleUpdateAddress=(data)=>{
-        const update={...data,_id:id}
-        setEdit(false)
-        dispatch(updateAddressByIdAsync(update))
-    }
-
-
+  const handleUpdateAddress = (data) => {
+    const update = { ...data, _id: id };
+    setEdit(false);
+    dispatch(updateAddressByIdAsync(update));
+  };
+  const [open, setOpen] = useState(false);
   return (
-    <Stack width={'100%'} p={is480?0:1}>
-                                        
-        {/* address type */}
-        <Stack color={'whitesmoke'} p={'.5rem'} borderRadius={'.2rem'} bgcolor={theme.palette.primary.main}>
-            <Typography>{type?.toUpperCase()}</Typography>
-        </Stack>
+    <div className="w-full p-4 bg-white shadow rounded-md border">
+      {/* Address Type */}
+      <div className="flex gap-x-2 items-center">
+        <p className="text-sm font-medium w-full p-2 rounded-md bg-secondary/60">
+          {type?.toUpperCase()}
+        </p>
 
-        {/* address details */}
-        <Stack p={2} position={'relative'} flexDirection={'column'} rowGap={1} component={'form'} noValidate onSubmit={handleSubmit(handleUpdateAddress)}>
+        <SpeedDial open={open} handler={setOpen} placement="bottom">
+          <SpeedDialHandler>
+            <IconButton
+              size="sm"
+              className="rounded-full p-2"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? (
+                <X
+                  className="h-5 w-5"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpen(false);
+                  }}
+                />
+              ) : (
+                <EllipsisVertical className="h-5 w-5" />
+              )}
+            </IconButton>
+          </SpeedDialHandler>
 
-            {/* if the edit is true then this update from shows*/}
-            {
-                edit?
-                (   
-                    // update address form
-                    <Stack rowGap={2}>
-                        
-                        <Stack>
-                            <Typography gutterBottom>Type</Typography>
-                            <TextField {...register("type",{required:true,value:type})}/>
-                        </Stack>
+          <SpeedDialContent>
+            <SpeedDialAction
+              onClick={() => {
+                setOpen(false);
+                setEdit(true);
+              }}
+              className="relative flex border-cta border h-14 w-14"
+            >
+              <PencilLine className="h-5 w-5 text-cta " />
+              <Typography className="text-xs font-normal text-cta">
+                Edit
+              </Typography>
+            </SpeedDialAction>
+            <SpeedDialAction
+              onClick={handleRemoveAddress}
+              className="relative flex border-ternary border h-14 w-14"
+            >
+              <Trash className="h-5 w-5 text-ternary" />
+              <Typography className="text-xs font-normal text-ternary">
+                Delete
+              </Typography>
+            </SpeedDialAction>
+          </SpeedDialContent>
+        </SpeedDial>
+      </div>
 
+      {/* Address Details or Edit Form */}
+      <form
+        className="mt-4 "
+        noValidate
+        onSubmit={handleSubmit(handleUpdateAddress)}
+      >
+        {edit ? (
+          <>
+            <div>
+              <label className="block text-sm font-medium">Type</label>
+              <input
+                type="text"
+                {...register("type", { required: true, value: type })}
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
 
-                        <Stack>
-                            <Typography gutterBottom>Street</Typography>
-                            <TextField {...register("street",{required:true,value:street})}/>
-                        </Stack>
+            <div>
+              <label className="block text-sm font-medium">Street</label>
+              <input
+                type="text"
+                {...register("street", { required: true, value: street })}
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
 
-                        <Stack>
-                            <Typography gutterBottom>Postal Code</Typography>
-                            <TextField type='number' {...register("postalCode",{required:true,value:postalCode})}/>
-                        </Stack>
+            <div>
+              <label className="block text-sm font-medium">Postal Code</label>
+              <input
+                type="number"
+                {...register("postalCode", {
+                  required: true,
+                  value: postalCode,
+                })}
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
 
-                        <Stack>
-                            <Typography gutterBottom>Country</Typography>
-                            <TextField {...register("country",{required:true,value:country})}/>
-                        </Stack>
+            <div>
+              <label className="block text-sm font-medium">Country</label>
+              <input
+                type="text"
+                {...register("country", { required: true, value: country })}
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
 
-                        <Stack>
-                            <Typography  gutterBottom>Phone Number</Typography>
-                            <TextField type='number' {...register("phoneNumber",{required:true,value:phoneNumber})}/>
-                        </Stack>
+            <div>
+              <label className="block text-sm font-medium">Phone Number</label>
+              <input
+                type="number"
+                {...register("phoneNumber", {
+                  required: true,
+                  value: phoneNumber,
+                })}
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
 
-                        <Stack>
-                            <Typography gutterBottom>State</Typography>
-                            <TextField {...register("state",{required:true,value:state})}/>
-                        </Stack>
+            <div>
+              <label className="block text-sm font-medium">State</label>
+              <input
+                type="text"
+                {...register("state", { required: true, value: state })}
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
 
-                        <Stack>
-                            <Typography gutterBottom>City</Typography>
-                            <TextField {...register("city",{required:true,value:city})}/>
-                        </Stack>
-                    </Stack>
-                ):(
-                <>
-                <Typography>Street - {street}</Typography>
-                <Typography>Postal Code- {postalCode}</Typography>
-                <Typography>Country - {country}</Typography>
-                <Typography>Phone Number - {phoneNumber}</Typography>
-                <Typography>State - {state}</Typography>
-                <Typography>City - {city}</Typography>
-                </>
-                )
-            }
+            <div>
+              <label className="block text-sm font-medium">City</label>
+              <input
+                type="text"
+                {...register("city", { required: true, value: city })}
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
+          </>
+        ) : (
+          <div className="space-y-2">
+            <p className="text-sm">Name - {name}</p>
+            <p className="text-sm">Street - {street}</p>
+            <p className="text-sm">Postal Code - {postalCode}</p>
+            <p className="text-sm">Country - {country}</p>
+            <p className="text-sm">Phone Number - {phoneNumber}</p>
+            <p className="text-sm">State - {state}</p>
+            <p className="text-sm">City - {city}</p>
+          </div>
+        )}
 
-            {/* action buttons */}
-            <Stack position={is480?"static":edit?"static":'absolute'} bottom={4} right={4} mt={is480?2:4} flexDirection={'row'} alignSelf={'flex-end'} columnGap={1}>
-
-                {/* if edit is true, then save changes button is shown instead of edit*/}
-                {
-                    edit?(<LoadingButton loading={status==='pending'} size='small' type='submit' variant='contained'>Save Changes</LoadingButton>
-                    ):(<Button size='small' onClick={()=>setEdit(true)} variant='contained'>Edit</Button>)
-                }
-
-                {/* if edit is true then cancel button is shown instead of remove */}
-                {
-                    edit?(
-                        <Button size='small' onClick={()=>{setEdit(false);reset()}} variant='outlined' color='error'>Cancel</Button>
-                    ):(
-                        <LoadingButton loading={status==='pending'} size='small' onClick={handleRemoveAddress} variant='outlined' color='error' >Remove</LoadingButton>
-                    )
-                }
-            </Stack>
-        </Stack>
-
-    </Stack>
-  )
-}
+        {/* Action Buttons */}
+        {edit && (
+          <div className="flex justify-end space-x-4 mt-4">
+            <>
+              <button
+                type="submit"
+                className="px-4 py-2 text-sm font-medium text-white bg-cta rounded "
+              >
+                Save Changes
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setEdit(false);
+                  reset();
+                }}
+                className="px-4 py-2 text-sm font-medium text-white bg-ternary rounded"
+              >
+                Cancel
+              </button>
+            </>
+          </div>
+        )}
+      </form>
+    </div>
+  );
+};

@@ -44,39 +44,39 @@ exports.getAll = async (req, res) => {
     let skip = 0;
     let limit = 0;
 
+    // Filter by brand
     if (req.query.brand) {
       filter.brand = { $in: req.query.brand };
     }
 
+    // Filter by category
     if (req.query.category) {
       filter.category = { $in: req.query.category };
     }
 
+    // Exclude deleted products
     if (req.query.user) {
-      filter["isDeleted"] = false;
+      filter.isDeleted = false;
     }
 
-    if (req.query.sort) {
-      sort[req.query.sort] = req.query.order
-        ? req.query.order === "asc"
-          ? 1
-          : -1
-        : 1;
+    // Sorting logic
+    if (req.query.sort === "price") {
+      const order = req.query.order === "asc" ? 1 : -1;
+      sort["weightOptions.0.price"] = order; // Sort by the first price in weightOptions
+    } else if (req.query.sort) {
+      sort[req.query.sort] = req.query.order === "asc" ? 1 : -1;
     }
 
+    // Pagination logic
     if (req.query.page && req.query.limit) {
-      const pageSize = req.query.limit;
-      const page = req.query.page;
+      const pageSize = parseInt(req.query.limit, 10);
+      const page = parseInt(req.query.page, 10);
 
       skip = pageSize * (page - 1);
       limit = pageSize;
     }
 
-    const totalDocs = await Product.find(filter)
-      .sort(sort)
-      .populate("brand")
-      .countDocuments()
-      .exec();
+    const totalDocs = await Product.find(filter).countDocuments().exec();
     const results = await Product.find(filter)
       .sort(sort)
       .populate("brand")
@@ -85,6 +85,7 @@ exports.getAll = async (req, res) => {
       .limit(limit)
       .exec();
 
+    // Set total count in headers
     res.set("X-Total-Count", totalDocs);
 
     res.status(200).json(results);
@@ -108,11 +109,9 @@ exports.getById = async (req, res) => {
     res.status(200).json(result);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "Error getting product details, please try again later.",
-      });
+    res.status(500).json({
+      message: "Error getting product details, please try again later.",
+    });
   }
 };
 
@@ -131,11 +130,9 @@ exports.updateById = async (req, res) => {
 
       for (const option of weightOptions) {
         if (!option.weight || !option.price) {
-          return res
-            .status(400)
-            .json({
-              message: "Each weight option must have weight and price.",
-            });
+          return res.status(400).json({
+            message: "Each weight option must have weight and price.",
+          });
         }
       }
 

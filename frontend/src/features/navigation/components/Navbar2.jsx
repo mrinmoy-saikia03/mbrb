@@ -105,19 +105,6 @@ const Navbar2 = () => {
                       )}
                     </li>
 
-                    {loggedInUser && !loggedInUser.isAdmin && (
-                      <li className={`hover-underline-animation `}>
-                        <Link
-                          to={"/contact"}
-                          className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
-                          href="#"
-                        >
-                          {" "}
-                          Contact Us{" "}
-                        </Link>
-                      </li>
-                    )}
-
                     {loggedInUser && loggedInUser.isAdmin && (
                       <li className={`hover-underline-animation `}>
                         <Link
@@ -180,7 +167,7 @@ const Navbar2 = () => {
                     </button>
                   </div>
                 ) : (
-                  <Link to={"/account"}>
+                  <Link to={"/profile"}>
                     <User size={20} className="text-white" />
                   </Link>
                 )}

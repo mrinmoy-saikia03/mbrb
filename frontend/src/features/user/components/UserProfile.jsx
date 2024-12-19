@@ -1,175 +1,217 @@
-import { Avatar, Button, Paper, Stack, Typography, useTheme ,TextField, useMediaQuery} from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectUserInfo } from '../UserSlice'
-import { addAddressAsync, resetAddressAddStatus, resetAddressDeleteStatus, resetAddressUpdateStatus, selectAddressAddStatus, selectAddressDeleteStatus, selectAddressErrors, selectAddressStatus, selectAddressUpdateStatus, selectAddresses } from '../../address/AddressSlice'
-import { Address } from '../../address/components/Address'
-import { useForm } from 'react-hook-form'
-import { LoadingButton } from '@mui/lab'
-import {toast} from 'react-toastify'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import {
+  selectAddresses,
+  selectAddressAddStatus,
+  selectAddressUpdateStatus,
+  selectAddressDeleteStatus,
+  selectAddressStatus,
+  addAddressAsync,
+  resetAddressAddStatus,
+  resetAddressUpdateStatus,
+  resetAddressDeleteStatus,
+} from "../../address/AddressSlice";
+import { Address } from "../../address/components/Address";
+import { toast } from "react-toastify";
+import { selectUserInfo } from "../UserSlice";
+import { Button } from "@material-tailwind/react";
 
 export const UserProfile = () => {
+  const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+  const status = useSelector(selectAddressStatus);
+  const userInfo = useSelector(selectUserInfo);
+  const addresses = useSelector(selectAddresses);
+  const addressAddStatus = useSelector(selectAddressAddStatus);
+  const addressUpdateStatus = useSelector(selectAddressUpdateStatus);
+  const addressDeleteStatus = useSelector(selectAddressDeleteStatus);
 
-    const dispatch=useDispatch()
-    const {register,handleSubmit,watch,reset,formState: { errors }} = useForm()
-    const status=useSelector(selectAddressStatus)
-    const userInfo=useSelector(selectUserInfo)
-    const addresses=useSelector(selectAddresses)
-    const theme=useTheme()
-    const [addAddress,setAddAddress]=useState(false)
+  const [addAddress, setAddAddress] = useState(false);
 
-    
-    const addressAddStatus=useSelector(selectAddressAddStatus)
-    const addressUpdateStatus=useSelector(selectAddressUpdateStatus)
-    const addressDeleteStatus=useSelector(selectAddressDeleteStatus)
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
-    const is900=useMediaQuery(theme.breakpoints.down(900))
-    const is480=useMediaQuery(theme.breakpoints.down(480))
-
-    useEffect(()=>{
-        window.scrollTo({
-            top:0,
-            behavior:"instant"
-        })
-    },[])
-
-
-    useEffect(()=>{
-        if(addressAddStatus==='fulfilled'){
-            toast.success("Address added")
-        }
-        else if(addressAddStatus==='rejected'){
-            toast.error("Error adding address, please try again later")
-        }
-    },[addressAddStatus])
-
-    useEffect(()=>{
-
-        if(addressUpdateStatus==='fulfilled'){
-            toast.success("Address updated")
-        }
-        else if(addressUpdateStatus==='rejected'){
-            toast.error("Error updating address, please try again later")
-        }
-    },[addressUpdateStatus])
-
-    useEffect(()=>{
-
-        if(addressDeleteStatus==='fulfilled'){
-            toast.success("Address deleted")
-        }
-        else if(addressDeleteStatus==='rejected'){
-            toast.error("Error deleting address, please try again later")
-        }
-    },[addressDeleteStatus])
-
-    useEffect(()=>{
-        return ()=>{
-            dispatch(resetAddressAddStatus())
-            dispatch(resetAddressUpdateStatus())
-            dispatch(resetAddressDeleteStatus())
-        }
-    },[])
-
-    const handleAddAddress=(data)=>{
-        const address={...data,user:userInfo._id}
-        dispatch(addAddressAsync(address))
-        setAddAddress(false)
-        reset()
+  useEffect(() => {
+    if (addressAddStatus === "fulfilled") {
+      toast.success("Address added");
+    } else if (addressAddStatus === "rejected") {
+      toast.error("Error adding address, please try again later");
     }
+  }, [addressAddStatus]);
+
+  useEffect(() => {
+    if (addressUpdateStatus === "fulfilled") {
+      toast.success("Address updated");
+    } else if (addressUpdateStatus === "rejected") {
+      toast.error("Error updating address, please try again later");
+    }
+  }, [addressUpdateStatus]);
+
+  useEffect(() => {
+    if (addressDeleteStatus === "fulfilled") {
+      toast.success("Address deleted");
+    } else if (addressDeleteStatus === "rejected") {
+      toast.error("Error deleting address, please try again later");
+    }
+  }, [addressDeleteStatus]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetAddressAddStatus());
+      dispatch(resetAddressUpdateStatus());
+      dispatch(resetAddressDeleteStatus());
+    };
+  }, [dispatch]);
+
+  const handleAddAddress = (data) => {
+    const address = { ...data, user: userInfo._id };
+    dispatch(addAddressAsync(address));
+    setAddAddress(false);
+    reset();
+  };
 
   return (
-    <Stack height={'calc(100vh - 4rem)'} justifyContent={'flex-start'} alignItems={'center'}>
+    <div className="flex flex-col items-center justify-start">
+      <div className="w-full max-w-4xl p-4 mt-5 bg-white shadow-lg rounded-lg">
+        {/* User Details */}
+        <div className="flex flex-col items-center p-4 bg-cta/20 border-cta border text-black rounded-lg">
+          <div className="w-16 h-16 rounded-full bg-cta text-white uppercase grid place-items-center text-3xl font-semibold">
+            <p>{userInfo?.name[0]}</p>
+          </div>
+          <p className="mt-2 text-lg font-semibold">{userInfo?.name}</p>
+          <p className="text-sm">{userInfo?.email}</p>
+        </div>
 
-            <Stack component={is480?'':Paper} elevation={1} width={is900?'100%':"50rem"} p={2} mt={is480?0:5} rowGap={2}>
+        {/* Manage Addresses Section */}
+        <div className="mt-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-medium">Manage Addresses</h2>
+            <button
+              onClick={() => setAddAddress(true)}
+              className="px-4 py-2 text-sm font-medium border border-cta text-cta rounded hover:bg-cta/20"
+            >
+              Add Address
+            </button>
+          </div>
 
-                    {/* user details - [name ,email ] */}
-                    <Stack bgcolor={theme.palette.primary.light} color={theme.palette.primary.main} p={2} rowGap={1} borderRadius={'.6rem'} justifyContent={'center'} alignItems={'center'}>
-                        <Avatar src='none' alt={userInfo?.name} sx={{width:70,height:70}}></Avatar>
-                        <Typography>{userInfo?.name}</Typography>
-                        <Typography>{userInfo?.email}</Typography>
-                    </Stack>
+          {/* Add Address Form */}
+          {addAddress && (
+            <form
+              onSubmit={handleSubmit(handleAddAddress)}
+              className="mt-4 space-y-4"
+            >
+              <div>
+                <label className="block text-sm font-medium">Type</label>
+                <input
+                  type="text"
+                  placeholder="e.g., Home, Business"
+                  {...register("type", { required: true })}
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Full name</label>
+                <input
+                  type="text"
+                  {...register("name", { required: true })}
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Street</label>
+                <input
+                  type="text"
+                  {...register("street", { required: true })}
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
 
+              <div>
+                <label className="block text-sm font-medium">Postal Code</label>
+                <input
+                  type="text"
+                  {...register("postalCode", { required: true })}
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
 
-                    {/* address section */}
-                    <Stack justifyContent={'center'} alignItems={'center'} rowGap={3}>
+              <div>
+                <label className="block text-sm font-medium">Country</label>
+                <input
+                  type="text"
+                  {...register("country", { required: true })}
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
 
+              <div>
+                <label className="block text-sm font-medium">
+                  Phone Number
+                </label>
+                <input
+                  type="text"
+                  {...register("phoneNumber", { required: true })}
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
 
-                        {/* heading and add button */}
-                        <Stack flexDirection={'row'} alignItems={'center'} justifyContent={'center'} columnGap={1}>
-                            <Typography variant='h6' fontWeight={400}>Manage addresses</Typography>
-                            <Button onClick={()=>setAddAddress(true)} size={is480?'small':""} variant='contained'>Add</Button>
-                        </Stack>
-                        
-                        {/* add address form - state dependent*/}
-                        {
-                            addAddress?(
-                                <Stack width={'100%'} component={'form'} noValidate onSubmit={handleSubmit(handleAddAddress)} rowGap={2}>
-                    
-                                        <Stack>
-                                            <Typography  gutterBottom>Type</Typography>
-                                            <TextField placeholder='Eg. Home, Buisness' {...register("type",{required:true})}/>
-                                        </Stack>
-                    
-                    
-                                        <Stack>
-                                            <Typography gutterBottom>Street</Typography>
-                                            <TextField {...register("street",{required:true})}/>
-                                        </Stack>
-                    
-                                        <Stack>
-                                            <Typography gutterBottom>Postal Code</Typography>
-                                            <TextField type='number' {...register("postalCode",{required:true})}/>
-                                        </Stack>
-                    
-                                        <Stack>
-                                            <Typography gutterBottom>Country</Typography>
-                                            <TextField {...register("country",{required:true})}/>
-                                        </Stack>
-                    
-                                        <Stack>
-                                            <Typography  gutterBottom>Phone Number</Typography>
-                                            <TextField type='number' {...register("phoneNumber",{required:true})}/>
-                                        </Stack>
-                    
-                                        <Stack>
-                                            <Typography gutterBottom>State</Typography>
-                                            <TextField {...register("state",{required:true})}/>
-                                        </Stack>
-                    
-                                        <Stack>
-                                            <Typography gutterBottom>City</Typography>
-                                            <TextField {...register("city",{required:true})}/>
-                                        </Stack>
+              <div>
+                <label className="block text-sm font-medium">State</label>
+                <input
+                  type="text"
+                  {...register("state", { required: true })}
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
 
-                                        <Stack flexDirection={'row'} alignSelf={'flex-end'} columnGap={is480?1:2}>
-                                            <LoadingButton loading={status==='pending'} type='submit' size={is480?"small":""} variant='contained'>add</LoadingButton>
-                                            <Button color='error' onClick={()=>setAddAddress(false)} variant={is480?"outlined":"text"} size={is480?"small":""} >cancel</Button>
-                                        </Stack>
-                                </Stack>
-                            ):('')
-                        }
+              <div>
+                <label className="block text-sm font-medium">City</label>
+                <input
+                  type="text"
+                  {...register("city", { required: true })}
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
 
-                        {/* mapping on addresses here  */}
-                        <Stack width={'100%'} rowGap={2}>
-                            {
-                                addresses.length>0?(
-                                    addresses.map((address)=>(
-                                        <Address key={address._id} id={address._id} city={address.city} country={address.country} phoneNumber={address.phoneNumber} postalCode={address.postalCode} state={address.state} street={address.street} type={address.type}/>
-                                    ))
-                                ):(
-                                    <Typography textAlign={'center'} mt={2} variant='body2'>You have no added addresses</Typography>
-                                )
-                            }      
-                        </Stack>
+              <div className="flex justify-end space-x-4">
+                <Button
+                  type="submit"
+                  className="px-4 py-2 text-sm font-medium text-white rounded"
+                >
+                  Add
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => setAddAddress(false)}
+                  className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          )}
 
-                    </Stack>
-
-
-            </Stack>
-
-
-
-    </Stack>
-  )
-}
+          {/* Address List */}
+          <div className="mt-4 space-y-4">
+            {addresses.length > 0 ? (
+              addresses.map((address) => (
+                <Address key={address._id} {...address} />
+              ))
+            ) : (
+              <p className="text-center text-gray-500">
+                You have no added addresses.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

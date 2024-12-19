@@ -4,9 +4,8 @@ import {Navbar} from '../features/navigation/components/Navbar'
 
 export const UserProfilePage = () => {
   return (
-    <>
-    <Navbar/>
+    <div className='py-5'>
     <UserProfile/>
-    </>
+    </div>
   )
 }
