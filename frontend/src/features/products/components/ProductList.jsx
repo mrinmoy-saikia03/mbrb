@@ -126,7 +126,7 @@ export const ProductList = () => {
 
     useEffect(()=>{
         if(wishlistItemAddStatus==='fulfilled'){
-            toast.success("Product added to wishlist")
+            toast("Product added to wishlist")
         }
         else if(wishlistItemAddStatus==='rejected'){
             toast.error("Error adding product to wishlist, please try again later")
@@ -136,7 +136,7 @@ export const ProductList = () => {
 
     useEffect(()=>{
         if(wishlistItemDeleteStatus==='fulfilled'){
-            toast.success("Product removed from wishlist")
+            toast("Product removed from wishlist")
         }
         else if(wishlistItemDeleteStatus==='rejected'){
             toast.error("Error removing product from wishlist, please try again later")
@@ -145,7 +145,7 @@ export const ProductList = () => {
 
     useEffect(()=>{
         if(cartItemAddStatus==='fulfilled'){
-            toast.success("Product added to cart")
+            toast("Product added to cart")
         }
         else if(cartItemAddStatus==='rejected'){
             toast.error("Error adding product to cart, please try again later")

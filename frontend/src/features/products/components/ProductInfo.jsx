@@ -71,7 +71,7 @@ const ProductInfo = () => {
 
   useEffect(() => {
     if (cartItemAddStatus === "fulfilled") {
-      toast.success("Product added to cart");
+      toast("Product added to cart");
     } else if (cartItemAddStatus === "rejected") {
       toast.error("Error adding product to cart, please try again later");
     }
@@ -97,7 +97,7 @@ const ProductInfo = () => {
 
   useEffect(() => {
     if (cartItemRemoveStatus === "fulfilled") {
-      toast.success("Product removed from cart");
+      toast("Product removed from cart");
       setCartItemId(null); // Reset the cart item ID
     } else if (cartItemRemoveStatus === "rejected") {
       toast.error("Error removing product from cart, please try again later");

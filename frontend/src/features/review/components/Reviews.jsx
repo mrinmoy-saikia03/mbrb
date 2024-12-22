@@ -37,7 +37,7 @@ export const Reviews = ({productId,averageRating}) => {
     useEffect(()=>{
 
         if(reviewAddStatus==='fulfilled'){
-            toast.success("Review added")
+            toast("Review added")
         }
         else if(reviewAddStatus==='rejected'){
             toast.error("Error posting review, please try again later")
@@ -51,7 +51,7 @@ export const Reviews = ({productId,averageRating}) => {
     useEffect(()=>{
 
         if(reviewDeleteStatus==='fulfilled'){
-            toast.success("Review deleted")
+            toast("Review deleted")
         }
         else if(reviewDeleteStatus==='rejected'){
             toast.error("Error deleting review, please try again later")
@@ -61,7 +61,7 @@ export const Reviews = ({productId,averageRating}) => {
     useEffect(()=>{
 
         if(reviewUpdateStatus==='fulfilled'){
-            toast.success("Review updated")
+            toast("Review updated")
         }
         else if(reviewUpdateStatus==='rejected'){
             toast.error("Error updating review, please try again later")

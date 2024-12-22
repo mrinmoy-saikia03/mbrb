@@ -4,7 +4,7 @@ import {Navbar} from '../features/navigation/components/Navbar'
 
 export const UserProfilePage = () => {
   return (
-    <div className='py-5'>
+    <div className=''>
     <UserProfile/>
     </div>
   )

@@ -46,7 +46,7 @@ export const ForgotPassword = () => {
   // Handle success
   useEffect(() => {
     if (status === "fullfilled") {
-      toast.success(successMessage?.message);
+      toast(successMessage?.message);
     }
     return () => {
       dispatch(clearForgotPasswordSuccessMessage());

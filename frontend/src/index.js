@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
-import { ToastContainer } from "react-toastify";
+import { Flip, Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme/theme";
@@ -14,7 +14,19 @@ root.render(
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <App />
-        <ToastContainer position="top-right" autoClose={1500} closeOnClick />
+        <ToastContainer
+          position="bottom-left"
+          autoClose={1000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover
+          theme="dark"
+          transition={Slide}
+        />
       </Provider>
     </ThemeProvider>
   </React.StrictMode>

@@ -193,3 +193,19 @@ exports.undeleteById = async (req, res) => {
       .json({ message: "Error restoring product, please try again later." });
   }
 };
+
+exports.removeById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = await Product.findByIdAndDelete(id);
+    if (!deleted) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+    res.status(200).json(deleted);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error removing product, please try again later." });
+  }
+};

@@ -40,7 +40,7 @@ export const AddProduct = () => {
   useEffect(() => {
     if (productAddStatus === "fullfilled") {
       reset();
-      toast.success("New product added");
+      toast("New product added");
       navigate("/admin/dashboard");
     } else if (productAddStatus === "rejected") {
       toast.error("Error adding product, please try again later");

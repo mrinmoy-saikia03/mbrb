@@ -54,7 +54,7 @@ export const ProductUpdate = () => {
 
   useEffect(() => {
     if (productUpdateStatus === "fullfilled") {
-      toast.success("Product Updated");
+      toast("Product Updated");
       navigate("/admin/dashboard");
     } else if (productUpdateStatus === "rejected") {
       toast.error("Error updating product, please try again later");

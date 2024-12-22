@@ -43,7 +43,7 @@ export const ResetPassword = () => {
   // Handle success
   useEffect(() => {
     if (status === 'fullfilled') {
-      toast.success(successMessage?.message);
+      toast(successMessage?.message);
       navigate('/login');
     }
     return () => {

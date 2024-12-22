@@ -54,7 +54,7 @@ export function SearchModal() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 id="default-search"
-                class="block w-full p-4 ps-10 text-sm text-black border border-ternary rounded-lg bg-transparent focus:ring-ternary focus:border-ternary focus:outline-none placeholder:text-secondary"
+                class="block w-full p-4 ps-10 text-sm text-black border border-ternary rounded-lg bg-transparent focus:ring-ternary focus:border-ternary focus:outline-none placeholder:text-gray-700"
                 placeholder="Rasgulla,Barfi,Laddoo..."
                 required
               />

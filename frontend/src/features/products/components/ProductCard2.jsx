@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { selectLoggedInUser } from "../../auth/AuthSlice";
 import {
   deleteProductByIdAsync,
+  removeProductByIdAsync,
   undeleteProductByIdAsync,
 } from "../ProductSlice";
 
@@ -75,7 +76,7 @@ const ProductCard2 = ({ product, isAdmin }) => {
       "Are you sure you want to delete this item?"
     );
     if (userResponse) {
-      // write code to handle delete
+      dispatch(removeProductByIdAsync(product._id));
     } else {
       return;
     }
@@ -174,14 +175,14 @@ const ProductCard2 = ({ product, isAdmin }) => {
                     onClick={handleProductUnDelete}
                     className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
                   >
-                    Hide
+                    Hide Product
                   </button>
                 ) : (
                   <button
                     onClick={handleProductDelete}
                     className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
                   >
-                    Show
+                    Show Product
                   </button>
                 )}
               </div>

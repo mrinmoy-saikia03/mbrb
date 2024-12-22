@@ -58,7 +58,7 @@ export const AdminOrders = () => {
 
   useEffect(() => {
     if (orderUpdateStatus === "fulfilled") {
-      toast.success("Status udpated");
+      toast("Status udpated");
     } else if (orderUpdateStatus === "rejected") {
       toast.error("Error updating order status");
     }

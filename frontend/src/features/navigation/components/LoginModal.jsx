@@ -63,7 +63,7 @@ export function LoginModal() {
 
   useEffect(() => {
     if (status2 === "fullfilled") {
-      toast.success(
+      toast(
         "Welcome! Verify your email to start shopping on mern-ecommerce."
       );
     }
@@ -90,7 +90,7 @@ export function LoginModal() {
 
   useEffect(() => {
     if (status === "fullfilled" && loggedInUser?.isVerified === true) {
-      toast.success(`Login successful`);
+      toast(`Login successful`);
       closeDrawer();
     }
     return () => {

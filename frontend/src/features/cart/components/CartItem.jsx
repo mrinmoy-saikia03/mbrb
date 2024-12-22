@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { deleteCartItemByIdAsync, updateCartItemByIdAsync } from "../CartSlice";
-import { IndianRupee } from "lucide-react";
+import { IndianRupee, Trash2 } from "lucide-react";
 
 export const CartItem = ({
   id,
@@ -10,12 +10,13 @@ export const CartItem = ({
   title,
   category,
   brand,
-  price,
   quantity,
   stockQuantity,
   productId,
+  selectedWeightOption,
 }) => {
   const dispatch = useDispatch();
+
   const handleAddQty = () => {
     const update = { _id: id, quantity: quantity + 1 };
     dispatch(updateCartItemByIdAsync(update));
@@ -35,58 +36,85 @@ export const CartItem = ({
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-between items-center bg-white p-4 shadow-md rounded-lg">
-      {/* Image and Details */}
-      <div className="flex flex-col md:flex-row items-center space-x-4">
+    <div className="flex flex-col md:flex-row justify-between items-center bg-gray-50 p-4 md:p-4 rounded-lg shadow hover:shadow-lg transition duration-300">
+      {/* Thumbnail and Product Info */}
+      <div className="flex items-center space-x-4 md:space-x-6 w-full md:w-2/3">
         <Link
           to={`/product-details/${productId}`}
-          className="w-32 h-32 flex-shrink-0"
+          className="w-20 h-20 md:w-24 md:h-24"
         >
           <img
             src={thumbnail}
-            alt={`${title} image unavailable`}
-            className="w-full h-full object-contain rounded-lg"
+            alt={`${title} image`}
+            className="w-full h-full object-cover rounded-lg"
           />
         </Link>
-
-        <div className="text-center md:text-left">
+        <div className="flex flex-col space-y-2">
+          {/* Product Title */}
           <Link
             to={`/product-details/${productId}`}
-            className="text-blue-600 font-semibold text-lg hover:underline"
+            className="text-base md:text-lg font-semibold text-gray-800 hover:underline"
           >
             {title}
           </Link>
-          <p className="text-gray-500 text-sm">{brand}</p>
-          <p className="mt-2 text-gray-700">Quantity</p>
-          <div className="flex items-center justify-center md:justify-start space-x-2 mt-1">
+          {/* Brand and Category */}
+          <p className="text-sm text-gray-500">
+            Brand: <span className="text-gray-700">{brand}</span>
+          </p>
+          <p className="text-sm text-gray-500">
+            Category: <span className="text-gray-700">{category}</span>
+          </p>
+          {/* Selected Weight Option */}
+          <p className="text-sm text-gray-500">
+            Weight:{" "}
+            <span className="text-gray-700">
+              {selectedWeightOption.weight}g
+            </span>
+          </p>
+          <p className="text-sm text-gray-500">
+            Price per unit:{" "}
+            <span className="text-gray-700">
+              <IndianRupee size={16} className="inline" />{" "}
+              {selectedWeightOption.price.toFixed(2)}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      {/* Quantity and Actions */}
+      <div className="flex md:flex-row items-center justify-between w-full md:w-1/3 mt-4 md:mt-0">
+        <div className="flex gap-x-2 items-center">
+          {/* Quantity Controls */}
+          <div className="flex items-center space-x-2">
             <button
               onClick={handleRemoveQty}
-              className="p-1 bg-gray-200 rounded hover:bg-gray-300"
+              className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300"
             >
               -
             </button>
-            <span>{quantity}</span>
+            <span className="font-semibold">{quantity}</span>
             <button
               onClick={handleAddQty}
-              className="p-1 bg-gray-200 rounded hover:bg-gray-300"
+              className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300"
             >
               +
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* Price and Remove Button */}
-      <div className="flex flex-col items-end space-y-4 mt-4 md:mt-0">
-        <p className="text-gray-700 font-medium flex items-center">
-          <IndianRupee size={20} />
-          {price}
-        </p>
+          {/* Total Price */}
+          <p className="text-base md:text-lg font-semibold flex items-center mt-2 md:mt-0">
+            <IndianRupee size={18} className="inline" />
+            <span className="ml-1">
+              {(selectedWeightOption.price * quantity).toFixed(2)}
+            </span>
+          </p>
+        </div>
+        {/* Remove Icon */}
         <button
           onClick={handleProductRemove}
-          className="py-1 px-4 bg-red-500 text-white rounded hover:bg-red-600"
+          className="ml-4 md:ml-6 text-red-500 hover:text-red-600 transition duration-300"
         >
-          Remove
+          <Trash2 size={24} />
         </button>
       </div>
     </div>

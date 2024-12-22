@@ -68,7 +68,7 @@ export const OtpVerfication = () => {
   // Resend OTP success handler
   useEffect(() => {
     if (resendOtpSuccessMessage) {
-      toast.success(resendOtpSuccessMessage.message);
+      toast(resendOtpSuccessMessage.message);
     }
     return () => {
       dispatch(clearResendOtpSuccessMessage());
@@ -88,7 +88,7 @@ export const OtpVerfication = () => {
   // OTP verification status handler
   useEffect(() => {
     if (otpVerificationStatus === "fullfilled") {
-      toast.success("Email verified! We are happy to have you here");
+      toast("Email verified! We are happy to have you here");
       dispatch(resetResendOtpStatus());
     }
     return () => {
