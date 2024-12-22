@@ -1,6 +1,6 @@
 import { IndianRupee, Star } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCartAsync,
@@ -9,8 +9,13 @@ import {
 } from "../../cart/CartSlice";
 import { toast } from "react-toastify";
 import { selectLoggedInUser } from "../../auth/AuthSlice";
+import {
+  deleteProductByIdAsync,
+  undeleteProductByIdAsync,
+} from "../ProductSlice";
 
-const ProductCard2 = ({ product }) => {
+const ProductCard2 = ({ product, isAdmin }) => {
+  const navigate = useNavigate();
   const loggedInUser = useSelector(selectLoggedInUser);
   const { _id, title, price, thumbnail, rating, weightOptions } = product;
   const dispatch = useDispatch();
@@ -64,6 +69,28 @@ const ProductCard2 = ({ product }) => {
     setSelectedWeightOption(weightOption);
   };
 
+  const handleProductRemove = (e) => {
+    e.preventDefault();
+    const userResponse = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (userResponse) {
+      // write code to handle delete
+    } else {
+      return;
+    }
+  };
+
+  const handleProductDelete = (e) => {
+    e.preventDefault();
+    dispatch(deleteProductByIdAsync(product._id));
+  };
+
+  const handleProductUnDelete = (e) => {
+    e.preventDefault();
+    dispatch(undeleteProductByIdAsync(product._id));
+  };
+
   return (
     <Link to={`/sweets/${_id}`}>
       <div className="relative w-full text-black flex flex-col overflow-hidden rounded border border-transparent transition duration-200 hover:bg-secondary/10 hover:border-secondary px-2 py-2 md:py-3 md:px-3">
@@ -113,20 +140,58 @@ const ProductCard2 = ({ product }) => {
           </div>
 
           {/* Add/Remove from Cart Button */}
-          {isInCart ? (
-            <button
-              onClick={handleRemoveFromCart}
-              className="w-full flex items-center justify-center rounded bg-ternary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-red-600"
-            >
-              Remove from Cart
-            </button>
-          ) : (
-            <button
-              onClick={handleAddToCart}
-              className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
-            >
-              Add to Cart
-            </button>
+          {!isAdmin &&
+            (isInCart ? (
+              <button
+                onClick={handleRemoveFromCart}
+                className="w-full flex items-center justify-center rounded bg-ternary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-red-600"
+              >
+                Remove from Cart
+              </button>
+            ) : (
+              <button
+                onClick={handleAddToCart}
+                className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
+              >
+                Add to Cart
+              </button>
+            ))}
+
+          {isAdmin && (
+            <>
+              <div className=" flex gap-x-2">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(`/admin/product-update/${product._id}`);
+                  }}
+                  className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
+                >
+                  Update
+                </button>
+                {product.isDeleted === true ? (
+                  <button
+                    onClick={handleProductUnDelete}
+                    className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
+                  >
+                    Hide
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleProductDelete}
+                    className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
+                  >
+                    Show
+                  </button>
+                )}
+              </div>
+              <button
+                onClick={handleProductRemove}
+                className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700 mt-2"
+              >
+                Remove Product
+              </button>
+            </>
           )}
         </div>
       </div>

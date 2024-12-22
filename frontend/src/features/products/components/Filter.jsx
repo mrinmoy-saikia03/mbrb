@@ -8,7 +8,7 @@ const sortOptions = [
   { name: "Price: high to low", sort: "price", order: "desc" },
 ];
 
-const Filter = ({ setFilters }) => {
+const Filter = () => {
   const [sort, setSort] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {

@@ -68,7 +68,7 @@ const Navbar2 = () => {
                         Our Products
                       </Link>
                     </li>
-                    {loggedInUser && !loggedInUser.isAdmin && (
+                    {
                       <li className={`hover-underline-animation`}>
                         <Link
                           to={"/branches"}
@@ -79,8 +79,8 @@ const Navbar2 = () => {
                           Branches{" "}
                         </Link>
                       </li>
-                    )}
-                    {loggedInUser && !loggedInUser.isAdmin && (
+                    }
+                    {
                       <li className={`hover-underline-animation`}>
                         <Link
                           to={"/about"}
@@ -91,9 +91,9 @@ const Navbar2 = () => {
                           About{" "}
                         </Link>
                       </li>
-                    )}
+                    }
                     <li className={`hover-underline-animation `}>
-                      {loggedInUser && !loggedInUser.isAdmin && (
+                      {
                         <Link
                           to={"/contact"}
                           className="text-white whitespace-nowrap transition hover:text-white/75 xl:hover:text-white"
@@ -102,7 +102,7 @@ const Navbar2 = () => {
                           {" "}
                           Contact Us{" "}
                         </Link>
-                      )}
+                      }
                     </li>
 
                     {loggedInUser && loggedInUser.isAdmin && (

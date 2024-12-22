@@ -23,18 +23,10 @@ const ProductCatalogue = () => {
   const totalResults = useSelector(selectProductTotalResults);
   const productFetchStatus = useSelector(selectProductFetchStatus);
 
-  // Fetch products when filters or page changes
-  useEffect(() => {
-    const filterParams = {
-      ...filters,
-      pagination: { page, limit: ITEMS_PER_PAGE },
-    };
-    dispatch(fetchProductsAsync(filterParams));
-  }, [filters, page, dispatch]);
 
 
 
-  console.log(products);
+
 
   return (
     <section className="text-gray-600 body-font">
