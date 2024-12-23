@@ -27,6 +27,8 @@ import Lottie from "lottie-react";
 import { loadingAnimation, noOrdersAnimation } from "../../../assets";
 import { toast } from "react-toastify";
 import { ArrowLeft, IndianRupee } from "lucide-react";
+import { format, addDays } from "date-fns";
+
 
 export const UserOrders = () => {
   const dispatch = useDispatch();
@@ -149,7 +151,7 @@ export const UserOrders = () => {
                           className="flex flex-wrap items-start gap-4 border-t pt-4"
                         >
                           <img
-                            src={product.product.images[0]}
+                            src={product.product.thumbnail}
                             alt={product.product.title}
                             className="sm:w-32 sm:h-32 object-contain"
                           />
@@ -201,16 +203,12 @@ export const UserOrders = () => {
                     <Typography className="text-gray-600">
                       Status: {order.status}
                     </Typography>
+
                     <Typography className="text-gray-600">
                       Estimated Delivery:{" "}
-                      {new Date(order.createdAt).toLocaleDateString(
-                        undefined,
-                        {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        },
-                        Date.now() + 10 * 24 * 60 * 60 * 1000
+                      {format(
+                        addDays(new Date(order.createdAt), 10), // Add 10 days to the order creation date
+                        "MMMM d, yyyy" // Format the date
                       )}
                     </Typography>
                   </CardFooter>

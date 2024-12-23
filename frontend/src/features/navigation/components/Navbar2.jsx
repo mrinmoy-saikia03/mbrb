@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Searchbox from "./SearchModal";
 import { ChevronDown, Menu, Search, ShoppingBag, User } from "lucide-react";
 import TopBanner from "./TopBanner";
 import Logo from "./Logo";
-import { CartDrawer } from "./CartDrawer";
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../Modals/modalSlice";
 import { selectLoggedInUser } from "../../auth/AuthSlice";

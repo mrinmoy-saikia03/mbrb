@@ -90,9 +90,12 @@ export function SearchModal() {
                 "Jalebi",
                 "Sohan Papdi",
                 "Petha",
-              ].map((val) => {
+              ].map((val, index) => {
                 return (
-                  <li className="text-sm my-1 whitespace-nowrap hover-underline-animation-black">
+                  <li
+                    key={index}
+                    className="text-sm my-1 whitespace-nowrap hover-underline-animation-black"
+                  >
                     <a
                       href={`/sweets?search=${val}`}
                       className="text-black flex items-center gap-1"
