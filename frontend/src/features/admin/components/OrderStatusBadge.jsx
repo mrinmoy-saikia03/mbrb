@@ -42,7 +42,7 @@ export function OrderStatusBadge({ status, onUpdate }) {
         <select
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
-          className="min-w-[140px] bg-secondary text-black rounded px-2 py-2"
+          className="min-w-[140px] bg-black text-white rounded px-2 py-2"
           size="sm"
         >
           {AVAILABLE_STATUSES.map((statusOption) => (
@@ -59,7 +59,10 @@ export function OrderStatusBadge({ status, onUpdate }) {
           variant="text"
           size="sm"
           color="green"
-          onClick={() => onUpdate(selectedStatus)}
+          onClick={() => {
+            setIsEditing(false);
+            onUpdate(selectedStatus);
+          }}
           className="p-2 transition-all duration-200 bg-green-100 hover:bg-green-200 focus:ring focus:ring-green-300 rounded-md"
         >
           <Check className="h-6 w-6" strokeWidth={4} />
