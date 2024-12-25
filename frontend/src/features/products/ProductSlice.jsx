@@ -4,6 +4,7 @@ import {
   deleteProductById,
   fetchProductById,
   fetchProducts,
+  fetchRandomProducts,
   removeProductById,
   undeleteProductById,
   updateProductById,
@@ -36,6 +37,14 @@ export const fetchProductsAsync = createAsyncThunk(
     return products;
   }
 );
+export const fetchRandomProductsAsync = createAsyncThunk(
+  "products/fetchRandomProductsAsync",
+  async () => {
+    const products = await fetchRandomProducts();
+    return products;
+  }
+);
+
 export const fetchProductByIdAsync = createAsyncThunk(
   "products/fetchProductByIdAsync",
   async (id) => {
@@ -120,11 +129,22 @@ const productSlice = createSlice({
         state.productFetchStatus = "pending";
       })
       .addCase(fetchProductsAsync.fulfilled, (state, action) => {
-        state.productFetchStatus = "fullfilled";
+        state.productFetchStatus = "fulfilled";
         state.products = action.payload.data;
         state.totalResults = action.payload.totalResults;
       })
       .addCase(fetchProductsAsync.rejected, (state, action) => {
+        state.productFetchStatus = "rejected";
+        state.errors = action.error;
+      })
+      .addCase(fetchRandomProductsAsync.pending, (state) => {
+        state.productFetchStatus = "pending";
+      })
+      .addCase(fetchRandomProductsAsync.fulfilled, (state, action) => {
+        state.productFetchStatus = "fulfilled";
+        state.products = action.payload;
+      })
+      .addCase(fetchRandomProductsAsync.rejected, (state, action) => {
         state.productFetchStatus = "rejected";
         state.errors = action.error;
       })
@@ -133,7 +153,7 @@ const productSlice = createSlice({
         state.productFetchStatus = "pending";
       })
       .addCase(fetchProductByIdAsync.fulfilled, (state, action) => {
-        state.productFetchStatus = "fullfilled";
+        state.productFetchStatus = "fulfilled";
         state.selectedProduct = action.payload;
       })
       .addCase(fetchProductByIdAsync.rejected, (state, action) => {

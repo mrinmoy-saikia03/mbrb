@@ -1,41 +1,104 @@
-import React from "react";
-import ProductCard2 from "./ProductCard2";
-import { MoveRight } from "lucide-react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { MoveRight, Package } from "lucide-react";
 import { Link } from "react-router-dom";
-const ProductList2 = () => {
+import {
+  Alert,
+  Card,
+  CardBody,
+  CardHeader,
+  Typography,
+} from "@material-tailwind/react";
+import ProductCard2 from "./ProductCard2";
+import {
+  selectProductFetchStatus,
+  selectProducts,
+  fetchProductsAsync,
+  fetchRandomProductsAsync,
+  resetProductFetchStatus,
+} from "../ProductSlice";
+import { ProductSkeleton } from "./Skeletons";
+
+const ProductList2 = ({ isHome = true }) => {
+  const dispatch = useDispatch();
+  const products = useSelector(selectProducts);
+  const productFetchStatus = useSelector(selectProductFetchStatus);
+
+  useEffect(() => {
+    dispatch(fetchRandomProductsAsync());
+  }, []);
+
+  const renderContent = () => {
+    switch (productFetchStatus) {
+      case "pending":
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, index) => (
+              <ProductSkeleton key={index} />
+            ))}
+          </div>
+        );
+      case "rejected":
+        return (
+          <Alert
+            variant="gradient"
+            color="red"
+            className="mx-auto max-w-md text-center mt-8"
+            icon={<Package className="h-6 w-6" />}
+          >
+            <Typography variant="h6" color="white">
+              Failed to load products. Kindly refresh to try again.
+            </Typography>
+          </Alert>
+        );
+      case "fulfilled":
+        return (
+          <>
+            <div className="grid grid-cols-2 lg:grid-cols-4">
+              {products.map((product) => (
+                <ProductCard2 key={product._id} product={product} />
+              ))}
+            </div>
+
+            <div className="mt-8 text-center xl:hidden">
+              <Link
+                to="/sweets"
+                className="inline-flex items-center gap-2 text-lg font-medium text-gray-900 hover:text-blue-500 transition-all duration-300 border-b border-transparent hover:border-blue-500 pb-1"
+              >
+                View All Products
+                <MoveRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <>
-      <section class="body-font">
-        <div class="text-xl md:text-2xl lg:text-5xl  font-semibold text-center mt-10 xl:mt-20 flex justify-between border-b mx-5 lg:mx-16 ">
-          <p className="md:pb-2">Our Best Sellers</p>
-          <div className="hover-underline-animation-black">
-            <Link
-              to={"/sweets"}
-              className="flex items-center gap-x-2 group text-lg md:text-2xl lg:text-4xl "
-            >
-              <p className="">View More</p>
-              <MoveRight className="rotate-[-45deg] group-hover:rotate-0 transition duration-200" />
-            </Link>
-          </div>
+    <section className="py-16 px-4 md:py-20 lg:py-24 bg-gray-50">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-12 border-b border-gray-200 pb-6">
+          <Typography
+            variant="h2"
+            className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent"
+          >
+            {isHome ? "Our Best Sellers" : "Related Products"}
+          </Typography>
+
+          <Link
+            to="/sweets"
+            className="hidden xl:inline-flex items-center gap-3 text-lg font-medium text-gray-900 hover:text-blue-500 transition-all duration-300 group"
+          >
+            View Collection
+            <MoveRight className="h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2" />
+          </Link>
         </div>
-        <div class="container px-5 pb-5 pt-3 md:pt-5 md:pb-10 lg:pb-16 mx-auto">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-2 gap-y-7">
-            <ProductCard2 />
-            <ProductCard2 />
-            <ProductCard2 />
-            <ProductCard2 />
-          </div>
-          <div className="grid place-items-center">
-            <Link
-              to={"/sweets"}
-              className="text-center text-lg border-b border-black mt-5 xl:hidden flex justify-center items-center gap-x-2"
-            >
-              View All <MoveRight size={20} />
-            </Link>
-          </div>
-        </div>
-      </section>
-    </>
+
+        {renderContent()}
+      </div>
+    </section>
   );
 };
 

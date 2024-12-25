@@ -97,6 +97,22 @@ exports.getAll = async (req, res) => {
   }
 };
 
+exports.getRandomProducts = async (req, res) => {
+  try {
+    const randomProducts = await Product.aggregate([
+      { $match: { isDeleted: false } }, // Exclude deleted products
+      { $sample: { size: 4 } }, // Fetch 4 random products
+    ]);
+
+    res.status(200).json(randomProducts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Error fetching random products, please try again later.",
+    });
+  }
+};
+
 exports.getById = async (req, res) => {
   try {
     const { id } = req.params;

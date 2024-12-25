@@ -1,74 +1,111 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Package } from "lucide-react";
+import { Alert, Typography } from "@material-tailwind/react";
 import {
   fetchProductsAsync,
+  resetProductFetchStatus,
   selectProductFetchStatus,
   selectProducts,
-  selectProductTotalResults,
 } from "../ProductSlice";
 import ProductCard2 from "./ProductCard2";
 import Filter from "./Filter";
-import Pagination from "@mui/material/Pagination";
-import { ITEMS_PER_PAGE } from "../../../constants";
-import { toast } from "react-toastify";
+import { ProductSkeleton } from "./Skeletons";
+import { Link } from "react-router-dom";
 
 const ProductCatalogue = () => {
-  const [page, setPage] = useState(1);
-  const [filters, setFilters] = useState({});
-  const dispatch = useDispatch();
-
-  // Redux state selectors
   const products = useSelector(selectProducts);
-  const totalResults = useSelector(selectProductTotalResults);
   const productFetchStatus = useSelector(selectProductFetchStatus);
 
-
-
-
-
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant",
+    });
+  }, []);
+  const renderContent = () => {
+    switch (productFetchStatus) {
+      case "pending":
+        return (
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            {[...Array(8)].map((_, index) => (
+              <ProductSkeleton key={index} />
+            ))}
+          </div>
+        );
+      case "rejected":
+        return (
+          <Alert
+            variant="gradient"
+            color="red"
+            className="mx-auto max-w-md text-center mt-8"
+            icon={<Package className="h-6 w-6" />}
+          >
+            <Typography variant="h6" color="white">
+              Failed to load products. Kindly refresh to try again.
+            </Typography>
+          </Alert>
+        );
+      case "fulfilled":
+        return (
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {products.map((product) => (
+              <ProductCard2 key={product._id} product={product} />
+            ))}
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
-    <section className="text-gray-600 body-font">
-      <div className="container md:px-5 pt-10 mx-auto">
-        <div className="flex flex-col text-center w-full mb-10 items-center">
-          <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 flex items-start md:items-center md:gap-x-5 px-3">
+    <section className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center gap-4 mb-4">
             <img
               width="45"
               height="32"
               src="https://img.icons8.com/retro/32/naan.png"
               alt="naan"
-              className="mt-2 md:mt-0"
-            />{" "}
-            Discover our wide range of Sweets
+              className="animate-bounce"
+            />
+            <Typography
+              variant="h1"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent"
+            >
+              Discover our Sweets
+            </Typography>
             <img
               width="48"
               height="48"
               src="https://img.icons8.com/parakeet/48/pie.png"
               alt="pie"
+              className="animate-bounce"
             />
-          </h1>
-          <h2 className="text-md text-ternary tracking-widest font-medium title-font mt-2 flex items-center">
-            Home <ChevronRight /> Sweets
-          </h2>
-        </div>
-
-        <Filter setFilters={setFilters} />
-
-        {/* Loading Spinner */}
-        {productFetchStatus === "pending" && (
-          <div className="flex justify-center mt-4">
-            <div className="animate-spin rounded-full border-t-4 border-blue-500 w-12 h-12" />
           </div>
-        )}
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-2 md:gap-x-2 gap-y-7 mt-5">
-          {productFetchStatus === "fullfilled" &&
-            products.map((product) => (
-              <ProductCard2 key={product._id} product={product} />
-            ))}
+          <div className="flex items-center justify-center gap-2 text-gray-600">
+            <Link
+              to={"/home"}
+              className="hover:text-blue-500 transition-colors"
+            >
+              Home
+            </Link>
+            <ChevronRight className="h-4 w-4" />
+            <span className="font-medium text-gray-900">Sweets</span>
+          </div>
         </div>
+
+        {/* Filter Section */}
+        <div className="mb-8">
+          <Filter />
+        </div>
+
+        {/* Products Grid with Loading States */}
+        <div className="relative">{renderContent()}</div>
       </div>
     </section>
   );

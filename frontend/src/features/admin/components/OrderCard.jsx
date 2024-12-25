@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import {
+  Copy,
   Eye,
   EyeOff,
   IndianRupee,
@@ -26,6 +27,7 @@ import {
   updateOrderByIdAsync,
 } from "../../order/OrderSlice.jsx";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export function OrderCard({ order }) {
   const dispatch = useDispatch();
@@ -36,7 +38,7 @@ export function OrderCard({ order }) {
       dispatch(resetOrderUpdateStatus());
     };
   }, []);
-  const [open, setOpen] = useState(order.status == "Pending");
+  const [open, setOpen] = useState(false);
 
   const handleUpdateOrder = (newStatus) => {
     const update = { ...order, _id: order._id, status: newStatus };
@@ -54,6 +56,16 @@ export function OrderCard({ order }) {
       handleUpdateOrder(newStatus);
     }
   };
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(order._id)
+      .then(() => {
+        toast(`Order ID #${order._id} copied!`);
+      })
+      .catch((error) => {
+        toast.error("Failed to copy order ID.");
+      });
+  };
 
   return (
     <Card className="w-full">
@@ -64,8 +76,12 @@ export function OrderCard({ order }) {
         <div className="flex items-center gap-4">
           <Package2 className="h-8 w-8" />
           <div>
-            <Typography variant="h6" color="white">
-              Order #{order._id}
+            <Typography
+              variant="h6"
+              color="white"
+              className="flex gap-x-2 items-center cursor-pointer"
+            >
+              Order #{order._id} <Copy onClick={handleCopy} size={16} />
             </Typography>
             <Typography variant="small" color="white" className="opacity-80">
               {format(new Date(order.createdAt), "PPPppp")}

@@ -10,10 +10,6 @@ import { selectLoggedInUser } from "../../auth/AuthSlice";
 const Navbar2 = () => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector(selectLoggedInUser);
-  const openCartDrawer = () => {
-    window.scrollTo(0, 0);
-    dispatch(openModal({ type: "cart" }));
-  };
 
   const openMobileNav = () => {
     window.scrollTo(0, 0);

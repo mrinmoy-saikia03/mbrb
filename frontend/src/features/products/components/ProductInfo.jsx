@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Button, Rating } from "@material-tailwind/react";
 import Quantity from "./Quantity";
 import ProductImageSwiper from "./ProductImageSwiper";
-import { Truck, Clock, IndianRupee } from "lucide-react";
+import { Truck, Clock, IndianRupee, Share2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import ProductList2 from "./ProductList2";
 import {
   clearSelectedProduct,
   fetchProductByIdAsync,
@@ -13,6 +14,7 @@ import {
 } from "../ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLoggedInUser } from "../../auth/AuthSlice";
+import { add, format } from "date-fns";
 import {
   addToCartAsync,
   deleteCartItemByIdAsync,
@@ -31,6 +33,7 @@ import {
   resetWishlistItemDeleteStatus,
 } from "../../wishlist/WishlistSlice";
 import { toast } from "react-toastify";
+import { ProductInfoSkeleton } from "./Skeletons";
 const ProductInfo = () => {
   const { id } = useParams();
   const product = useSelector(selectSelectedProduct);
@@ -44,6 +47,10 @@ const ProductInfo = () => {
   const [productQuantity, setQuantity] = useState(1);
   const [selectedWeightOption, setSelectedWeightOption] = useState({});
   const [cartItemId, setCartItemId] = useState(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   useEffect(() => {
     if (product && product.weightOptions?.length > 0) {
@@ -164,11 +171,28 @@ const ProductInfo = () => {
       `/checkout?single=true&product=${id}&quantity=${productQuantity}&weightOption=${selectedWeightOption._id}`
     );
   };
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: product.title,
+          text: `Check out this amazing product: ${product.title}`,
+          url: window.location.href,
+        })
+        .then(() => toast("Product shared successfully"))
+        .catch((error) => console.log("Error sharing product:", error));
+    } else {
+      // Fallback for desktop: Copy URL to clipboard
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        toast("Product link copied to clipboard!");
+      });
+    }
+  };
 
   return (
     <section class="text-gray-600 body-font overflow-hidden">
-      {productFetchStatus === "fullfilled" && product && (
-        <div class="px-5 py-24">
+      {productFetchStatus === "fulfilled" && product && (
+        <div class="px-5 py-5 md:py-10 lg:py-16 xl:py-24">
           <div class="xl:w-4/5 mx-auto lg:flex">
             <div>
               <ProductImageSwiper
@@ -179,9 +203,17 @@ const ProductInfo = () => {
               <h2 class="text-sm title-font text-gray-500 tracking-widest">
                 {product.category.name}
               </h2>
-              <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">
-                {product.title}
-              </h1>
+              <div className="flex items-center justify-between">
+                <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
+                  {product.title}
+                </h1>
+                <button
+                  onClick={handleShare}
+                  className="flex items-center justify-center bg-primary p-2 rounded-full hover:bg-primary-dark transition duration-200"
+                >
+                  <Share2 color="black" />
+                </button>
+              </div>
               <div class="flex mb-4">
                 <span class="flex items-center">
                   <Rating value={4} readonly />
@@ -270,14 +302,31 @@ const ProductInfo = () => {
                   {product.piecesPerKg}
                 </li>
               </ul>
-              <div className="flex gap-x-2 border-t border-cta text-ternary pt-3 items-center justify-center">
-                <Clock /> Order Now to get it delivered by 7th December,2024
-                (ETA) <Truck />
+              <div className="flex flex-col items-center justify-center gap-y-2 border-t border-cta pt-4 mt-4 text-center text-ternary">
+                <div className="flex items-center gap-x-2 text-lg font-medium">
+                  <Clock className="text-secondary h-6 w-6" />
+                  <p className="text-slate-700">
+                    Order now to get it delivered by{" "}
+                    <span className="font-semibold text-secondary">
+                      {format(add(new Date(), { days: 12 }), "do MMMM, yyyy")}
+                    </span>
+                  </p>
+                  <Truck className="text-secondary h-6 w-6" />
+                </div>
+                <p className="text-sm text-gray-500 italic">
+                  Delivery dates are estimated and may vary.
+                </p>
               </div>
             </div>
           </div>
         </div>
       )}
+      {productFetchStatus === "pending" && (
+        <div class="px-5 py-5 md:py-10 lg:py-16 xl:py-24">
+          <ProductInfoSkeleton />
+        </div>
+      )}
+      <ProductList2 isHome={false} />
     </section>
   );
 };

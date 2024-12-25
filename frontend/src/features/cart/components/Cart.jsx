@@ -6,7 +6,9 @@ import {
   resetCartItemRemoveStatus,
   selectCartItemRemoveStatus,
   selectCartItems,
+  selectCartStatus,
 } from "../CartSlice";
+import { CartItemSkeleton } from "../../products/components/Skeletons";
 import { SHIPPING, TAXES } from "../../../constants";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
@@ -23,6 +25,7 @@ export const Cart = ({ checkout }) => {
   const navigate = useNavigate();
   const cartItemRemoveStatus = useSelector(selectCartItemRemoveStatus);
   const dispatch = useDispatch();
+  const cartFetchStatus = useSelector(selectCartStatus); // Cart fetch status
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -42,6 +45,14 @@ export const Cart = ({ checkout }) => {
     };
   }, []);
 
+  const handleCheckoutClick = () => {
+    if (items.length == 0) {
+      toast("Your cart is empty.");
+      return;
+    }
+    navigate("/checkout");
+  };
+
   return (
     <div className="flex flex-col items-center mb-20 bg-gray-50 min-h-screen">
       <div className={`w-full ${checkout ? "px-0" : "px-4"} mt-12 max-w-4xl`}>
@@ -57,7 +68,11 @@ export const Cart = ({ checkout }) => {
 
           {/* Cart items */}
           <div className="space-y-6">
-            {items.length ? (
+            {cartFetchStatus === "pending" ? (
+              Array.from({ length: 3 }).map((_, index) => (
+                <CartItemSkeleton key={index} />
+              ))
+            ) : items.length ? (
               items.map((item) => (
                 <CartItem
                   key={item._id}
@@ -133,11 +148,13 @@ export const Cart = ({ checkout }) => {
           {/* Checkout or Continue Shopping */}
           {!checkout && (
             <div className="flex flex-col md:flex-row gap-5 justify-between items-center mt-8">
-              <Link to="/checkout" className="w-full">
-                <button className="w-full py-3 px-6 bg-cta text-white font-semibold rounded-lg shadow hover:bg-cta/70 transition duration-300">
-                  Proceed to Checkout
-                </button>
-              </Link>
+              <button
+                onClick={handleCheckoutClick}
+                className="w-full py-3 px-6 bg-cta text-white font-semibold rounded-lg shadow hover:bg-cta/70 transition duration-300"
+              >
+                Proceed to Checkout
+              </button>
+
               <Link to="/sweets" className="ml-4">
                 <Button
                   className="w-max py-3 px-6 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition duration-300"

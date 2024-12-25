@@ -8,6 +8,7 @@ export const addProduct = async (data) => {
     throw error.response.data;
   }
 };
+
 export const fetchProducts = async (filters) => {
   let queryString = "";
 
@@ -42,6 +43,16 @@ export const fetchProducts = async (filters) => {
     throw error.response.data;
   }
 };
+
+export const fetchRandomProducts = async () => {
+  try {
+    const res = await axiosi.get(`/products/random`);
+    return res.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
 export const fetchProductById = async (id) => {
   try {
     const res = await axiosi.get(`/products/${id}`);
