@@ -19,7 +19,7 @@ export const AdminDashBoard = () => {
   const productFetchStatus = useSelector(selectProductFetchStatus);
 
   return (
-    <>
+    <div className="py-10">
       <div className="px-5 mt-5">
         <Filter />
       </div>
@@ -34,7 +34,7 @@ export const AdminDashBoard = () => {
 
           {/* Product Grid */}
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-2 md:gap-x-2 gap-y-7 mt-5">
-            {productFetchStatus === "fullfilled" &&
+            {productFetchStatus === "fulfilled" &&
               products.map((product) => (
                 <ProductCard2
                   key={product._id}
@@ -45,6 +45,6 @@ export const AdminDashBoard = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

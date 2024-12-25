@@ -153,7 +153,7 @@ export const Checkout = () => {
           <Typography variant="small" color="gray">
             Choose from existing addresses
           </Typography>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {addresses.map((address) => (
               <Card key={address._id} className="p-4 border border-gray-200">
                 <div className="flex items-center gap-4">
