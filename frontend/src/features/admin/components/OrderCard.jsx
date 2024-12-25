@@ -42,7 +42,7 @@ export function OrderCard({ order }) {
 
   const handleUpdateOrder = (newStatus) => {
     const update = { ...order, _id: order._id, status: newStatus };
-    dispatch(updateOrderByIdAsync(update));
+    dispatch(updateOrderByIdAsync(update, newStatus));
   };
   const onUpdate = (newStatus) => {
     if (!newStatus) return;

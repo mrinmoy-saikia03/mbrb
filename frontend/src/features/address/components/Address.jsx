@@ -17,7 +17,15 @@ import {
   SpeedDialHandler,
   Typography,
 } from "@material-tailwind/react";
-import { Building2, EllipsisVertical, MapPin, PencilLine, Phone, Trash, X } from "lucide-react";
+import {
+  Building2,
+  EllipsisVertical,
+  MapPin,
+  PencilLine,
+  Phone,
+  Trash,
+  X,
+} from "lucide-react";
 
 export const Address = ({
   _id,
@@ -29,6 +37,7 @@ export const Address = ({
   phoneNumber,
   state,
   city,
+  checkout,
 }) => {
   const dispatch = useDispatch();
   const {
@@ -64,9 +73,16 @@ export const Address = ({
             />
             <span className="font-medium text-gray-900">{name}</span>
           </div>
-          <SpeedDial open={open} handler={setOpen} placement="left">
+          <SpeedDial
+            open={open}
+            handler={setOpen}
+            placement={checkout ? "bottom" : "left"}
+          >
             <SpeedDialHandler>
-              <IconButton size="sm" className="rounded-full bg-gray-50 hover:bg-gray-100">
+              <IconButton
+                size="sm"
+                className="rounded-full bg-gray-50 hover:bg-gray-100 ml-1"
+              >
                 {open ? (
                   <X className="h-4 w-4 text-gray-600" />
                 ) : (
@@ -74,7 +90,7 @@ export const Address = ({
                 )}
               </IconButton>
             </SpeedDialHandler>
-            <SpeedDialContent className="flex-row">
+            <SpeedDialContent className={checkout ? "" : "flex-row"}>
               <SpeedDialAction
                 onClick={() => {
                   setOpen(false);
@@ -97,7 +113,10 @@ export const Address = ({
         </div>
 
         {/* Content */}
-        <form onSubmit={handleSubmit(handleUpdateAddress)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(handleUpdateAddress)}
+          className="space-y-4"
+        >
           {edit ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
@@ -105,7 +124,11 @@ export const Address = ({
                 { name: "street", label: "Street", value: street },
                 { name: "postalCode", label: "Postal Code", value: postalCode },
                 { name: "country", label: "Country", value: country },
-                { name: "phoneNumber", label: "Phone Number", value: phoneNumber },
+                {
+                  name: "phoneNumber",
+                  label: "Phone Number",
+                  value: phoneNumber,
+                },
                 { name: "state", label: "State", value: state },
                 { name: "city", label: "City", value: city },
               ].map((field) => (
@@ -115,7 +138,10 @@ export const Address = ({
                   </label>
                   <input
                     type="text"
-                    {...register(field.name, { required: true, value: field.value })}
+                    {...register(field.name, {
+                      required: true,
+                      value: field.value,
+                    })}
                     className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   />
                 </div>
@@ -145,7 +171,9 @@ export const Address = ({
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <div className="space-y-1">
                   <p className="text-sm">{street}</p>
-                  <p className="text-sm">{city}, {state} {postalCode}</p>
+                  <p className="text-sm">
+                    {city}, {state} {postalCode}
+                  </p>
                   <p className="text-sm">{country}</p>
                 </div>
               </div>

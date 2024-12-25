@@ -54,8 +54,10 @@ export const Cart = ({ checkout }) => {
   };
 
   return (
-    <div className="flex flex-col items-center mb-20 bg-gray-50">
-      <div className={`w-full ${checkout ? "px-0" : "px-4"} mt-12 max-w-4xl`}>
+    <div
+      className={`flex flex-col items-center ${checkout ? "py-0" : "pb-24"}`}
+    >
+      <div className={`w-full ${checkout ? "px-0" : "px-4"} mt-4 max-w-4xl`}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -79,12 +81,13 @@ export const Cart = ({ checkout }) => {
                   id={item._id}
                   title={item.product.title}
                   brand={item.product.brand.name}
-                  category={item.product.category.name}
+                  category={item.product.category}
                   selectedWeightOption={item.selectedWeightOption}
                   quantity={item.quantity}
                   thumbnail={item.product.thumbnail}
                   stockQuantity={item.product.stockQuantity}
                   productId={item.product._id}
+                  isCheckout={checkout}
                 />
               ))
             ) : (

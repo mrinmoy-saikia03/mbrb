@@ -14,6 +14,7 @@ import {
   removeProductByIdAsync,
   undeleteProductByIdAsync,
 } from "../ProductSlice";
+import { Button } from "@material-tailwind/react";
 
 const ProductCard2 = ({ product, isAdmin }) => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const ProductCard2 = ({ product, isAdmin }) => {
     e.preventDefault();
     if (cartItemId) {
       dispatch(deleteCartItemByIdAsync(cartItemId));
-      toast.info(`${title} removed from cart`);
+      toast(`${title} removed from cart`);
     }
   };
 
@@ -143,19 +144,19 @@ const ProductCard2 = ({ product, isAdmin }) => {
           {/* Add/Remove from Cart Button */}
           {!isAdmin &&
             (isInCart ? (
-              <button
+              <Button
                 onClick={handleRemoveFromCart}
-                className="w-full flex items-center justify-center rounded bg-ternary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-red-600"
+                className="w-full flex items-center justify-center rounded bg-ternary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white"
               >
                 Remove from Cart
-              </button>
+              </Button>
             ) : (
-              <button
+              <Button
                 onClick={handleAddToCart}
-                className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
+                className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white "
               >
                 Add to Cart
-              </button>
+              </Button>
             ))}
 
           {isAdmin && (

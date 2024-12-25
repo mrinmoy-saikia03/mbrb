@@ -19,6 +19,7 @@ import {
   addToCartAsync,
   deleteCartItemByIdAsync,
   resetCartItemAddStatus,
+  resetCartItemRemoveStatus,
   selectCartItemAddStatus,
   selectCartItemRemoveStatus,
   selectCartItems,
@@ -123,6 +124,8 @@ const ProductInfo = () => {
       dispatch(resetReviewFetchStatus());
       dispatch(resetWishlistItemDeleteStatus());
       dispatch(resetWishlistItemAddStatus());
+      dispatch(resetCartItemAddStatus());
+      dispatch(resetCartItemRemoveStatus());
       dispatch(resetCartItemAddStatus());
     };
   }, []);
@@ -265,23 +268,25 @@ const ProductInfo = () => {
                 </div>
               </div>
               <div className="flex flex-col lg:flex-row gap-2 mt-5 w-full">
-                <Button
-                  onClick={handleBuyNowClick}
-                  className="flex-1 w-full ml-auto text-center text-white bg-ternary border-0 py-4 tracking-widest px-6 rounded"
-                >
-                  Buy Now
-                </Button>
                 {isProductAlreadyInCart ? (
-                  <Button
-                    onClick={handleProductRemove}
-                    className="flex-1 w-full ml-auto text-center text-white bg-secondary border-0 py-4 tracking-widest px-6  rounded"
-                  >
-                    Remove from Cart
-                  </Button>
+                  <div className="flex flex-1 gap-x-2">
+                    <Button
+                      onClick={() => navigate("/cart")}
+                      className="flex-1 w-full ml-auto text-center text-white bg-secondary border-0 py-4 tracking-widest px-6 rounded"
+                    >
+                      View Cart
+                    </Button>
+                    <Button
+                      onClick={handleProductRemove}
+                      className="flex-1 w-full ml-auto text-center text-white bg-ternary border-0 py-4 tracking-widest px-6 rounded"
+                    >
+                      Remove from Cart
+                    </Button>
+                  </div>
                 ) : (
                   <Button
                     onClick={handleAddToCart}
-                    className="flex-1 w-full ml-auto text-center text-white bg-secondary border-0 py-4 tracking-widest px-6  rounded"
+                    className="flex-1 w-full ml-auto text-center text-white bg-ternary border-0 py-4 tracking-widest px-6 rounded"
                   >
                     Add to Cart
                   </Button>

@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addAddressAsync,
+  selectAddressAddStatus,
   selectAddressStatus,
   selectAddresses,
 } from "../../address/AddressSlice";
@@ -33,6 +34,9 @@ import {
   fetchProductByIdAsync,
   selectSelectedProduct,
 } from "../../products/ProductSlice";
+import { toast } from "react-toastify";
+import { ArrowLeft } from "lucide-react";
+import AddressManagement from "../../user/components/AddressManagement";
 
 export const Checkout = () => {
   const location = useLocation();
@@ -44,26 +48,16 @@ export const Checkout = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const addresses = useSelector(selectAddresses);
   const loggedInUser = useSelector(selectLoggedInUser);
   const product = useSelector(selectSelectedProduct);
   const cartItems = useSelector(selectCartItems);
-  const addressStatus = useSelector(selectAddressStatus);
   const orderStatus = useSelector(selectOrderStatus);
   const currentOrder = useSelector(selectCurrentOrder);
-
-  const [selectedAddress, setSelectedAddress] = useState(addresses[0]);
+  const [selectedAddress, setSelectedAddress] = useState();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("COD");
   const [singleProductItem, setSingleProductItem] = useState(null);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-
+  // Calculate order total for single product or cart
   const orderTotal = isSingleCheckout
     ? singleProductItem?.total || 0
     : cartItems.reduce(
@@ -87,6 +81,7 @@ export const Checkout = () => {
           product,
           selectedWeightOption: weightOption,
           quantity: queryQuantity,
+          total: weightOption.price * queryQuantity, // Ensure total is calculated
           user: loggedInUser._id,
         });
       }
@@ -105,78 +100,53 @@ export const Checkout = () => {
       dispatch(clearSelectedProduct());
     };
   }, [dispatch]);
-
-  const handleAddAddress = (data) => {
-    const address = { ...data, user: loggedInUser._id };
-    dispatch(addAddressAsync(address));
-  };
-
+  console.log(selectedAddress);
   const handleCreateOrder = () => {
+    if (!selectedAddress) {
+      toast.error("Please select an address");
+      return;
+    }
+    if (cartItems.length === 0) {
+      toast.error("Please add items to cart and then proceed to checkout");
+      navigate("/sweets");
+      return;
+    }
     const order = {
       user: loggedInUser._id,
-      item: isSingleCheckout ? [singleProductItem] : cartItems,
+      item: cartItems,
       address: selectedAddress,
       paymentMode: selectedPaymentMethod,
-      total: orderTotal + SHIPPING + TAXES,
+      total: orderTotal + SHIPPING + TAXES, // Add shipping and taxes
     };
     dispatch(createOrderAsync(order));
   };
 
   return (
-    <div className="flex flex-wrap justify-center p-6 gap-10 mb-20 mt-6 overflow-hidden">
+    <div className="w-full flex md:justify-center flex-wrap p-2 md:p-6 gap-10 mb-20 mt-6 overflow-hidden">
       {/* Left Section */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 w-full md:w-auto">
         {/* Heading */}
-        <div className="flex items-center gap-4">
-          <motion.div whileHover={{ x: -5 }}>
+        <div className="flex items-center gap-4 justify-center w-full relative">
+          <motion.div
+            whileHover={{ x: -5 }}
+            className="flex items-center gap-4 justify-between w-full absolute left-2"
+          >
             <IconButton>
               <Link to="/cart">
-                <i className="material-icons">arrow_back</i>
+                <ArrowLeft />
               </Link>
             </IconButton>
           </motion.div>
-          <Typography variant="h4">Shipping Information</Typography>
-        </div>
-
-        {/* Address Form */}
-        <form
-          className="flex flex-col gap-4"
-          noValidate
-          onSubmit={handleSubmit(handleAddAddress)}
-        >
-          {/* Input fields for address */}
-        </form>
-
-        {/* Existing Addresses */}
-        <div className="flex flex-col gap-4">
-          <Typography variant="h6">Address</Typography>
-          <Typography variant="small" color="gray">
-            Choose from existing addresses
+          <Typography
+            className="w-max whitespace-nowrap text-center"
+            variant="h4"
+          >
+            Shipping Information
           </Typography>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {addresses.map((address) => (
-              <Card key={address._id} className="p-4 border border-gray-200">
-                <div className="flex items-center gap-4">
-                  <Radio
-                    name="addressRadioGroup"
-                    value={selectedAddress}
-                    checked={selectedAddress === address}
-                    onChange={() => setSelectedAddress(address)}
-                  />
-                  <Typography>{address.type}</Typography>
-                </div>
-                <div>
-                  <Typography>{address.street}</Typography>
-                  <Typography>
-                    {address.state}, {address.city}, {address.country},{" "}
-                    {address.postalCode}
-                  </Typography>
-                  <Typography>{address.phoneNumber}</Typography>
-                </div>
-              </Card>
-            ))}
-          </div>
         </div>
+
+        {/* Address Management */}
+        <AddressManagement checkout={true} setAddress={setSelectedAddress} />
 
         {/* Payment Methods */}
         <div className="flex flex-col gap-4">
@@ -201,19 +171,9 @@ export const Checkout = () => {
       {/* Right Section */}
       <div className="flex flex-col gap-4 w-full md:w-auto">
         <Typography variant="h4">Order Summary</Typography>
-        {/* Show single product or cart */}
-        {isSingleCheckout && singleProductItem ? (
-          <div>
-            <Typography>{singleProductItem.name}</Typography>
-            <Typography>
-              {singleProductItem.selectedWeightOption.label} - Quantity:{" "}
-              {singleProductItem.quantity}
-            </Typography>
-            <Typography>Total: ${singleProductItem.total}</Typography>
-          </div>
-        ) : (
-          <Cart checkout={true} />
-        )}
+
+        <Cart checkout={true} />
+
         <Button
           fullWidth
           onClick={handleCreateOrder}
