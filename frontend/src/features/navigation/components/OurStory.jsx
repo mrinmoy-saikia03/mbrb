@@ -2,8 +2,8 @@ import React from "react";
 
 const OurStory = () => {
   return (
-    <section class="text-gray-600 body-font">
-      <div className="grid place-items-center pt-24 w-full">
+    <section class="text-gray-600 body-font bg-gray-50 py-14">
+      <div className="grid place-items-center w-full">
         <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
           Our Story
         </h1>

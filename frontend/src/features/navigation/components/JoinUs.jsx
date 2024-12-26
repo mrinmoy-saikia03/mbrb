@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const JoinUs = () => {
   return (
@@ -23,12 +24,12 @@ const JoinUs = () => {
             opportunities for success. Join now and thrive!
           </p>
           <div class="flex justify-center">
-            <button class="inline-flex text-white bg-secondary border-0 py-2 px-6 focus:outline-none hover:bg-secondary/70 rounded text-lg">
+            <Link to={"/contact"} class="inline-flex text-white bg-secondary border-0 py-2 px-6 focus:outline-none hover:bg-secondary/70 rounded text-lg">
               Become a Distributor
-            </button>
-            <button class="ml-4 inline-flex text-gray-700 bg-primary border border-secondary py-2 px-6 focus:outline-none hover:bg-secondary/20 rounded text-lg">
+            </Link>
+            <Link to={"/contact"} class="ml-4 inline-flex text-gray-700 bg-primary border border-secondary py-2 px-6 focus:outline-none hover:bg-secondary/20 rounded text-lg">
               Outlet Enquiry
-            </button>
+            </Link>
           </div>
         </div>
       </div>
