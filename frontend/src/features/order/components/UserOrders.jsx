@@ -16,7 +16,7 @@ import {
   IconButton,
   Spinner,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   addToCartAsync,
   resetCartItemAddStatus,
@@ -29,7 +29,6 @@ import { toast } from "react-toastify";
 import { ArrowLeft, IndianRupee } from "lucide-react";
 import { format, addDays } from "date-fns";
 
-
 export const UserOrders = () => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector(selectLoggedInUser);
@@ -37,7 +36,7 @@ export const UserOrders = () => {
   const cartItems = useSelector(selectCartItems);
   const orderFetchStatus = useSelector(selectOrderFetchStatus);
   const cartItemAddStatus = useSelector(selectCartItemAddStatus);
-
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
     dispatch(getOrderByUserIdAsync(loggedInUser?._id));
@@ -84,7 +83,12 @@ export const UserOrders = () => {
         <div className="w-full max-w-5xl p-4">
           {/* Heading and Navigation */}
           <div className="flex items-center gap-4 mb-6">
-            <IconButton variant="text" component={Link} to="/">
+            <IconButton
+              onClick={() => navigate("/")}
+              variant="text"
+              component={Link}
+              to="/"
+            >
               <ArrowLeft className="h-6 w-6" />
             </IconButton>
             <div>

@@ -107,7 +107,7 @@ exports.create = async (req, res) => {
 exports.getByUserId = async (req, res) => {
   try {
     const { id } = req.params;
-    const results = await Order.find({ user: id });
+    const results = await Order.find({ user: id }).sort({ createdAt: -1 });
     res.status(200).json(results);
   } catch (error) {
     console.log(error);
