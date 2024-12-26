@@ -1,28 +1,41 @@
-import { Button, Paper, Stack, Typography } from '@mui/material'
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { notFoundPageAnimation } from '../assets'
-import Lottie from 'lottie-react'
-
+import React from "react";
+import { Link } from "react-router-dom";
+import { Typography, Button, Card, CardBody } from "@material-tailwind/react";
+import Lottie from "lottie-react";
+import { notFoundPageAnimation } from "../assets";
 
 export const NotFoundPage = () => {
   return (
-    <Stack justifyContent={'center'} alignItems={'center'} height={'100vh'}>
+    <div className="flex flex-col justify-center items-center h-screen bg-gray-50">
+      <Card className="shadow-lg p-6 max-w-lg text-center">
+        {/* Animation */}
+        <div className="w-64 mx-auto">
+          <Lottie animationData={notFoundPageAnimation} loop={true} />
+        </div>
 
-        <Stack rowGap={1} justifyContent={'center'} alignItems={'center'}>
-            
-            <Stack width={'25rem'}>
-                <Lottie animationData={notFoundPageAnimation}/>
-            </Stack>
-            
-            <Stack justifyContent={'center'} alignItems={'center'}>
-              <Typography variant='h4' fontWeight={500}>404 Not Found</Typography>
-              <Typography variant='h6' fontWeight={'300'}>Sorry, we coudn't find the page you were looking for</Typography>
-            </Stack>
+        <CardBody>
+          {/* Heading */}
+          <Typography variant="h4" className="font-semibold text-gray-800">
+            404 Not Found
+          </Typography>
 
-            <Button sx={{mt:3}} size='large' component={Link} to={'/'} variant='contained'>Go back to homePage</Button>
-        </Stack>
+          {/* Subheading */}
+          <Typography variant="paragraph" className="text-gray-600 mt-2">
+            Sorry, we couldn't find the page you were looking for.
+          </Typography>
 
-    </Stack>
-  )
-}
+          {/* Button */}
+          <Link to={"/"}>
+            <Button
+              className="mt-6 text-white font-medium px-6 py-2 rounded-lg"
+              size="lg"
+              as={Link}
+            >
+              Go back to Homepage
+            </Button>
+          </Link>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};

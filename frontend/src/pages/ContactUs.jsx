@@ -176,7 +176,7 @@ const ContactUs = () => {
               </div>
               <button
                 type="submit"
-                className="text-white bg-ternary border-0 py-2 px-6 focus:outline-none rounded text-lg"
+                className="text-white bg-ternary border-0 py-2 px-6 focus:outline-none rounded text-lg w-full"
               >
                 Submit
               </button>

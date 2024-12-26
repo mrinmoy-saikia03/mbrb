@@ -35,6 +35,7 @@ import {
 } from "../../wishlist/WishlistSlice";
 import { toast } from "react-toastify";
 import { ProductInfoSkeleton } from "./Skeletons";
+import { openModal } from "../../Modals/modalSlice";
 const ProductInfo = () => {
   const { id } = useParams();
   const product = useSelector(selectSelectedProduct);
@@ -130,7 +131,13 @@ const ProductInfo = () => {
     };
   }, []);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    if (!loggedInUser) {
+      toast("Please login to add items to cart");
+      dispatch(openModal({ type: "login" }));
+      return;
+    }
     const item = {
       user: loggedInUser._id,
       product: id,

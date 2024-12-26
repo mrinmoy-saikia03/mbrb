@@ -10,13 +10,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../Modals/modalSlice";
 import { Brush, Search, TrendingUp, X } from "lucide-react";
 import { duration } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function SearchModal() {
   const { isOpen, type, props } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const closeDrawer = () => dispatch(closeModal());
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/sweets?search=${search}`);
+    closeDrawer();
+    setSearch("");
+  };
 
   return (
     <>
@@ -38,7 +45,7 @@ export function SearchModal() {
           </div>
         </DialogHeader>
         <DialogBody>
-          <form class="w-full">
+          <form onSubmit={handleSubmit} class="w-full">
             <label
               for="default-search"
               class="mb-2 text-sm font-medium text-black sr-only"

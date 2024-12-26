@@ -59,6 +59,15 @@ exports.getAll = async (req, res) => {
       filter.isDeleted = false;
     }
 
+    // Search functionality
+    if (req.query.search) {
+      const searchText = req.query.search;
+      filter.$or = [
+        { title: { $regex: searchText, $options: "i" } }, // Case-insensitive search in the name field
+        { description: { $regex: searchText, $options: "i" } }, // Case-insensitive search in the description field
+      ];
+    }
+
     // Sorting logic
     if (req.query.sort === "price") {
       const order = req.query.order === "asc" ? 1 : -1;

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ChevronRight, Package } from "lucide-react";
-import { Alert, Typography } from "@material-tailwind/react";
+import { ChevronRight, Package, ArrowLeft } from "lucide-react";
+import { Alert, Typography, Button } from "@material-tailwind/react";
 import {
   fetchProductsAsync,
   resetProductFetchStatus,
@@ -11,11 +11,15 @@ import {
 import ProductCard2 from "./ProductCard2";
 import Filter from "./Filter";
 import { ProductSkeleton } from "./Skeletons";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const ProductCatalogue = () => {
   const products = useSelector(selectProducts);
   const productFetchStatus = useSelector(selectProductFetchStatus);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const searchText = params.get("search");
 
   useEffect(() => {
     window.scrollTo({
@@ -23,6 +27,7 @@ const ProductCatalogue = () => {
       behavior: "instant",
     });
   }, []);
+
   const renderContent = () => {
     switch (productFetchStatus) {
       case "pending":
@@ -48,11 +53,47 @@ const ProductCatalogue = () => {
         );
       case "fulfilled":
         return (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard2 key={product._id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-3 lg:gap-5">
+              {products.length > 0 &&
+                products.map((product) => (
+                  <ProductCard2 key={product._id} product={product} />
+                ))}
+            </div>
+            {products.length === 0 && (
+              <div className="w-full grid place-items-center py-12">
+                <div className="flex flex-col items-center gap-6">
+                  {/* Icon */}
+                  <div className="bg-red-100 p-6 rounded-full shadow-lg">
+                    <Package className="h-12 w-12 text-red-500" />
+                  </div>
+
+                  {/* Message */}
+                  <Typography
+                    variant="h4"
+                    className="text-gray-800 font-bold text-center"
+                  >
+                    No Products Found
+                  </Typography>
+                  <Typography
+                    variant="paragraph"
+                    className="text-gray-600 text-center max-w-md"
+                  >
+                    We couldn't find any products matching your search. Explore
+                    our wide range of sweets and discover something delightful.
+                  </Typography>
+
+                  {/* Button */}
+                  <Link
+                    to={"/sweets"}
+                    className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-medium px-6 py-3 rounded-md shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+                  >
+                    Browse Our Products
+                  </Link>
+                </div>
+              </div>
+            )}
+          </>
         );
       default:
         return null;
@@ -60,8 +101,20 @@ const ProductCatalogue = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-4 md:px-8">
+    <section className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-2 md:px-8">
       <div className="max-w-7xl mx-auto">
+        {/* Back Button */}
+        <div className="mb-4">
+          <Button
+            variant="text"
+            className="flex items-center gap-2 text-gray-700"
+            onClick={() => navigate(-1)} // Navigate back to the previous URL
+          >
+            <ArrowLeft className="h-5 w-5" />
+            <span>Back</span>
+          </Button>
+        </div>
+
         {/* Header Section */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-4 mb-4">
@@ -88,20 +141,25 @@ const ProductCatalogue = () => {
           </div>
 
           <div className="flex items-center justify-center gap-2 text-gray-600">
-            <Link
-              to={"/home"}
-              className="hover:text-blue-500 transition-colors"
-            >
+            <Link to={"/"} className="hover:text-blue-500 transition-colors">
               Home
             </Link>
             <ChevronRight className="h-4 w-4" />
-            <span className="font-medium text-gray-900">Sweets</span>
+            <Link to={"/sweets"} className="font-medium text-gray-900">
+              Sweets
+            </Link>
+            {searchText && (
+              <>
+                <ChevronRight className="h-4 w-4" />
+                <span className="font-medium text-gray-900">{searchText}</span>
+              </>
+            )}
           </div>
         </div>
 
         {/* Filter Section */}
         <div className="mb-8">
-          <Filter />
+          <Filter searchText={searchText} />
         </div>
 
         {/* Products Grid with Loading States */}

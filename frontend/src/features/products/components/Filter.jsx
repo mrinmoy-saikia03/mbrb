@@ -8,31 +8,28 @@ const sortOptions = [
   { name: "Price: high to low", sort: "price", order: "desc" },
 ];
 
-const Filter = () => {
+const Filter = ({ searchText }) => {
   const [sort, setSort] = useState(null);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    const finalFilters = { sort };
+    const finalFilters = { sort, searchText };
     dispatch(fetchProductsAsync(finalFilters));
-  }, [sort]);
+  }, [sort, searchText]);
+
   return (
     <div className="ml-5 mb-6 w-48">
       <Select
-        onChange={(e) => {
-          console.log("sort select", e);
-          setSort(e);
+        onChange={(value) => {
+          setSort(sortOptions[value]); // Parse the stringified object
         }}
-        variant="standard"
+        variant="outlined"
         label="Sort by"
         className="text-black"
       >
         <Option value={null}>Reset</Option>
-
-        {sortOptions.map((opt, index) => (
-          <Option className="text-black" key={index} value={opt}>
-            {opt.name}
-          </Option>
-        ))}
+        <Option value={0}>Price: low to high</Option>
+        <Option value={1}>Price: high to low</Option>
       </Select>
     </div>
   );

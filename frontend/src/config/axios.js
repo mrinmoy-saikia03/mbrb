@@ -1,3 +1,6 @@
-import axios from 'axios'
+import axios from "axios";
 
-export const axiosi=axios.create({withCredentials:true,baseURL:"http://localhost:000"})
+export const axiosi = axios.create({
+  withCredentials: true,
+  baseURL: "https://mbrb.vercel.app",
+});

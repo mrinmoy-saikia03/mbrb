@@ -27,6 +27,7 @@ const ProductList2 = ({ isHome = true }) => {
   useEffect(() => {
     dispatch(fetchRandomProductsAsync());
   }, []);
+  
 
   const renderContent = () => {
     switch (productFetchStatus) {
@@ -55,9 +56,10 @@ const ProductList2 = ({ isHome = true }) => {
         return (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4">
-              {products.map((product) => (
-                <ProductCard2 key={product._id} product={product} />
-              ))}
+              {products &&
+                products.map((product) => (
+                  <ProductCard2 key={product._id} product={product} />
+                ))}
             </div>
 
             <div className="mt-8 text-center xl:hidden">
@@ -77,9 +79,9 @@ const ProductList2 = ({ isHome = true }) => {
   };
 
   return (
-    <section className="py-16 px-4 md:py-20 lg:py-24 bg-gray-50">
+    <section className="py-10 px-2 md:py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-12 border-b border-gray-200 pb-6">
+        <div className="flex items-center justify-between mb-4 md:mb-5 lg:mb-8 xl:mb-12 border-b border-gray-200 pb-2">
           <Typography
             variant="h2"
             className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent"

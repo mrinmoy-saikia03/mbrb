@@ -19,17 +19,23 @@ import {
   SearchCheck,
   Headset,
   Power,
+  ShoppingCart,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModal } from "../../Modals/modalSlice";
+import { closeModal, openModal } from "../../Modals/modalSlice";
 import { Link } from "react-router-dom";
-import { logoutAsync } from "../../auth/AuthSlice";
+import { logoutAsync, selectLoggedInUser } from "../../auth/AuthSlice";
 
 export function MobileNavigation() {
   const { isOpen, type, props } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const closeDrawer = () => dispatch(closeModal());
+  const loggedInUser = useSelector(selectLoggedInUser);
 
+  const openLoginModal = () => {
+    window.scrollTo(0, 0);
+    dispatch(openModal({ type: "login" }));
+  };
   return (
     <React.Fragment>
       <Drawer
@@ -99,28 +105,50 @@ export function MobileNavigation() {
               </div>
               Contact Us
             </Link>
-            <Link
-              onClick={closeDrawer}
-              to={"/account"}
-              class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-black focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-black active:bg-blue-gray-50 active:bg-opacity-80 active:text-black"
-            >
-              <div class="grid mr-4 place-items-center">
-                <User />
-              </div>
-              Account
-            </Link>
-            <Button
-              onClick={() => {
-                dispatch(logoutAsync());
-                closeDrawer();
-              }}
-              className="bg-ternary flex items-center w-11/12 text-white p-3 leading-tight transition-all rounded-lg outline-none text-start  hover:bg-opacity-80 "
-            >
-              <div class="grid mr-4 place-items-center">
-                <Power />
-              </div>
-              Log Out
-            </Button>
+            {loggedInUser && (
+              <>
+                <Link
+                  onClick={closeDrawer}
+                  to={"/cart"}
+                  class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-black focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-black active:bg-blue-gray-50 active:bg-opacity-80 active:text-black"
+                >
+                  <div class="grid mr-4 place-items-center">
+                    <ShoppingCart />
+                  </div>
+                  Cart
+                </Link>
+                <Link
+                  onClick={closeDrawer}
+                  to={"/profile"}
+                  class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-black focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-black active:bg-blue-gray-50 active:bg-opacity-80 active:text-black"
+                >
+                  <div class="grid mr-4 place-items-center">
+                    <User />
+                  </div>
+                  Account
+                </Link>
+                <Button
+                  onClick={() => {
+                    dispatch(logoutAsync());
+                    closeDrawer();
+                  }}
+                  className="bg-ternary flex items-center w-11/12 text-white p-3 leading-tight transition-all rounded-lg outline-none text-start  hover:bg-opacity-80 "
+                >
+                  <div class="grid mr-4 place-items-center">
+                    <Power />
+                  </div>
+                  Log Out
+                </Button>
+              </>
+            )}
+            {!loggedInUser && (
+              <button
+                onClick={openLoginModal}
+                className="rounded-md bg-cta px-2 md:px-4 py-3 text-lg font-bold text-white justify-center mt-3 shadow flex items-center gap-x-1"
+              >
+                <User strokeWidth={3} /> Login
+              </button>
+            )}
           </nav>
         </div>
       </Drawer>

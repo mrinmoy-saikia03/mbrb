@@ -47,7 +47,7 @@ import ModalProvider from "./providers/ModalProvider.jsx";
 // Protected Route Wrapper
 function ProtectedRoute({ children, isAuthenticated }) {
   if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
   return children;
 }
@@ -86,7 +86,6 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/branches" element={<Branches />} />
-          <Route path="/account" element={<AccountPage />} />
 
           <Route path="/verify-otp" element={<OtpVerificationPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -94,7 +93,6 @@ function App() {
             path="/reset-password/:userId/:passwordResetToken"
             element={<ResetPasswordPage />}
           />
-          <Route path="/checkout" element={<CheckoutPage />} />
 
           {/* Admin Routes */}
           {loggedInUser?.isAdmin && (
@@ -138,14 +136,6 @@ function App() {
 
           <>
             <Route
-              path="/home"
-              element={
-                <ProtectedRoute isAuthenticated={!!loggedInUser}>
-                  <HomePage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/cart"
               element={
                 <ProtectedRoute isAuthenticated={!!loggedInUser}>
@@ -178,15 +168,24 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route
-              path="/wishlist"
+              path="/account"
               element={
                 <ProtectedRoute isAuthenticated={!!loggedInUser}>
-                  <WishlistPage />
+                  <AccountPage />
                 </ProtectedRoute>
               }
             />
           </>
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute isAuthenticated={!!loggedInUser}>
+                <CheckoutPage />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Catch-all Route */}
           <Route path="*" element={<NotFoundPage />} />

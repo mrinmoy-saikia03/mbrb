@@ -35,6 +35,11 @@ export const fetchProducts = async (filters) => {
     queryString += `user=${filters.user}&`;
   }
 
+  // Add searchText to query string if it exists
+  if (filters.searchText) {
+    queryString += `search=${encodeURIComponent(filters.searchText)}&`;
+  }
+
   try {
     const res = await axiosi.get(`/products?${queryString}`);
     const totalResults = await res.headers.get("X-Total-Count");

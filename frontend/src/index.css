@@ -109,3 +109,38 @@
   height: 100%;
   object-fit: cover;
 }
+
+
+.react-slideshow-container {
+  @apply relative;
+}
+
+.react-slideshow-container .nav {
+  @apply z-10;
+}
+
+.indicators {
+  @apply absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 transform gap-2;
+}
+
+.indicator.active {
+  @apply bg-white;
+}
+
+/* Add smooth transition for images */
+.react-slideshow-fade-wrapper {
+  @apply transition-all duration-500;
+}
+
+/* Optimize image loading */
+img {
+  @apply transition-opacity duration-300;
+}
+
+img[loading="lazy"] {
+  @apply opacity-100;
+}
+
+img[loading="lazy"].loaded {
+  @apply opacity-0;
+}
