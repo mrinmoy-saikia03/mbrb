@@ -84,7 +84,7 @@ const ProductList2 = ({ isHome = true }) => {
   };
 
   return (
-    <section className="py-10 px-2 md:py-16 bg-gray-50">
+    <section className="py-10 px-2 md:py-16">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-4 md:mb-5 lg:mb-8 xl:mb-12 border-b border-gray-200 pb-2">
           <Typography
