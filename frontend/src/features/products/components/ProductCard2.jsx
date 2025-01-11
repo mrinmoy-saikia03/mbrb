@@ -1,4 +1,4 @@
-import { IndianRupee, Star } from "lucide-react";
+import { IndianRupee, Star, Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +14,7 @@ import {
   removeProductByIdAsync,
   undeleteProductByIdAsync,
 } from "../ProductSlice";
-import { Button } from "@material-tailwind/react";
+import { Button, Tooltip } from "@material-tailwind/react";
 import { openModal } from "../../Modals/modalSlice";
 
 const ProductCard2 = ({ product, isAdmin }) => {
@@ -28,6 +28,7 @@ const ProductCard2 = ({ product, isAdmin }) => {
   );
   const [isInCart, setIsInCart] = useState(false);
   const [cartItemId, setCartItemId] = useState(null);
+  const [adminExpanded, setAdminExpanded] = useState(false); // Toggle admin actions
 
   // Check if product is already in the cart
   useEffect(() => {
@@ -84,8 +85,6 @@ const ProductCard2 = ({ product, isAdmin }) => {
     );
     if (userResponse) {
       dispatch(removeProductByIdAsync(product._id));
-    } else {
-      return;
     }
   };
 
@@ -103,9 +102,11 @@ const ProductCard2 = ({ product, isAdmin }) => {
     <Link to={`/sweets/${_id}`}>
       <div className="relative w-full text-black flex flex-col overflow-hidden rounded border border-transparent transition duration-200 hover:bg-secondary/10 hover:border-secondary px-2 py-2 md:py-3 md:px-3">
         {/* Product Image */}
-        <div className="relative  flex h-48 sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded border">
+        <div className="relative flex h-48 sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded border">
           <img
-            className="w-full object-cover"
+            className={`${
+              product.isDeleted ? "grayscale" : ""
+            } w-full object-cover`}
             src={thumbnail || "https://via.placeholder.com/535x535.png"} // Fallback image if no image is provided
             alt={title}
           />
@@ -122,14 +123,16 @@ const ProductCard2 = ({ product, isAdmin }) => {
             </h5>
           </div>
 
-          <div className=" mt-1 font-semibold flex items-center justify-between">
-            <p className="flex items-center text-slate-900">
-              <span className="text-base sm:text-lg md:text-xl tracking-tighter flex items-center">
-                <IndianRupee className="h-4 w-4 sm:h-5 sm:w-5" />
-                {selectedWeightOption.price || price || 0}
-              </span>
-            </p>
-          </div>
+          {!isAdmin && (
+            <div className="mt-1 font-semibold flex items-center justify-between">
+              <p className="flex items-center text-slate-900">
+                <span className="text-base sm:text-lg md:text-xl tracking-tighter flex items-center">
+                  <IndianRupee className="h-4 w-4 sm:h-5 sm:w-5" />
+                  {selectedWeightOption.price || price || 0}
+                </span>
+              </p>
+            </div>
+          )}
 
           {/* Weight Selector */}
           <div className="my-3" onClick={(e) => e.preventDefault()}>
@@ -165,40 +168,49 @@ const ProductCard2 = ({ product, isAdmin }) => {
               </Button>
             ))}
 
+          {/* Admin Actions */}
           {isAdmin && (
             <>
-              <div className=" flex gap-x-2">
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate(`/admin/product-update/${product._id}`);
-                  }}
-                  className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
-                >
-                  Update
-                </button>
-                {product.isDeleted === true ? (
+              <div className="flex items-center justify-between">
+                <Tooltip content="Update">
                   <button
-                    onClick={handleProductUnDelete}
-                    className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate(`/admin/product-update/${product._id}`);
+                    }}
+                    className="text-white w-full bg-secondary grid place-items-center mx-1 py-2 rounded-lg"
                   >
-                    Hide Product
+                    <Edit className="h-5 w-5" />
                   </button>
+                </Tooltip>
+                {product.isDeleted ? (
+                  <Tooltip content="Show">
+                    <button
+                      onClick={handleProductUnDelete}
+                      className="text-white w-full bg-secondary grid place-items-center mx-1 py-2 rounded-lg"
+                    >
+                      <Eye className="h-5 w-5" />
+                    </button>
+                  </Tooltip>
                 ) : (
-                  <button
-                    onClick={handleProductDelete}
-                    className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700"
-                  >
-                    Show Product
-                  </button>
+                  <Tooltip content="Hide">
+                    <button
+                      onClick={handleProductDelete}
+                      className="text-white w-full bg-secondary grid place-items-center mx-1 py-2 rounded-lg"
+                    >
+                      <EyeOff className="h-5 w-5" />
+                    </button>
+                  </Tooltip>
                 )}
+                <Tooltip content="Delete">
+                  <button
+                    onClick={handleProductRemove}
+                    className="text-white w-full bg-secondary grid place-items-center mx-1 py-2 rounded-lg"
+                  >
+                    <Trash2 className="h-5 w-5" />
+                  </button>
+                </Tooltip>
               </div>
-              <button
-                onClick={handleProductRemove}
-                className="w-full flex items-center justify-center rounded bg-secondary px-3 py-2 sm:px-4 sm:py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-gray-700 mt-2"
-              >
-                Remove Product
-              </button>
             </>
           )}
         </div>

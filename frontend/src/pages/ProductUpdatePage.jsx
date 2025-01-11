@@ -1,11 +1,13 @@
-import React from 'react'
-import { ProductUpdate } from '../features/admin/components/ProductUpdate'
-import {Navbar} from '../features/navigation/components/Navbar'
+import React from "react";
+import { ProductUpdate } from "../features/admin/components/ProductUpdate";
+import { Navbar } from "../features/navigation/components/Navbar";
 
-export const ProductUpdatePage = () => {
+const ProductUpdatePage = () => {
   return (
     <>
-    <ProductUpdate/>
+      <ProductUpdate />
     </>
-  )
-}
+  );
+};
+
+export default ProductUpdatePage;

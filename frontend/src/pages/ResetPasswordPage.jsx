@@ -1,8 +1,8 @@
-import React from 'react'
-import { ResetPassword } from '../features/auth/components/ResetPassword'
+import React from "react";
+import { ResetPassword } from "../features/auth/components/ResetPassword";
 
 export const ResetPasswordPage = () => {
-  return (
-    <ResetPassword/>
-  )
-}
+  return <ResetPassword />;
+};
+
+export default ResetPasswordPage;

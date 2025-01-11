@@ -1,11 +1,13 @@
-import React from 'react'
-import { Navbar } from '../features/navigation/components/Navbar'
-import { AddProduct } from '../features/admin/components/AddProduct'
+import React from "react";
+import { Navbar } from "../features/navigation/components/Navbar";
+import { AddProduct } from "../features/admin/components/AddProduct";
 
-export const AddProductPage = () => {
+const AddProductPage = () => {
   return (
     <>
-    <AddProduct/>
+      <AddProduct />
     </>
-  )
-}
+  );
+};
+
+export default AddProductPage;

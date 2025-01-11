@@ -364,12 +364,9 @@ export const AddProduct = () => {
 
         {/* Submit Button */}
         <div className="mt-4">
-          <button
-            type="submit"
-            className="w-full bg-indigo-500 text-white py-2 rounded-md"
-          >
+          <Button type="submit" className="w-full text-white py-2 rounded-md">
             Add Product
-          </button>
+          </Button>
         </div>
       </form>
     </div>

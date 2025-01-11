@@ -4,7 +4,7 @@ import { Typography, Button, Card, CardBody } from "@material-tailwind/react";
 import Lottie from "lottie-react";
 import { notFoundPageAnimation } from "../assets";
 
-export const NotFoundPage = () => {
+const NotFoundPage = () => {
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-gray-50">
       <Card className="shadow-lg p-6 max-w-lg text-center">
@@ -39,3 +39,5 @@ export const NotFoundPage = () => {
     </div>
   );
 };
+
+export default NotFoundPage;

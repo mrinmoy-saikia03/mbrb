@@ -1,11 +1,11 @@
-import React from 'react'
-import { UserProfile } from '../features/user/components/UserProfile'
-import {Navbar} from '../features/navigation/components/Navbar'
+import React from "react";
+import { UserProfile } from "../features/user/components/UserProfile";
 
-export const UserProfilePage = () => {
+const UserProfilePage = () => {
   return (
-    <div className=''>
-    <UserProfile/>
+    <div className="">
+      <UserProfile />
     </div>
-  )
-}
+  );
+};
+export default UserProfilePage;

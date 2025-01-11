@@ -19,6 +19,14 @@ import {
 } from "../ProductSlice";
 import { ProductSkeleton } from "./Skeletons";
 
+export const ProductFetchSkeletonLoader = () => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    {[...Array(4)].map((_, index) => (
+      <ProductSkeleton key={index} />
+    ))}
+  </div>
+);
+
 const ProductList2 = ({ isHome = true }) => {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
@@ -27,18 +35,11 @@ const ProductList2 = ({ isHome = true }) => {
   useEffect(() => {
     dispatch(fetchRandomProductsAsync());
   }, []);
-  
 
   const renderContent = () => {
     switch (productFetchStatus) {
       case "pending":
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {[...Array(4)].map((_, index) => (
-              <ProductSkeleton key={index} />
-            ))}
-          </div>
-        );
+        return <ProductFetchSkeletonLoader />;
       case "rejected":
         return (
           <Alert

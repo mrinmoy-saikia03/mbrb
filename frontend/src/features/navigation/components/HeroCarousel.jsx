@@ -32,7 +32,7 @@ const carouselData = {
 };
 
 const CarouselSlide = ({ pcImage, mobileImage, title, description, index }) => (
-  <div className="relative h-[60vh] w-full">
+  <div className="relative h-[60vh] lg:h-[90vh] w-full">
     <div className="absolute inset-0 bg-black/20" />
     <picture>
       <source media="(min-width: 768px)" srcSet={pcImage} />

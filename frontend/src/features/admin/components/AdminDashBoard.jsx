@@ -19,11 +19,11 @@ export const AdminDashBoard = () => {
   const productFetchStatus = useSelector(selectProductFetchStatus);
 
   return (
-    <div className="py-10">
+    <div className="py-10 lg:px-5">
       <div className="px-5 mt-5">
         <Filter />
       </div>
-      <div className="px-5 w-full mt-5">
+      <div className="lg:px-20 w-full mt-5">
         <div>
           {/* Loading Spinner */}
           {productFetchStatus === "pending" && (
@@ -33,7 +33,7 @@ export const AdminDashBoard = () => {
           )}
 
           {/* Product Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-2 md:gap-x-2 gap-y-7 mt-5">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-2 md:gap-x-5 gap-y-7 mt-5">
             {productFetchStatus === "fulfilled" &&
               products.map((product) => (
                 <ProductCard2

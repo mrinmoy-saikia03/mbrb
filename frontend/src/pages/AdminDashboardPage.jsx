@@ -1,11 +1,13 @@
-import React from 'react'
-import { Navbar } from '../features/navigation/components/Navbar'
-import { AdminDashBoard } from '../features/admin/components/AdminDashBoard'
+import React from "react";
+import { Navbar } from "../features/navigation/components/Navbar";
+import { AdminDashBoard } from "../features/admin/components/AdminDashBoard";
 
-export const AdminDashboardPage = () => {
+const AdminDashboardPage = () => {
   return (
     <>
-    <AdminDashBoard/>
+      <AdminDashBoard />
     </>
-  )
-}
+  );
+};
+
+export default AdminDashboardPage;
