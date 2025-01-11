@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MoveRight, Package } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -13,7 +13,6 @@ import ProductCard2 from "./ProductCard2";
 import {
   selectProductFetchStatus,
   selectProducts,
-  fetchProductsAsync,
   fetchRandomProductsAsync,
   resetProductFetchStatus,
 } from "../ProductSlice";
@@ -32,9 +31,14 @@ const ProductList2 = ({ isHome = true }) => {
   const products = useSelector(selectProducts);
   const productFetchStatus = useSelector(selectProductFetchStatus);
 
+  const hasFetched = useRef(false);
+
   useEffect(() => {
-    dispatch(fetchRandomProductsAsync());
-  }, []);
+    if (!hasFetched.current) {
+      dispatch(fetchRandomProductsAsync());
+      hasFetched.current = true; // Mark as fetched
+    }
+  }, [dispatch]);
 
   const renderContent = () => {
     switch (productFetchStatus) {

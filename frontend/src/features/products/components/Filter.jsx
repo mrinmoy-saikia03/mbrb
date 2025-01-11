@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { fetchProductsAsync } from "../ProductSlice";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProductsAsync, selectProducts } from "../ProductSlice";
 import { Option, Select } from "@material-tailwind/react";
+import { selectLoggedInUser } from "../../auth/AuthSlice";
 
 const sortOptions = [
   { name: "Price: low to high", sort: "price", order: "asc" },
@@ -11,17 +12,49 @@ const sortOptions = [
 const Filter = ({ searchText }) => {
   const [sort, setSort] = useState(null);
   const dispatch = useDispatch();
+  const loggedInUser = useSelector(selectLoggedInUser);
+  const products = useSelector(selectProducts);
+
+  // Ref to track the previous filters
+  const prevFilters = useRef({ sort, searchText });
+  const initialRender = useRef(true); // Track if it's the initial render
 
   useEffect(() => {
-    const finalFilters = { sort, searchText };
-    dispatch(fetchProductsAsync(finalFilters));
-  }, [sort, searchText]);
+    // If it's the initial render, don't call the API again
+    if (initialRender.current) {
+      const finalFilters = {
+        sort,
+        searchText,
+        user: loggedInUser ? loggedInUser.isAdmin : false,
+      };
+      dispatch(fetchProductsAsync(finalFilters));
+      initialRender.current = false;
+      return;
+    }
+
+    // Only call the API if the filters have actually changed
+    if (
+      prevFilters.current.sort !== sort ||
+      prevFilters.current.searchText !== searchText
+    ) {
+      const finalFilters = {
+        sort,
+        searchText,
+        user: loggedInUser ? loggedInUser.isAdmin : false,
+      };
+      dispatch(fetchProductsAsync(finalFilters));
+
+      // Update the previous filters
+      prevFilters.current = { sort, searchText };
+    }
+  }, [sort, searchText, loggedInUser, dispatch]);
 
   return (
     <div className="ml-5 mb-6 w-48">
       <Select
         onChange={(value) => {
-          setSort(sortOptions[value]); // Parse the stringified object
+          // Store only the necessary values (sort and order)
+          setSort(sortOptions[value]);
         }}
         variant="outlined"
         label="Sort by"

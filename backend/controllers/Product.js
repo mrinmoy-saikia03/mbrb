@@ -1,5 +1,6 @@
 const { Schema, default: mongoose } = require("mongoose");
 const Product = require("../models/Product");
+const _ = require("lodash");
 
 exports.create = async (req, res) => {
   try {
@@ -55,7 +56,7 @@ exports.getAll = async (req, res) => {
     }
 
     // Exclude deleted products
-    if (req.query.user) {
+    if (req.query.user == undefined || req.query.user == false) {
       filter.isDeleted = false;
     }
 
@@ -86,7 +87,7 @@ exports.getAll = async (req, res) => {
     }
 
     const totalDocs = await Product.find(filter).countDocuments().exec();
-    const results = await Product.find(filter)
+    let results = await Product.find(filter)
       .sort(sort)
       .populate("brand")
       .populate("category")
@@ -96,6 +97,14 @@ exports.getAll = async (req, res) => {
 
     // Set total count in headers
     res.set("X-Total-Count", totalDocs);
+    if (
+      !req.query.sort &&
+      !req.query.search &&
+      !req.query.brand &&
+      !req.query.category
+    ) {
+      results = _.shuffle(results);
+    }
 
     res.status(200).json(results);
   } catch (error) {

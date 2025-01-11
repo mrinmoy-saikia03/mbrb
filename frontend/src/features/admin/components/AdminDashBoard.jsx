@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Filter from "../../products/components/Filter";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchProductsAsync,
   selectProductFetchStatus,
   selectProducts,
   selectProductTotalResults,

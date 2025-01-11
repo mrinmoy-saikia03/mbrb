@@ -2,12 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChevronRight, Package, ArrowLeft } from "lucide-react";
 import { Alert, Typography, Button } from "@material-tailwind/react";
-import {
-  fetchProductsAsync,
-  resetProductFetchStatus,
-  selectProductFetchStatus,
-  selectProducts,
-} from "../ProductSlice";
+import { selectProductFetchStatus, selectProducts } from "../ProductSlice";
 import ProductCard2 from "./ProductCard2";
 import Filter from "./Filter";
 import { ProductSkeleton } from "./Skeletons";
