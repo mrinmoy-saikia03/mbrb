@@ -7,6 +7,7 @@ import {
   selectProductTotalResults,
 } from "../../products/ProductSlice";
 import ProductCard2 from "../../products/components/ProductCard2";
+import CategoryManager from "../../categories/components/CategoryManager";
 export const AdminDashBoard = () => {
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({});
@@ -19,8 +20,9 @@ export const AdminDashBoard = () => {
 
   return (
     <div className="py-10 lg:px-5">
-      <div className="px-5 mt-5">
+      <div className="px-5 mt-5 flex justify-between">
         <Filter />
+        <CategoryManager />
       </div>
       <div className="lg:px-20 w-full mt-5">
         <div>
