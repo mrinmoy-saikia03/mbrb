@@ -1,16 +1,14 @@
 import React from "react";
 import { Fade } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
-import { banner1, banner2, banner3, banner4 } from "../../../assets";
+import BannerImage1 from "../../../assets/images/BannerImage1.png";
+import BannerImage2 from "../../../assets/images/BannerImage2.webp";
+import BannerImage3 from "../../../assets/images/BannerImage3.png";
+import BannerImage4 from "../../../assets/images/BannerImage4.png";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 const carouselData = {
-  pcImages: [banner1, banner2, banner3, banner4],
-  mobileImages: [
-    "https://images.unsplash.com/photo-1707343843437-caacff5cfa74?w=750&q=80",
-    "https://images.unsplash.com/photo-1707345512638-997d31a10eaa?w=750&q=80",
-    "https://images.unsplash.com/photo-1682687982501-1e58ab814714?w=750&q=80",
-    "https://images.unsplash.com/photo-1729505622656-6da75375c3a2?w=1920&q=80",
-  ],
+  pcImages: [BannerImage1, BannerImage3, BannerImage4, BannerImage2],
+  mobileImages: [BannerImage1, BannerImage3, BannerImage4, BannerImage2],
   slides: [
     {
       title: "Experience Nature",
@@ -32,8 +30,8 @@ const carouselData = {
 };
 
 const CarouselSlide = ({ pcImage, mobileImage, title, description, index }) => (
-  <div className="relative h-[60vh] lg:h-[90vh] w-full">
-    <div className="absolute inset-0 bg-black/20" />
+  <div className="relative h-[30vh] lg:h-[90vh] w-full">
+    <div className="absolute inset-0 hidden" />
     <picture>
       <source media="(min-width: 768px)" srcSet={pcImage} />
       <img
@@ -45,7 +43,7 @@ const CarouselSlide = ({ pcImage, mobileImage, title, description, index }) => (
     </picture>
     <div className="absolute inset-0 flex items-center justify-center">
       <div className="container mx-auto px-4">
-        <div className="max-w-xl text-center text-white">
+        <div className="max-w-xl text-center text-white hidden">
           <h2 className="mb-4 text-3xl font-bold md:text-4xl lg:text-5xl">
             {title}
           </h2>
@@ -59,14 +57,14 @@ const CarouselSlide = ({ pcImage, mobileImage, title, description, index }) => (
 const arrows = {
   prevArrow: (
     <div className="group absolute left-0 top-0 flex h-full items-center">
-      <button className="bg-black/30 p-2 backdrop-blur-sm transition-all duration-300 hover:bg-black/50 group-hover:translate-x-2">
+      <button className="bg-transparent lg:bg-black/30 p-2 lg:backdrop-blur-sm transition-all duration-300 lg:hover:bg-black/50 group-hover:translate-x-2">
         <ChevronLeft className="text-white" size={24} strokeWidth={2} />
       </button>
     </div>
   ),
   nextArrow: (
     <div className="group absolute right-0 top-0 flex h-full items-center">
-      <button className="bg-black/30 p-2 backdrop-blur-sm transition-all duration-300 hover:bg-black/50 group-hover:-translate-x-2">
+      <button className="bg-transparent lg:bg-black/30 p-2 lg:backdrop-blur-sm transition-all duration-300 lg:hover:bg-black/50 group-hover:-translate-x-2">
         <ChevronRight className="text-white" size={24} strokeWidth={2} />
       </button>
     </div>

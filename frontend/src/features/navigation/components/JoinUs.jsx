@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import MBRBJoinus from "../../../assets/images/MBRBJoingus.webp";
 const JoinUs = () => {
   return (
     <section class="text-gray-600 body-font mt-10">
@@ -9,7 +9,7 @@ const JoinUs = () => {
           <img
             class="object-cover object-center rounded"
             alt="hero"
-            src="https://dummyimage.com/720x600"
+            src={MBRBJoinus}
           />
         </div>
         <div class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
@@ -24,10 +24,16 @@ const JoinUs = () => {
             opportunities for success. Join now and thrive!
           </p>
           <div class="flex justify-center">
-            <Link to={"/contact"} class="inline-flex text-white bg-secondary border-0 py-2 px-6 focus:outline-none hover:bg-secondary/70 rounded text-lg">
+            <Link
+              to={"/contact"}
+              class="inline-flex text-white bg-secondary border-0 py-2 px-6 focus:outline-none hover:bg-secondary/70 rounded text-lg"
+            >
               Become a Distributor
             </Link>
-            <Link to={"/contact"} class="ml-4 inline-flex text-gray-700 bg-primary border border-secondary py-2 px-6 focus:outline-none hover:bg-secondary/20 rounded text-lg">
+            <Link
+              to={"/contact"}
+              class="ml-4 inline-flex text-gray-700 bg-primary border border-secondary py-2 px-6 focus:outline-none hover:bg-secondary/20 rounded text-lg"
+            >
               Outlet Enquiry
             </Link>
           </div>

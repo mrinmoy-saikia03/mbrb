@@ -1,5 +1,5 @@
 import React from "react";
-
+import MBRBOwner from "../../../assets/images/MBRBOwner.jpeg";
 const OurStory = () => {
   return (
     <section class="text-gray-600 body-font bg-gray-50 py-14">
@@ -46,7 +46,7 @@ const OurStory = () => {
           <img
             class="object-cover object-center rounded"
             alt="hero"
-            src="https://dummyimage.com/720x600"
+            src={MBRBOwner}
           />
         </div>
       </div>
