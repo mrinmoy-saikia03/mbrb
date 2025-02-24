@@ -29,13 +29,16 @@ export const ProductFetchSkeletonLoader = () => (
 const ProductList2 = ({ isHome = true }) => {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
-  const productFetchStatus = useSelector(selectProductFetchStatus);
+  let productFetchStatus = useSelector(selectProductFetchStatus);
 
   const hasFetched = useRef(false);
 
   useEffect(() => {
     if (!hasFetched.current) {
-      dispatch(fetchRandomProductsAsync());
+      if (!products || products.length < 4) {
+        dispatch(fetchRandomProductsAsync());
+      }
+      productFetchStatus = true;
       hasFetched.current = true; // Mark as fetched
     }
   }, [dispatch]);
@@ -58,6 +61,27 @@ const ProductList2 = ({ isHome = true }) => {
           </Alert>
         );
       case "fulfilled":
+        return (
+          <>
+            <div className="grid grid-cols-2 lg:grid-cols-4">
+              {products &&
+                products.map((product) => (
+                  <ProductCard2 key={product._id} product={product} />
+                ))}
+            </div>
+
+            <div className="mt-8 text-center xl:hidden">
+              <Link
+                to="/sweets"
+                className="inline-flex items-center gap-2 text-lg font-medium text-gray-900 hover:text-blue-500 transition-all duration-300 border-b border-transparent hover:border-blue-500 pb-1"
+              >
+                View All Products
+                <MoveRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+          </>
+        );
+      case "idle":
         return (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4">

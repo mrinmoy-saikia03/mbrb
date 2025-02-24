@@ -70,13 +70,17 @@ const ProductInfo = () => {
       behavior: "instant",
     });
   }, []);
-
+  console.log(productFetchStatus);
+  let isMounted = true;
   useEffect(() => {
-    if (id) {
+    if (id && isMounted) {
       dispatch(fetchProductByIdAsync(id));
-      dispatch(fetchReviewsByProductIdAsync(id));
     }
-  }, [id]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id, dispatch]);
 
   useEffect(() => {
     if (cartItemAddStatus === "fulfilled") {
@@ -333,7 +337,7 @@ const ProductInfo = () => {
           </div>
         </div>
       )}
-      {productFetchStatus === "pending" && (
+      {productFetchStatus === "idle" && (
         <div class="px-5 py-5 md:py-10 lg:py-16 xl:py-24">
           <ProductInfoSkeleton />
         </div>

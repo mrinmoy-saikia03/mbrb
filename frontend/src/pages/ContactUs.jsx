@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { axiosi } from "../config/axios.js";
 import { toast } from "react-toastify";
+
 const ContactUs = () => {
   const {
     register,
@@ -12,10 +13,8 @@ const ContactUs = () => {
 
   const onSubmit = async (data) => {
     try {
-      // Make the API call to submit the contact form
       const res = await axiosi.post("users/contact", data);
 
-      // Check if the response is successful
       if (res.status === 200) {
         toast.success("Your message has been sent successfully!");
         reset();
@@ -23,80 +22,74 @@ const ContactUs = () => {
         toast.error("Failed to send your message. Please try again.");
       }
     } catch (error) {
-      // Handle error scenarios
       console.error("Error submitting contact form:", error);
 
-      // Provide user feedback based on error type
       if (error.response) {
-        // Server responded with a status code outside the range of 2xx
         toast.error(
           error.response.data?.message || "An error occurred. Please try again."
         );
       } else if (error.request) {
-        // Request was made but no response received
         toast.error(
           "No response from the server. Please check your connection."
         );
       } else {
-        // Something else went wrong
         toast.error("An unexpected error occurred. Please try again later.");
       }
     }
   };
 
   return (
-    <>
-      <section className="text-gray-600 body-font relative">
-        <div className="container px-5 py-24 mx-auto flex sm:flex-nowrap flex-wrap">
-          <div className="lg:w-2/3 md:w-1/2 bg-gray-300 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
-            <iframe
-              width="100%"
-              height="100%"
-              className="absolute inset-0"
-              frameBorder="0"
-              title="map"
-              marginHeight="0"
-              marginWidth="0"
-              scrolling="no"
-              src="https://maps.google.com/maps?width=100%&height=600&hl=en&q=%C4%B0zmir+(My%20Business%20Name)&ie=UTF8&t=&z=14&iwloc=B&output=embed"
-              style={{ filter: "grayscale(1) contrast(1.2) opacity(0.4)" }}
-            ></iframe>
-            <div className="bg-primary relative flex flex-wrap py-6 rounded shadow-md">
-              <div className="lg:w-1/2 px-6">
-                <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs">
-                  ADDRESS
-                </h2>
-                <p className="mt-1">
-                  Photo booth tattooed prism, portland taiyaki hoodie neutra
-                  typewriter
+    <section className="text-gray-600 body-font relative bg-gray-50 py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Left Side: Contact Information */}
+          <div className="lg:w-1/3 bg-white rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Get in Touch
+            </h2>
+            <p className="text-gray-600 mb-6">
+              We'd love to hear from you! Whether you have a question, feedback,
+              or just want to say hello, feel free to reach out.
+            </p>
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 uppercase">
+                  Address
+                </h3>
+                <p className="text-gray-600">
+                  GVM Road ,Girdhar Market, Near Bus Stand Sardarshaher ,Churu,
+                  Rajasthan, India, 331403
                 </p>
               </div>
-              <div className="lg:w-1/2 px-6 mt-4 lg:mt-0">
-                <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs">
-                  EMAIL
-                </h2>
-                <a className="text-indigo-500 leading-relaxed">
-                  example@email.com
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 uppercase">
+                  Email
+                </h3>
+                <a
+                  className="text-indigo-500 hover:text-indigo-600"
+                >
+                  enquiry@mbrb.in , Helpdesk@mbrb.in
                 </a>
-                <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs mt-4">
-                  PHONE
-                </h2>
-                <p className="leading-relaxed">123-456-7890</p>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 uppercase">
+                  Phone
+                </h3>
+                <p className="text-gray-600">6350127930 , 01564-4456395</p>
               </div>
             </div>
           </div>
-          <div className="lg:w-1/3 md:w-1/2 flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0">
-            <h2 className="text-gray-900 text-2xl mb-1 font-medium title-font">
-              Contact Us
+
+          {/* Right Side: Contact Form */}
+          <div className="lg:w-2/3 bg-white rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Send Us a Message
             </h2>
-            <p className="leading-relaxed mb-5 text-gray-600">
-              Post-ironic portland shabby chic echo park, banjo fashion axe
-            </p>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="relative mb-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div>
                 <label
                   htmlFor="name"
-                  className="leading-7 text-sm text-gray-600"
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Name
                 </label>
@@ -104,7 +97,7 @@ const ContactUs = () => {
                   type="text"
                   id="name"
                   {...register("name", { required: "Name is required" })}
-                  className="w-full bg-secondary/10 rounded border border-ternary focus:border-ternary focus:ring-2 focus:ring-ternary/50 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  className="mt-1 p-2 block w-full rounded-md border-teranary shadow-sm bg-ternary/10 sm:text-sm"
                 />
                 {errors.name && (
                   <p className="text-red-500 text-xs mt-1">
@@ -112,10 +105,10 @@ const ContactUs = () => {
                   </p>
                 )}
               </div>
-              <div className="relative mb-4">
+              <div>
                 <label
                   htmlFor="email"
-                  className="leading-7 text-sm text-gray-600"
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Email
                 </label>
@@ -129,7 +122,7 @@ const ContactUs = () => {
                       message: "Invalid email address",
                     },
                   })}
-                  className="w-full bg-secondary/10 rounded border border-ternary focus:border-ternary focus:ring-2 focus:ring-ternary/50 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  className="mt-1 p-2 block w-full rounded-md border-teranary shadow-sm bg-ternary/10 sm:text-sm"
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1">
@@ -137,10 +130,10 @@ const ContactUs = () => {
                   </p>
                 )}
               </div>
-              <div className="relative mb-4">
+              <div>
                 <label
-                  htmlFor="name"
-                  className="leading-7 text-sm text-gray-600"
+                  htmlFor="subject"
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Subject
                 </label>
@@ -148,7 +141,7 @@ const ContactUs = () => {
                   type="text"
                   id="subject"
                   {...register("subject", { required: "Subject is required" })}
-                  className="w-full bg-secondary/10 rounded border border-ternary focus:border-ternary focus:ring-2 focus:ring-ternary/50 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  className="mt-1 p-2 block w-full rounded-md border-teranary shadow-sm bg-ternary/10 sm:text-sm"
                 />
                 {errors.subject && (
                   <p className="text-red-500 text-xs mt-1">
@@ -156,17 +149,18 @@ const ContactUs = () => {
                   </p>
                 )}
               </div>
-              <div className="relative mb-4">
+              <div>
                 <label
                   htmlFor="message"
-                  className="leading-7 text-sm text-gray-600"
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Message
                 </label>
                 <textarea
                   id="message"
                   {...register("message", { required: "Message is required" })}
-                  className="w-full bg-secondary/10 rounded border border-ternary focus:border-ternary focus:ring-2 focus:ring-ternary/50 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                  className="mt-1 p-2 block w-full rounded-md border-teranary shadow-sm bg-ternary/10 sm:text-sm"
+                  rows="4"
                 ></textarea>
                 {errors.message && (
                   <p className="text-red-500 text-xs mt-1">
@@ -174,21 +168,19 @@ const ContactUs = () => {
                   </p>
                 )}
               </div>
-              <button
-                type="submit"
-                className="text-white bg-ternary border-0 py-2 px-6 focus:outline-none rounded text-lg w-full"
-              >
-                Submit
-              </button>
+              <div>
+                <button
+                  type="submit"
+                  className="w-full bg-ternary text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2"
+                >
+                  Submit
+                </button>
+              </div>
             </form>
-            <p className="text-xs text-gray-500 mt-3">
-              Chicharrones blog helvetica normcore iceland tousled brook viral
-              artisan.
-            </p>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 

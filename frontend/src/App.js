@@ -13,7 +13,7 @@ import {
 import { useAuthCheck } from "./hooks/useAuth/useAuthCheck";
 import { useFetchLoggedInUserDetails } from "./hooks/useAuth/useFetchLoggedInUserDetails";
 import Navbar2 from "./features/navigation/components/Navbar2";
-import { Footer } from "./features/footer/Footer";
+import Footer from "./features/footer/Footer";
 import ModalProvider from "./providers/ModalProvider.jsx";
 import "./index.css";
 import { ProductInfoSkeleton } from "./features/products/components/Skeletons.jsx";
@@ -26,7 +26,9 @@ const ProductDetails2 = lazy(() => import("./pages/ProductDetails2.jsx"));
 const AboutUs = lazy(() => import("./pages/AboutUs.jsx"));
 const ContactUs = lazy(() => import("./pages/ContactUs.jsx"));
 const Branches = lazy(() => import("./pages/Branches.jsx"));
-const OtpVerificationPage = lazy(() => import("./pages/OtpVerificationPage.jsx"));
+const OtpVerificationPage = lazy(() =>
+  import("./pages/OtpVerificationPage.jsx")
+);
 const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage.jsx"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage.jsx"));
 const AdminDashboardPage = lazy(() => import("./pages/AdminDashboardPage.jsx"));

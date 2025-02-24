@@ -10,7 +10,6 @@ import {
 } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../Modals/modalSlice";
-
 import {
   selectLoggedInUser,
   loginAsync,
@@ -31,24 +30,27 @@ export function LoginModal() {
   const { isOpen, type } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  //signup
+
+  // Signup state
   const status2 = useSelector(selectSignupStatus);
   const error2 = useSelector(selectSignupError);
 
-  //signin
+  // Signin state
   const status = useSelector(selectLoginStatus);
   const error = useSelector(selectLoginError);
   const loggedInUser = useSelector(selectLoggedInUser);
+
   const [isSignUp, setIsSignUp] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    phone: "", // Added phone number field
   });
   const [message, setMessage] = useState("");
 
-  //signup useeffects
+  // Signup effects
   useEffect(() => {
     if (loggedInUser && !loggedInUser?.isVerified) {
       navigate("/verify-otp");
@@ -62,10 +64,8 @@ export function LoginModal() {
   }, [error2]);
 
   useEffect(() => {
-    if (status2 === "fullfilled") {
-      toast(
-        "Welcome! Verify your email to start shopping on mern-ecommerce."
-      );
+    if (status2 === "fulfilled") {
+      toast("Welcome! Verify your email to start shopping on mern-ecommerce.");
     }
     return () => {
       dispatch(clearSignupError());
@@ -73,7 +73,7 @@ export function LoginModal() {
     };
   }, [status2]);
 
-  //signin useeffects
+  // Signin effects
   useEffect(() => {
     if (loggedInUser && loggedInUser?.isVerified) {
       closeDrawer();
@@ -89,7 +89,7 @@ export function LoginModal() {
   }, [error]);
 
   useEffect(() => {
-    if (status === "fullfilled" && loggedInUser?.isVerified === true) {
+    if (status === "fulfilled" && loggedInUser?.isVerified === true) {
       toast(`Login successful`);
       closeDrawer();
     }
@@ -103,7 +103,7 @@ export function LoginModal() {
     dispatch(closeModal());
     setIsSignUp(false);
     setIsForgotPassword(false);
-    setFormData({ name: "", email: "", password: "" });
+    setFormData({ name: "", email: "", password: "", phone: "" }); // Reset phone field
     setMessage("");
   };
 
@@ -113,25 +113,30 @@ export function LoginModal() {
   };
 
   const handleLoginSubmit = () => {
-    console.log("Login Data:", formData);
     const cred = { email: formData.email, password: formData.password };
     dispatch(loginAsync(cred));
     closeDrawer();
   };
 
   const handleSignupSubmit = () => {
-    console.log("Signup Data:", formData);
+    // Validate phone number
+    const phoneRegex = /^[6-9]\d{9}$/; // Indian phone number regex
+    if (!phoneRegex.test(formData.phone)) {
+      toast.error("Please enter a valid 10-digit Indian phone number.");
+      return;
+    }
+
     const cred = {
       name: formData.name,
       email: formData.email,
       password: formData.password,
+      phone: formData.phone, // Include phone number in credentials
     };
     dispatch(signupAsync(cred));
     closeDrawer();
   };
 
   const handleForgotPasswordSubmit = () => {
-    console.log("Forgot Password Data:", formData.email);
     setMessage(
       "A link has been sent to your email for resetting your password."
     );
@@ -198,6 +203,16 @@ export function LoginModal() {
                       value={formData.name}
                       onChange={handleInputChange}
                     />
+                    <Typography className="-mb-2 text-black" variant="h6">
+                      Your Phone Number
+                    </Typography>
+                    <Input
+                      label="Phone Number"
+                      size="lg"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                    />
                   </>
                 )}
                 <Typography className="-mb-2 text-black" variant="h6">
@@ -228,7 +243,7 @@ export function LoginModal() {
             {!message && (
               <>
                 <Button
-                  loading={status === "pending"}
+                  loading={status === "pending" || status2 === "pending"}
                   type="submit"
                   onClick={
                     isForgotPassword

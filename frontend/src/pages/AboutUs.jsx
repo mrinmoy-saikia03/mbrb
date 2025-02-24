@@ -1,424 +1,333 @@
+import React from "react";
 import {
-  Card,
-  CardBody,
-  Typography,
-  CardHeader,
-  Button,
-} from "@material-tailwind/react";
+  MapPin,
+  Award,
+  Truck,
+  Users,
+  ArrowRight,
+  Star,
+  Clock,
+  Shield,
+  Leaf,
+} from "lucide-react";
+import aboutUsGulabJamun from "./../assets/images/abousUsGulabJamun.jpg";
+import aboutUsChef from "./../assets/images/aboutUsChep.jpg";
+import aboutUsBanner from "./../assets/images/AboutUsBanner.webp";
+import { Link } from "react-router-dom";
 
-function ContentCard({ img, title, desc }) {
+function About() {
   return (
-    <Card
-      className="relative grid min-h-[30rem] items-end overflow-hidden rounded-xl"
-      color="transparent"
-    >
-      <img
-        src={img}
-        alt="bg"
-        className="absolute inset-0 h-full w-full object-cover object-center"
-      />
-      <div className="absolute inset-0 bg-black/70" />
-      <CardBody className="relative flex flex-col justify-end">
-        <Typography variant="h4" color="white">
-          {title}
-        </Typography>
-        <Typography
-          variant="paragraph"
-          color="white"
-          className="my-2 font-normal"
-        >
-          {desc}
-        </Typography>
-      </CardBody>
-    </Card>
-  );
-}
-
-const contents = [
-  {
-    img: "https://www.material-tailwind.com/image/blog-11.jpeg",
-    title: "Search and Discovery",
-    desc: "Website visitors today demand a frictionless user expericence — especially when using search. Because of the hight standards we tend to offer.",
-  },
-  {
-    img: "https://www.material-tailwind.com/image/blog-10.jpeg",
-    title: "Last visits in US",
-    desc: "Wealth creation is an evolutionarily recent positive-sum game. Status is an old zero-sum game. Those attacking wealth creation are often just seeking status.",
-  },
-  {
-    img: "https://demos.creative-tim.com/material-kit-pro/assets/img/examples/card-blog2.jpg",
-    title: "Grow in a beautiful area",
-    desc: "Free people make free choices. Free choices mean you get unequal outcomes. You can have freedom, or you can have equal outcomes. You can't have both.",
-  },
-];
-
-function TestimonialCard({ img, client, title, clientInfo }) {
-  return (
-    <Card shadow={false} className="bg-gray-100/50 rounded-2xl p-6">
-      <CardHeader color="transparent" floated={false} shadow={false}>
-        <Typography
-          color="blue-gray"
-          className="lg:mb-20 mb-4 text-2xl font-bold"
-        >
-          &quot;{title}&quot;
-        </Typography>
-      </CardHeader>
-      <CardBody className="px-4 py-0 flex flex-wrap-reverse gap-x-6 justify-between items-center">
-        <div>
-          <Typography variant="h6" color="blue-gray">
-            {client}
-          </Typography>
-          <Typography
-            variant="paragraph"
-            className="font-normal !text-gray-500"
-          >
-            {clientInfo}
-          </Typography>
-        </div>
-        <img src={img} className="max-w-[8rem]" alt={client} />
-      </CardBody>
-    </Card>
-  );
-}
-
-const testimonials = [
-  {
-    title:
-      "The team went above and beyond to ensure my issue was resolved quickly and efficiently. Truly outstanding!",
-    client: "Jessica Devis",
-    clientInfo: "Full Stack Developer @Netflix",
-    img: "/image/netflix.svg",
-  },
-  {
-    title:
-      "It have broadened my horizons and helped me advance my career. The community is incredibly supportive.",
-    client: "Marcell Glock",
-    clientInfo: "Graphic Designer, @Coinbase",
-    img: "https://www.material-tailwind.com/image/Logo-coinbase.svg",
-  },
-];
-
-const faqs = [
-  {
-    title: "How do I order?",
-    desc: "We're not always in the position that we want to be at. We're constantly growing. We're constantly making mistakes. We're constantly trying to express ourselves and actualize our dreams. If you have the opportunity to play this game of life you need to appreciate every moment. A lot of people don't appreciate the moment until it's passed.",
-  },
-  {
-    title: "How can i make the payment?",
-    desc: "It really matters and then like it really doesn't matter. What matters is the people who are sparked by it. And the people who are like offended by it, it doesn't matter. Because it's about motivating the doers. Because I'm here to follow my dreams and inspire other people to follow their dreams, too. We're not always in the position that we want to be at.",
-  },
-];
-
-export function AboutUs() {
-  return (
-    <>
-      <section class="text-gray-600 body-font">
-        <div class="container px-5 py-24 mx-auto flex flex-col">
-          <div class="lg:w-4/6 mx-auto">
-            <div class="rounded-lg h-64 overflow-hidden">
-              <img
-                alt="content"
-                class="object-cover object-center h-full w-full"
-                src="https://dummyimage.com/1200x500"
-              />
+    <div className="bg-gray-50">
+      {/* Hero Section */}
+      <div
+        className="relative h-[600px] bg-cover bg-center bg-fixed"
+        style={{
+          backgroundImage: `url("${aboutUsBanner}")`,
+        }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-60">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+            <div className="text-white max-w-3xl">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                Crafting Sweet Moments Since 2008
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 leading-relaxed">
+                From the heart of Rajasthan to homes across India, we bring you
+                authentic sweets made with time-honored recipes and the finest
+                ingredients.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  to={"/sweets"}
+                  className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 px-8 rounded-full inline-flex items-center transition-all"
+                >
+                  Explore Our Products
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </div>
             </div>
-            <div class="flex flex-col sm:flex-row mt-10">
-              <div class="sm:w-1/3 text-center sm:pr-8 sm:py-8">
-                <div class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    class="w-10 h-10"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="bg-orange-600 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {[
+              { number: "15+", label: "Years of Excellence" },
+              { number: "50+", label: "Sweet Varieties" },
+              { number: "10K+", label: "Happy Customers" },
+              { number: "25+", label: "Cities Served" },
+            ].map((stat, index) => (
+              <div key={index}>
+                <div className="text-4xl font-bold mb-2">{stat.number}</div>
+                <div className="text-sm uppercase tracking-wider">
+                  {stat.label}
                 </div>
-                <div class="flex flex-col items-center text-center justify-center">
-                  <h2 class="font-medium title-font mt-4 text-gray-900 text-lg">
-                    Phoebe Caulfield
-                  </h2>
-                  <div class="w-12 h-1 bg-indigo-500 rounded mt-2 mb-4"></div>
-                  <p class="text-base">
-                    Raclette knausgaard hella meggs normcore williamsburg enamel
-                    pin sartorial venmo tbh hot chicken gentrify portland.
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Our Legacy Section */}
+      <div className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+            <div>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                Our Legacy of Authenticity & Excellence
+              </h2>
+              <div className="space-y-6 text-lg text-gray-600">
+                <p>
+                  Since our humble beginnings in 2008, MBRB Sweets has been more
+                  than just a sweets manufacturer – we've been creators of
+                  moments, memories, and traditions.
+                </p>
+                <p>
+                  Our journey began in a small kitchen in Jaipur, where our
+                  founder's passion for preserving authentic Rajasthani recipes
+                  met with a vision to share these delicacies with the world.
+                  Today, we stand as one of Rajasthan's most trusted names in
+                  traditional sweets and premium raw materials.
+                </p>
+                <p>
+                  Every sweet that leaves our kitchen carries with it the warmth
+                  of tradition, the excellence of craftsmanship, and our
+                  commitment to quality that has earned us the trust of
+                  thousands of families across India.
+                </p>
+              </div>
+              <div className="mt-8 grid grid-cols-2 gap-4">
+                <div className="border border-orange-200 rounded-lg p-4 bg-orange-50">
+                  <Star className="h-8 w-8 text-orange-600 mb-2" />
+                  <h3 className="font-semibold text-gray-900">
+                    Premium Quality
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Only the finest ingredients make it to our kitchen
+                  </p>
+                </div>
+                <div className="border border-orange-200 rounded-lg p-4 bg-orange-50">
+                  <Shield className="h-8 w-8 text-orange-600 mb-2" />
+                  <h3 className="font-semibold text-gray-900">Food Safety</h3>
+                  <p className="text-sm text-gray-600">
+                    FSSAI certified facilities and processes
                   </p>
                 </div>
               </div>
-              <div class="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-200 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
-                <p class="leading-relaxed text-lg mb-4">
-                  Meggings portland fingerstache lyft, post-ironic fixie man bun
-                  banh mi umami everyday carry hexagon locavore direct trade art
-                  party. Locavore small batch listicle gastropub farm-to-table
-                  lumbersexual salvia messenger bag. Coloring book flannel
-                  truffaut craft beer drinking vinegar sartorial, disrupt
-                  fashion axe normcore meh butcher. Portland 90's scenester
-                  vexillologist forage post-ironic asymmetrical, chartreuse
-                  disrupt butcher paleo intelligentsia pabst before they sold
-                  out four loko. 3 wolf moon brooklyn.
-                </p>
-                <a class="text-indigo-500 inline-flex items-center">
-                  Learn More
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    class="w-4 h-4 ml-2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7"></path>
-                  </svg>
-                </a>
+            </div>
+            <div className="mt-12 lg:mt-0 grid grid-cols-1 gap-8">
+              <div className="aspect-[4/3] overflow-hidden rounded-lg shadow-xl">
+                <img
+                  src={aboutUsChef}
+                  alt="Traditional sweets display"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="aspect-[4/3] overflow-hidden rounded-lg shadow-xl">
+                <img
+                  src={aboutUsGulabJamun}
+                  alt="Chef preparing sweets"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
         </div>
-      </section>
-      <section className="px-8 py-10 lg:py-28">
-        <div className="container mx-auto">
-          <Typography
-            variant="h2"
-            color="blue-gray"
-            className="mb-4 !text-2xl lg:!text-4xl"
-          >
-            The heartfelt testimonials of our community
-          </Typography>
-          <Typography
-            variant="lead"
-            className="max-w-3xl !text-gray-500 mb-10 lg:mb-20"
-          >
-            From life-enhancing gadgets to unparalleled customer support, and
-            transformative learning opportunities.
-          </Typography>
-          <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
-            {testimonials.map((props, key) => (
-              <TestimonialCard key={key} {...props} />
+      </div>
+
+      {/* Our Process Section */}
+      <div className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">
+            Our Commitment to Excellence
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {[
+              {
+                icon: <Leaf className="h-12 w-12 text-orange-600" />,
+                title: "Ingredient Selection",
+                description:
+                  "We source the finest ingredients directly from trusted farmers and suppliers, ensuring every component meets our strict quality standards.",
+              },
+              {
+                icon: <Clock className="h-12 w-12 text-orange-600" />,
+                title: "Traditional Methods",
+                description:
+                  "Our master craftsmen follow time-honored recipes and techniques, taking no shortcuts in the pursuit of authentic taste.",
+              },
+              {
+                icon: <Shield className="h-12 w-12 text-orange-600" />,
+                title: "Quality Control",
+                description:
+                  "Every batch undergoes rigorous quality checks before reaching our customers, ensuring consistent excellence in every bite.",
+              },
+            ].map((process, index) => (
+              <div key={index} className="text-center">
+                <div className="flex justify-center mb-6">{process.icon}</div>
+                <h3 className="text-2xl font-semibold mb-4">{process.title}</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {process.description}
+                </p>
+              </div>
             ))}
           </div>
-
-          <Card
-            shadow={false}
-            className="mt-8 bg-gray-100/50 text-center rounded-2xl p-6"
-          >
-            <CardHeader color="transparent" floated={false} shadow={false}>
-              <Typography
-                color="blue-gray"
-                className="mb-4 !text-2xl lg:!text-3xl max-w-4xl !leading-snug mx-auto font-bold"
-              >
-                &quot;Its intuitive design and powerful features make it
-                indispensable. I can&apos;t imagine going back to life before
-                it!&quot;
-              </Typography>
-            </CardHeader>
-            <CardBody className="items-center mx-auto py-2">
-              <img
-                src="/image/spotify.svg"
-                className="max-w-[8rem] mx-auto grayscale"
-                alt="spotify"
-              />
-              <Typography variant="h6" color="blue-gray">
-                Emma Roberts
-              </Typography>
-              <Typography
-                variant="paragraph"
-                className="font-normal !text-gray-500"
-              >
-                Chief Executive @Spotify
-              </Typography>
-            </CardBody>
-          </Card>
         </div>
-      </section>
+      </div>
 
-      <section className="container mx-auto px-8 py-10 lg:py-28">
-        <Typography
-          variant="h2"
-          color="blue-gray"
-          className="!text-2xl !leading-snug lg:!text-3xl"
-        >
-          Build something great
-        </Typography>
-        <Typography
-          variant="lead"
-          className="mt-2 max-w-lg !font-normal !text-gray-500"
-        >
-          We&apos;re constantly trying to express ourselves and actualize our
-          dreams. If you have the opportunity to play this game of life you need
-          to appreciate every moment.
-        </Typography>
-
-        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-3">
-          {contents.map(({ img, title, desc }) => (
-            <ContentCard key={title} img={img} title={title} desc={desc} />
-          ))}
-        </div>
-      </section>
-
-      <section className="py-8 px-8 lg:py-20">
-        <div className="container !mx-auto text-center place-content-center grid">
-          <Typography
-            color="blue-gray"
-            variant="lead"
-            className="!font-semibold lg:!text-lg !text-base"
-          >
-            More than 50+ brands trust us
-          </Typography>
-          <Typography
-            variant="h1"
-            color="blue-gray"
-            className="my-4 !text-2xl !leading-snug lg:!text-3xl"
-          >
-            Trusted by Leading Brands
-          </Typography>
-          <Typography
-            variant="lead"
-            className="mx-auto max-w-5xl !text-gray-500 lg:px-8 mb-10"
-          >
-            From innovative startups to Fortune 500 companies, our client list
-            spans a spectrum of sectors, each with unique challenges that
-            we&apos;ve successfully navigated.
-          </Typography>
-          <div className="flex flex-col md:flex-row gap-6 max-w-6xl mx-auto">
-            <div className="flex flex-col items-center justify-center gap-6">
-              <Card shadow={false} className="bg-[#FAFAFA] px-10">
-                <CardBody>
-                  <img
-                    src="https://www.material-tailwind.com/logos/logo-coinbase.svg"
-                    alt="logo"
-                    className="w-40"
-                  />
-                  <Typography
-                    variant="small"
-                    className="font-normal text-gray-500"
-                  >
-                    coinbase.com
-                  </Typography>
-                </CardBody>
-              </Card>
-              <Card shadow={false} className="bg-[#FAFAFA] px-10">
-                <CardBody>
-                  <img
-                    src="https://www.material-tailwind.com/logos/logo-amazon.svg"
-                    alt="logo"
-                    className="w-40"
-                  />
-                  <Typography
-                    variant="small"
-                    className="font-normal text-gray-500"
-                  >
-                    amazon.com
-                  </Typography>
-                </CardBody>
-              </Card>
-            </div>
-            <Card
-              shadow={false}
-              className="bg-[#FAFAFA] lg:px-10 justify-center max-w-[18rem] lg:max-w-lg"
-            >
-              <CardBody className="text-center">
-                <img
-                  src="https://www.material-tailwind.com/logos/logo-netflix.svg"
-                  alt="logo"
-                  className="w-40 mx-auto"
-                />
-                <Typography
-                  variant="small"
-                  className="font-normal text-gray-500 mb-4"
-                >
-                  netflix.com
-                </Typography>
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal lg:max-w-[16rem]"
-                >
-                  &quot;It have broadened our horizons and helped me advance my
-                  career. The community is incredibly supportive &quot;
-                </Typography>
-              </CardBody>
-            </Card>
-            <div className="flex flex-col items-center justify-center gap-6">
-              <Card shadow={false} className="bg-[#FAFAFA] px-10">
-                <CardBody>
-                  <img
-                    src="https://www.material-tailwind.com/logos/logo-spotify.svg"
-                    alt="logo"
-                    className="w-40"
-                  />
-                  <Typography
-                    variant="small"
-                    className="font-normal text-gray-500"
-                  >
-                    spotify.com
-                  </Typography>
-                </CardBody>
-              </Card>
-              <Card shadow={false} className="bg-[#FAFAFA] px-10">
-                <CardBody>
-                  <img
-                    src="https://www.material-tailwind.com/logos/logo-google.svg"
-                    alt="logo"
-                    className="w-40"
-                  />
-                  <Typography
-                    variant="small"
-                    className="font-normal text-gray-500"
-                  >
-                    google.com
-                  </Typography>
-                </CardBody>
-              </Card>
-            </div>
+      {/* Why Choose Us Section */}
+      <div className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">
+            Why Choose Us?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                icon: <Award className="h-10 w-10 text-orange-600" />,
+                title: "15+ Years of Expertise",
+                description:
+                  "A legacy built on trust, quality, and continuous innovation in traditional sweets.",
+              },
+              {
+                icon: <Users className="h-10 w-10 text-orange-600" />,
+                title: "Master Craftsmen",
+                description:
+                  "Our team of experienced artisans brings generations of expertise to every creation.",
+              },
+              {
+                icon: <MapPin className="h-10 w-10 text-orange-600" />,
+                title: "10+ Premium Outlets",
+                description:
+                  "Strategically located stores across Rajasthan for your convenience.",
+              },
+              {
+                icon: <Truck className="h-10 w-10 text-orange-600" />,
+                title: "Pan-India Delivery",
+                description:
+                  "Swift and secure delivery to your doorstep anywhere in India.",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="bg-orange-50 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-4">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
+              </div>
+            ))}
           </div>
         </div>
-        <Button className="mt-6 mx-auto flex" variant="outlined">
-          see all projects
-        </Button>
-      </section>
+      </div>
 
-      <section className="px-8 py-20">
-        <div className="container mx-auto">
-          <div className="mb-14 text-center ">
-            <Typography
-              variant="h1"
-              color="blue-gray"
-              className="mb-4 text-4xl !leading-snug lg:text-[40px]"
-            >
-              Frequently asked questions
-            </Typography>
-            <Typography className="mx-auto font-normal text-[18px] !text-gray-500 lg:max-w-3xl">
-              A lot of people don&apos;t appreciate the moment until it&apos;s
-              passed. I&apos;m not trying my hardest, and I&apos;m not trying to
-              do.
-            </Typography>
-          </div>
-          <div className="max-w-3xl mx-auto grid gap-10">
-            {faqs.map(({ title, desc }) => (
-              <div key={title}>
-                <Typography
-                  color="blue-gray"
-                  className="pb-6 text-[20px] font-bold"
-                >
-                  {title}
-                </Typography>
-                <div className="border-t border-gray-200 pt-4">
-                  <Typography className="font-normal !text-gray-500">
-                    {desc}
-                  </Typography>
+      {/* Testimonials Section */}
+      <div className="py-20 bg-orange-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">
+            What Our Customers Say
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                text: "The best Rajasthani sweets I've ever had! Their attention to detail and quality is unmatched. Every celebration at our home is incomplete without MBRB Sweets.",
+                author: "Priya Sharma",
+                position: "Regular Customer",
+              },
+              {
+                text: "As a business owner, I appreciate their professionalism and consistency. Their bulk order handling and timely delivery have made them our go-to supplier for corporate gifts.",
+                author: "Rajesh Kumar",
+                position: "Business Client",
+              },
+              {
+                text: "The authentic taste of their sweets reminds me of my childhood in Rajasthan. It's heartwarming to find such quality and tradition being maintained so beautifully.",
+                author: "Amit Singhania",
+                position: "Food Critic",
+              },
+            ].map((testimonial, index) => (
+              <div key={index} className="bg-white p-8 rounded-xl shadow-lg">
+                <div className="flex items-center mb-6">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className="h-5 w-5 text-orange-400 fill-current"
+                    />
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-6 italic">
+                  "{testimonial.text}"
+                </p>
+                <div>
+                  <p className="font-semibold text-gray-900">
+                    {testimonial.author}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {testimonial.position}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+
+      {/* Contact Section */}
+      <div className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              Get in Touch with Us!
+            </h2>
+            <p className="text-xl text-gray-600 mb-8">
+              Whether you're planning a special celebration, looking for bulk
+              orders, or simply want to learn more about our products, we're
+              here to help.
+            </p>
+            <div className="bg-orange-50 p-8 rounded-2xl mb-8">
+              <p className="text-lg text-gray-800 mb-4">
+                Visit us at any of our premium outlets or reach out at:
+              </p>
+              <div className="space-y-4">
+                <a
+                  href="tel:6350127930"
+                  className="block text-xl text-orange-600 font-semibold hover:text-orange-700 transition-colors"
+                >
+                  +91 6350127930
+                </a>
+                <a
+                  href="mailto:enquiry@mbrb.in"
+                  className="block text-xl text-orange-600 font-semibold hover:text-orange-700 transition-colors"
+                >
+                  enquiry@mbrb.in
+                </a>
+                <p className="text-gray-600">
+                  GVM Road, Girdhar Market,
+                  <br />
+                  Near Bus Stand Sardarshaher,
+                  <br />
+                  Churu, Rajasthan, 331403
+                </p>
+                <p className="mt-4 text-gray-600">
+                  Business Hours: Monday - Sunday, 8:00 AM - 9:00 PM
+                </p>
+              </div>
+            </div>
+            <Link
+              to={"/sweets"}
+              className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 px-8 rounded-full inline-flex items-center transition-all"
+            >
+              Explore Our Products
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
-export default AboutUs;
+export default About;
