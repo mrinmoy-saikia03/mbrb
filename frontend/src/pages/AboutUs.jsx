@@ -9,11 +9,26 @@ import {
   Clock,
   Shield,
   Leaf,
+  Phone,
+  Mail,
+  Users2,
+  Heart,
+  Utensils,
+  Gift,
+  Coffee,
 } from "lucide-react";
 import aboutUsGulabJamun from "./../assets/images/abousUsGulabJamun.jpg";
 import aboutUsChef from "./../assets/images/aboutUsChep.jpg";
-import aboutUsBanner from "./../assets/images/AboutUsBanner.webp";
+import aboutUsBanner from "./../assets/images/aboutUsBanner2.jpg";
 import { Link } from "react-router-dom";
+import aboutDeliver from "./../assets/images/aboutdelivery.jpeg";
+import aboutCraftsmen from "./../assets/images/aboutcraftsmen.jpeg";
+import about15yrs from "./../assets/images/about15yrs.jpeg";
+import aboutShop from "./../assets/images/MBRBBranch5.jpg";
+import aboutsweet1 from "./../assets/images/aboutsweet1.jpeg";
+import aboutsweet2 from "./../assets/images/aboutsweet2.jpeg";
+import aboutsweet3 from "./../assets/images/aboutsweet3.jpeg";
+import aboutsweet4 from "./../assets/images/aboutsweet4.jpeg";
 
 function About() {
   return (
@@ -183,44 +198,105 @@ function About() {
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">
             Why Choose Us?
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: <Award className="h-10 w-10 text-orange-600" />,
-                title: "15+ Years of Expertise",
-                description:
-                  "A legacy built on trust, quality, and continuous innovation in traditional sweets.",
-              },
-              {
-                icon: <Users className="h-10 w-10 text-orange-600" />,
-                title: "Master Craftsmen",
-                description:
-                  "Our team of experienced artisans brings generations of expertise to every creation.",
-              },
-              {
-                icon: <MapPin className="h-10 w-10 text-orange-600" />,
-                title: "10+ Premium Outlets",
-                description:
-                  "Strategically located stores across Rajasthan for your convenience.",
-              },
-              {
-                icon: <Truck className="h-10 w-10 text-orange-600" />,
-                title: "Pan-India Delivery",
-                description:
-                  "Swift and secure delivery to your doorstep anywhere in India.",
-              },
-            ].map((item, index) => (
-              <div
-                key={index}
-                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
-              >
-                <div className="bg-orange-50 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                  {item.icon}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="grid grid-cols-2 gap-6">
+              {[
+                {
+                  icon: <Award className="h-8 w-8 text-orange-600" />,
+                  title: "15+ Years of Expertise",
+                  description: "A legacy built on trust and quality.",
+                  image: about15yrs,
+                },
+                {
+                  icon: <Users2 className="h-8 w-8 text-orange-600" />,
+                  title: "Master Craftsmen",
+                  description: "Generations of expertise in every creation.",
+                  image: aboutCraftsmen,
+                },
+                {
+                  icon: <MapPin className="h-8 w-8 text-orange-600" />,
+                  title: "10+ Premium Outlets",
+                  description: "Conveniently located across Rajasthan.",
+                  image: aboutShop,
+                },
+                {
+                  icon: <Truck className="h-8 w-8 text-orange-600" />,
+                  title: "Pan-India Delivery",
+                  description: "Swift delivery to your doorstep.",
+                  image: aboutDeliver,
+                },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="group relative overflow-hidden rounded-xl shadow-lg"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <div className="bg-orange-200 p-2 rounded-full w-max flex items-center justify-center mb-2">
+                      {item.icon}
+                    </div>
+                    <h3 className="text-lg font-bold mb-1">{item.title}</h3>
+                    <p className="text-sm opacity-90">{item.description}</p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold mb-4">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
+              ))}
+            </div>
+            <div className="space-y-8">
+              <h3 className="text-3xl font-bold text-gray-900">
+                Excellence in Every Bite
+              </h3>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Our commitment to quality and tradition has made us one of
+                Rajasthan's most trusted names in traditional sweets. We combine
+                age-old recipes with modern techniques to create sweets that are
+                not just delicious but also a testament to our rich culinary
+                heritage.
+              </p>
+              <div className="grid grid-cols-2 gap-6">
+                {[
+                  {
+                    icon: <Heart className="h-6 w-6" />,
+                    title: "Made with Love",
+                    value: "100%",
+                  },
+                  {
+                    icon: <Utensils className="h-6 w-6" />,
+                    title: "Quality Ingredients",
+                    value: "Premium",
+                  },
+                  {
+                    icon: <Gift className="h-6 w-6" />,
+                    title: "Perfect for Gifts",
+                    value: "Always",
+                  },
+                  {
+                    icon: <Coffee className="h-6 w-6" />,
+                    title: "Fresh Daily",
+                    value: "24/7",
+                  },
+                ].map((stat, index) => (
+                  <div
+                    key={index}
+                    className="bg-orange-50 rounded-lg p-4 flex items-center space-x-4"
+                  >
+                    <div className="bg-orange-100 rounded-full p-3 text-orange-600">
+                      {stat.icon}
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">{stat.title}</p>
+                      <p className="text-lg font-bold text-orange-600">
+                        {stat.value}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
@@ -275,54 +351,75 @@ function About() {
         </div>
       </div>
 
-      {/* Contact Section */}
-      <div className="py-20 bg-white">
+      {/* Contact Section - Enhanced with visual elements */}
+      <div className="py-20 bg-orange-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Get in Touch with Us!
-            </h2>
-            <p className="text-xl text-gray-600 mb-8">
-              Whether you're planning a special celebration, looking for bulk
-              orders, or simply want to learn more about our products, we're
-              here to help.
-            </p>
-            <div className="bg-orange-50 p-8 rounded-2xl mb-8">
-              <p className="text-lg text-gray-800 mb-4">
-                Visit us at any of our premium outlets or reach out at:
-              </p>
-              <div className="space-y-4">
-                <a
-                  href="tel:6350127930"
-                  className="block text-xl text-orange-600 font-semibold hover:text-orange-700 transition-colors"
-                >
-                  +91 6350127930
-                </a>
-                <a
-                  href="mailto:enquiry@mbrb.in"
-                  className="block text-xl text-orange-600 font-semibold hover:text-orange-700 transition-colors"
-                >
-                  enquiry@mbrb.in
-                </a>
-                <p className="text-gray-600">
-                  GVM Road, Girdhar Market,
-                  <br />
-                  Near Bus Stand Sardarshaher,
-                  <br />
-                  Churu, Rajasthan, 331403
-                </p>
-                <p className="mt-4 text-gray-600">
-                  Business Hours: Monday - Sunday, 8:00 AM - 9:00 PM
-                </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-4xl font-bold text-gray-900 mb-8">
+                Visit Our Store
+              </h2>
+              <div className="bg-white p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                <div className="relative z-10">
+                  <p className="text-lg text-gray-800 mb-8">
+                    Experience our sweets in person at our flagship store:
+                  </p>
+                  <div className="space-y-6">
+                    <div className="flex items-start space-x-4">
+                      <MapPin className="h-6 w-6 text-orange-600 flex-shrink-0 mt-1" />
+                      <p className="text-gray-600">
+                        GVM Road, Girdhar Market,
+                        <br />
+                        Near Bus Stand Sardarshaher,
+                        <br />
+                        Churu, Rajasthan, 331403
+                      </p>
+                    </div>
+                    <a
+                      href="tel:6350127930"
+                      className="flex items-center space-x-4 text-orange-600 hover:text-orange-700 transition-colors"
+                    >
+                      <Phone className="h-6 w-6" />
+                      <span>+91 6350127930</span>
+                    </a>
+                    <a
+                      href="mailto:enquiry@mbrb.in"
+                      className="flex items-center space-x-4 text-orange-600 hover:text-orange-700 transition-colors"
+                    >
+                      <Mail className="h-6 w-6" />
+                      <span>enquiry@mbrb.in</span>
+                    </a>
+                  </div>
+                  <div className="mt-8 pt-8 border-t border-gray-100">
+                    <p className="text-gray-600">
+                      <span className="font-semibold">Business Hours:</span>
+                      <br />
+                      Monday - Sunday, 8:00 AM - 9:00 PM
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute top-0 right-0 w-64 h-64 bg-orange-100 rounded-full -mr-32 -mt-32 opacity-20"></div>
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-orange-100 rounded-full -ml-24 -mb-24 opacity-20"></div>
               </div>
             </div>
-            <Link
-              to={"/sweets"}
-              className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 px-8 rounded-full inline-flex items-center transition-all"
-            >
-              Explore Our Products
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+            <div className="grid grid-cols-2 gap-4">
+              {[aboutsweet1, aboutsweet2, aboutsweet3, aboutsweet4].map(
+                (image, index) => (
+                  <div
+                    key={index}
+                    className={`rounded-lg overflow-hidden shadow-lg ${
+                      index === 1 || index === 2 ? "translate-y-8" : ""
+                    }`}
+                  >
+                    <img
+                      src={image}
+                      alt="Store and products"
+                      className="w-full h-48 object-cover transform hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
       </div>

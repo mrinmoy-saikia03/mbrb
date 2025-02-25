@@ -1,14 +1,13 @@
 import React from "react";
 import { Fade } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
-import BannerImage1 from "../../../assets/images/BannerImage1.png";
-import BannerImage2 from "../../../assets/images/BannerImage2.webp";
-import BannerImage3 from "../../../assets/images/BannerImage3.png";
-import BannerImage4 from "../../../assets/images/BannerImage4.png";
+import BannerImage1 from "../../../assets/images/AboutUsBanner.webp";
+import BannerImage2 from "../../../assets/images/homeGulabJamun.jpeg";
+import BannerImage3 from "../../../assets/images/BannerImage2.webp";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 const carouselData = {
-  pcImages: [BannerImage1, BannerImage3, BannerImage4, BannerImage2],
-  mobileImages: [BannerImage1, BannerImage3, BannerImage4, BannerImage2],
+  pcImages: [BannerImage1, BannerImage3, BannerImage2],
+  mobileImages: [BannerImage1, BannerImage3, BannerImage2],
   slides: [
     {
       title: "Experience Nature",
@@ -21,10 +20,6 @@ const carouselData = {
     {
       title: "Peaceful Moments",
       description: "Find tranquility in every corner",
-    },
-    {
-      title: "Modern Living",
-      description: "Embrace contemporary lifestyle",
     },
   ],
 };
