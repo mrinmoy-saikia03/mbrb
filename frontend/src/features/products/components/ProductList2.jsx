@@ -65,7 +65,7 @@ const ProductList2 = ({ isHome = true }) => {
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4">
               {products &&
-                products.map((product) => (
+                products.slice(0,4).map((product) => (
                   <ProductCard2 key={product._id} product={product} />
                 ))}
             </div>
