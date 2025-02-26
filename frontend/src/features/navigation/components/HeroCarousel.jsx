@@ -6,8 +6,8 @@ import BannerImage2 from "../../../assets/images/homeGulabJamun.jpeg";
 import BannerImage3 from "../../../assets/images/BannerImage2.webp";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 const carouselData = {
-  pcImages: [BannerImage1, BannerImage3, BannerImage2],
-  mobileImages: [BannerImage1, BannerImage3, BannerImage2],
+  pcImages: [BannerImage3, BannerImage2, BannerImage1],
+  mobileImages: [BannerImage3, BannerImage2, BannerImage1],
   slides: [
     {
       title: "Experience Nature",
