@@ -113,7 +113,7 @@ export function LoginModal() {
   };
 
   const handleLoginSubmit = () => {
-    const cred = { email: formData.email, password: formData.password };
+    const cred = { phone: formData.phone, password: formData.password };
     dispatch(loginAsync(cred));
     closeDrawer();
   };
@@ -203,28 +203,32 @@ export function LoginModal() {
                       value={formData.name}
                       onChange={handleInputChange}
                     />
+                  </>
+                )}
+                <Typography className="-mb-2 text-black" variant="h6">
+                  Your Phone Number
+                </Typography>
+                <Input
+                  label="Phone Number"
+                  size="lg"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                />
+                {isSignUp && (
+                  <>
                     <Typography className="-mb-2 text-black" variant="h6">
-                      Your Phone Number
+                      Your Email
                     </Typography>
                     <Input
-                      label="Phone Number"
+                      label="Email"
                       size="lg"
-                      name="phone"
-                      value={formData.phone}
+                      name="email"
+                      value={formData.email}
                       onChange={handleInputChange}
                     />
                   </>
                 )}
-                <Typography className="-mb-2 text-black" variant="h6">
-                  Your Email
-                </Typography>
-                <Input
-                  label="Email"
-                  size="lg"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
                 <Typography className="-mb-2 text-black" variant="h6">
                   Your Password
                 </Typography>

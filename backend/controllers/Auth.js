@@ -9,7 +9,7 @@ const PasswordResetToken = require("../models/PasswordResetToken");
 
 exports.signup = async (req, res) => {
   try {
-    const existingUser = await User.findOne({ email: req.body.email });
+    const existingUser = await User.findOne({ phone: req.body.phone });
 
     // if user already exists
     if (existingUser) {
@@ -53,7 +53,7 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     // checking if user exists or not
-    const existingUser = await User.findOne({ email: req.body.email });
+    const existingUser = await User.findOne({ phone: req.body.phone });
 
     // if exists and password matches the hash
     if (
@@ -84,11 +84,9 @@ exports.login = async (req, res) => {
     return res.status(404).json({ message: "Invalid Credentials" });
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({
-        message: "Some error occurred while logging in, please try again later",
-      });
+    res.status(500).json({
+      message: "Some error occurred while logging in, please try again later",
+    });
   }
 };
 

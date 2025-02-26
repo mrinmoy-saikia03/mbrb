@@ -144,7 +144,7 @@ export const OtpVerfication = () => {
         ) : (
           <div className="space-y-4 text-center">
             <Typography className="text-gray-600">
-              We will send you an OTP to {resendOtpStatus}
+              We will send you an OTP to
             </Typography>
             <Typography className="font-semibold text-gray-600">
               {loggedInUser?.email}
