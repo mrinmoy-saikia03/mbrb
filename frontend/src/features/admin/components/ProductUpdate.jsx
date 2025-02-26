@@ -96,6 +96,10 @@ export const ProductUpdate = () => {
   }, [selectedProduct, append]);
 
   const handleProductUpdate = (data) => {
+    if (data.weightOptions.length === 0) {
+      toast.error("At least one weight option is required.");
+      return;
+    }
     const productUpdate = {
       ...data,
       _id: selectedProduct._id,

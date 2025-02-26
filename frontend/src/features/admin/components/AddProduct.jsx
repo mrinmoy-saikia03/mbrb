@@ -54,11 +54,18 @@ export const AddProduct = () => {
   }, []);
 
   const handleAddProduct = (data) => {
+
+    if (data.weightOptions.length === 0) {
+      toast.error("At least one weight option is required.");
+      return;
+    }
+
     const newProduct = {
       ...data,
       images: imagesPublicIds,
       thumbnail: thumbnailPublicId,
     };
+
     dispatch(addProductAsync(newProduct));
   };
 
