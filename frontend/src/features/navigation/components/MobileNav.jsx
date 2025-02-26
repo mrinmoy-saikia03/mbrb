@@ -20,6 +20,8 @@ import {
   Headset,
   Power,
   ShoppingCart,
+  ShieldEllipsis,
+  Plus,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../../Modals/modalSlice";
@@ -105,6 +107,32 @@ export function MobileNavigation() {
               </div>
               Contact Us
             </Link>
+
+            {loggedInUser && loggedInUser.isAdmin && (
+              <>
+                <Link
+                  onClick={closeDrawer}
+                  to={"/admin/dashboard"}
+                  class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-black focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-black active:bg-blue-gray-50 active:bg-opacity-80 active:text-black"
+                >
+                  <div class="grid mr-4 place-items-center">
+                    <ShieldEllipsis />
+                  </div>
+                  Dashboard
+                </Link>
+                <Link
+                  onClick={closeDrawer}
+                  to={"/admin/add-product"}
+                  class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-black focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-black active:bg-blue-gray-50 active:bg-opacity-80 active:text-black"
+                >
+                  <div class="grid mr-4 place-items-center">
+                    <Plus />
+                  </div>
+                  Add Product
+                </Link>
+              </>
+            )}
+
             {loggedInUser && (
               <>
                 <Link
@@ -141,6 +169,7 @@ export function MobileNavigation() {
                 </Button>
               </>
             )}
+
             {!loggedInUser && (
               <button
                 onClick={openLoginModal}

@@ -20,7 +20,7 @@ export const AdminDashBoard = () => {
 
   return (
     <div className="py-10 lg:px-5">
-      <div className="px-5 mt-5 flex justify-between">
+      <div className="px-5 mt-5 flex justify-between gap-x-2">
         <Filter />
         <CategoryManager />
       </div>

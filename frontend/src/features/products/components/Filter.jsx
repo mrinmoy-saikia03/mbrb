@@ -50,7 +50,7 @@ const Filter = ({ searchText }) => {
   }, [sort, searchText, loggedInUser, dispatch]);
 
   return (
-    <div className="ml-5 mb-6 w-48">
+    <div className="lg:ml-5 mb-6 max-w-48">
       <Select
         onChange={(value) => {
           // Store only the necessary values (sort and order)
