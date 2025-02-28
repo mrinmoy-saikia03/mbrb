@@ -153,7 +153,7 @@ const ProductCatalogue = () => {
         </div>
 
         {/* Filter Section */}
-        <div className="mb-8">
+        <div className="mb-8 w-max">
           <Filter searchText={searchText} />
         </div>
 
