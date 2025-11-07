@@ -59,8 +59,8 @@ const Homepage2 = () => {
   return (
     <div className="w-full bg-primary">
       <FloatingWhatsApp
-        phoneNumber="919352361119"
-        accountName="MBRB"
+        phoneNumber="918473904529"
+        accountName="DreamSweets"
         allowEsc
         statusMessage="Online"
         allowClickAway

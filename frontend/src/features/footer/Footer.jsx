@@ -80,19 +80,19 @@ function Footer() {
               <li className="flex items-center">
                 <Phone className="h-4 w-4 text-white" />
                 <a
-                  href="tel:6350127930"
+                  href="tel:8403864477"
                   className="ml-2 text-white hover:text-gray-300 transition-colors"
                 >
-                  +91 6350127930
+                  +91 8403864477
                 </a>
               </li>
               <li className="flex items-center">
                 <Mail className="h-4 w-4 text-white" />
                 <a
-                  href="mailto:enquiry@mbrb.in"
+                  href="mailto:abhinabhbaruah987@gmail.com"
                   className="ml-2 text-white hover:text-gray-300 transition-colors"
                 >
-                  enquiry@mbrb.in
+                  abhinabhbaruah987@gmail.com
                 </a>
               </li>
               <li className="flex items-start">
@@ -112,7 +112,7 @@ function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-white/10">
+        {/* <div className="mt-12 pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-white text-sm text-center md:text-left">
               Copyright © 2025 MAMA BHANJA RASGULLA BHANDAR - All rights
@@ -131,7 +131,7 @@ function Footer() {
               </span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
