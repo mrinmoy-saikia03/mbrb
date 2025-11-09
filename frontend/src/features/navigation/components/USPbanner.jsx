@@ -9,7 +9,7 @@ const USPbanner = () => {
             Why Choose Us?
           </h1>
           <p className="text-base leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto text-gray-500">
-            At MBRB, we bring you the finest handcrafted sweets made with love,
+            At DreamSweets, we bring you the finest handcrafted sweets made with love,
             tradition, and the choicest ingredients. Indulge in delicacies that
             tell stories of heritage, flavor, and joy.
           </p>

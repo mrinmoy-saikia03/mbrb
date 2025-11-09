@@ -96,7 +96,7 @@ function About() {
               </h2>
               <div className="space-y-6 text-lg text-gray-600">
                 <p>
-                  Since our humble beginnings in 2008, MBRB Sweets has been more
+                  Since our humble beginnings in 2008, DreamSweets has been more
                   than just a sweets manufacturer – we've been creators of
                   moments, memories, and traditions.
                 </p>
@@ -380,14 +380,14 @@ function About() {
                       className="flex items-center space-x-4 text-orange-600 hover:text-orange-700 transition-colors"
                     >
                       <Phone className="h-6 w-6" />
-                      <span>+91 6350127930</span>
+                      <span>+91 8403867744</span>
                     </a>
                     <a
                       href="mailto:enquiry@mbrb.in"
                       className="flex items-center space-x-4 text-orange-600 hover:text-orange-700 transition-colors"
                     >
                       <Mail className="h-6 w-6" />
-                      <span>enquiry@mbrb.in</span>
+                      <span>abhinabhbaruah987@gmail.com</span>
                     </a>
                   </div>
                   <div className="mt-8 pt-8 border-t border-gray-100">

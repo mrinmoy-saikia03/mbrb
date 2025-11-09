@@ -54,10 +54,10 @@ export function StatsSection() {
           color="blue-gray"
           className="mb-4 !text-2xl font-bold lg:!text-4xl"
         >
-          Sweeten Every Moment with MBRB
+          Sweeten Every Moment with DreamSweets
         </Typography>
         <Typography variant="lead" className="w-w-full !text-gray-500 max-w-xl">
-          At MBRB, we craft each sweet with love and care to make your moments special. Order online and indulge in the finest sweets delivered to your doorstep.
+          At DS, we craft each sweet with love and care to make your moments special. Order online and indulge in the finest sweets delivered to your doorstep.
         </Typography>
       </div>
       <div className="grid gap-10 lg:grid-cols-1 lg:gap-24 xl:grid-cols-2 items-center">
@@ -82,7 +82,7 @@ export function StatsSection() {
             variant="lead"
             className="mt-1 text-base mx-auto !text-gray-500 lg:w-8/12"
           >
-            Thank you for trusting MBRB to make your celebrations sweeter. We are committed to serving you better every day!
+            Thank you for trusting DS to make your celebrations sweeter. We are committed to serving you better every day!
           </Typography>
         </Card>
         <div>
