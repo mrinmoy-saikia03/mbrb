@@ -68,14 +68,14 @@ const ContactUs = () => {
                 <a
                   className="text-indigo-500 hover:text-indigo-600"
                 >
-                  abhinabhbaruah987@gmail.com 
+                  enquiry@mbrb.in , Helpdesk@mbrb.in
                 </a>
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-gray-900 uppercase">
                   Phone
                 </h3>
-                <p className="text-gray-600">8403864477</p>
+                <p className="text-gray-600">6350127930 , 01564-4456395</p>
               </div>
             </div>
           </div>

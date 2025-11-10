@@ -16,64 +16,64 @@ const BranchesData = [
     address: {
       addressLine1: "Main bus stand Beniwal market Bhaleri",
     },
-    phone: "+91 8403864477",
-    email: "abhinabhbaruah987@gmail.com",
+    phone: "+91 6350127930",
+    email: "enquiry@mbrb.in",
     locationUrl: "https://maps.app.goo.gl/17SWHiihQBPmqCQv5",
   },
   {
     address: {
       addressLine1: "Pilaniya school ke pass, Post office ke pass, Tarangar",
     },
-    phone: "+91 8403864477",
-    email: "abhinabhbaruah987@gmail.com",
+    phone: "+91 6350127930",
+    email: "enquiry@mbrb.in",
     locationUrl: "https://maps.app.goo.gl/QTJgvm2jERbfDGPC6",
   },
   {
     address: {
       addressLine1: "Bus stand piche Sekha supar market Rajgrah (sadulpur)",
     },
-    phone: "+91 8403864477",
-    email: "abhinabhbaruah987@gmail.com",
+    phone: "+91 6350127930",
+    email: "enquiry@mbrb.in",
     locationUrl: "https://maps.app.goo.gl/gV45QRr4Qd1yw7rr9",
   },
   {
     address: {
       addressLine1: "Mamta bus stand Jagdmba frut bhandar ke pass Pallu",
     },
-    phone: "+91 8403864477",
-    email: "abhinabhbaruah987@gmail.com",
+    phone: "+91 6350127930",
+    email: "enquiry@mbrb.in",
     locationUrl: "https://maps.app.goo.gl/Uv8Pq5nMZXoajARr8",
   },
   {
     address: {
       addressLine1: "Sidhamukha",
     },
-    phone: "+91 8403864477",
-    email: "abhinabhbaruah987@gmail.com",
+    phone: "+91 6350127930",
+    email: "enquiry@mbrb.in",
     locationUrl: "https://maps.app.goo.gl/WQZ6xLBVKynodQnk7",
   },
   {
     address: {
       addressLine1: "Shree Dungargarh",
     },
-    phone: "+91 8403864477",
-    email: "abhinabhbaruah987@gmail.com",
+    phone: "+91 6350127930",
+    email: "enquiry@mbrb.in",
     locationUrl: "https://maps.app.goo.gl/oSTSehc4QxNz5kz67",
   },
   {
     address: {
       addressLine1: "Suratgarh",
     },
-    phone: "+91 8403864477",
-    email: "abhinabhbaruah987@gmail.com",
+    phone: "+91 6350127930",
+    email: "enquiry@mbrb.in",
     locationUrl: "https://maps.app.goo.gl/PJgDLBKuh8PuuwVV8",
   },
   {
     address: {
       addressLine1: "Post office ke pass Chapar",
     },
-    phone: "+91 8403864477",
-    email: "abhinabhbaruah987@gmail.com",
+    phone: "+91 6350127930",
+    email: "enquiry@mbrb.in",
     locationUrl: "https://maps.app.goo.gl/skUkQGVLXpDG6ck7A",
   },
 ];
